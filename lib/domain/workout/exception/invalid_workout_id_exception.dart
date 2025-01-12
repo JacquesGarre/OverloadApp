@@ -1,0 +1,1 @@
+class InvalidWorkoutIdException implements Exception {}
