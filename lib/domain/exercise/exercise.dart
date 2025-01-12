@@ -3,12 +3,15 @@ import 'package:overload/domain/exercise/name.dart';
 import 'package:overload/domain/exercise/units.dart';
 
 class Exercise {
-
   final Id id;
   final Name name;
   final Units units;
 
-  Exercise({required this.id, required this.name, required this.units}); // TODO make private after having done the handlers
+  Exercise({
+    required this.id,
+    required this.name,
+    required this.units,
+  }); // TODO make private after having done the handlers
 
   static Exercise create(Name name, Units units) {
     return Exercise(
@@ -25,6 +28,10 @@ class Exercise {
       name: newName,
       units: newUnits,
     );
+    // TODO domain event
+  }
+
+  delete() {
     // TODO domain event
   }
 }

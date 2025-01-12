@@ -5,6 +5,7 @@ import 'package:overload/infrastructure/providers/exercise/exercise_provider.dar
 import 'package:provider/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await setupContainer();
   runApp(
     MultiProvider(

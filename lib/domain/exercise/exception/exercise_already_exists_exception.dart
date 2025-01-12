@@ -1,0 +1,1 @@
+class ExerciseAlreadyExistsException implements Exception {}

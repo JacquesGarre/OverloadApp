@@ -1,5 +1,4 @@
 class Unit {
-
   final String value;
 
   static const Unit kgs = Unit._('Kgs');
@@ -9,15 +8,10 @@ class Unit {
   const Unit._(this.value);
 
   static List<Unit> all() {
-    return [
-      Unit.kgs,
-      Unit.reps,
-      Unit.restTime
-    ];
+    return [Unit.kgs, Unit.reps, Unit.restTime];
   }
 
   static Unit fromString(String value) {
     return Unit._(value); // TODO validate that it exists
   }
-
 }

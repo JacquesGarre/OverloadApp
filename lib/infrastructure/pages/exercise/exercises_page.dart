@@ -14,6 +14,15 @@ class ExercisesPage extends StatefulWidget {
 }
 
 class _ExercisesPageState extends State<ExercisesPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ExerciseProvider>(context, listen: false).loadExercises();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final ExerciseProvider exerciseProvider =

@@ -12,7 +12,7 @@ class Units {
 
   List<String> toStringList() {
     List<String> strings = [];
-    for(Unit unit in value) {
+    for (Unit unit in value) {
       strings.add(unit.value);
     }
     return strings;
@@ -24,11 +24,10 @@ class Units {
 
   static Units fromStringList(List<String> units) {
     List<Unit> value = [];
-    for(String unit in units) {
+    for (String unit in units) {
       value.add(Unit.fromString(unit));
     }
     return Units._(value: value);
     // TODO validate that no duplicates
   }
-
 }

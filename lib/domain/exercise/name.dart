@@ -7,4 +7,8 @@ class Name {
     return Name._(value: value);
     // TODO validate that at least 1 character
   }
+
+  bool equals(Name name) {
+    return value == name.value;
+  }
 }

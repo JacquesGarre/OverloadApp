@@ -1,7 +1,6 @@
 import 'package:uuid/uuid.dart';
 
 class Id {
-
   final UuidValue value;
 
   Id._(this.value);
@@ -21,9 +20,8 @@ class Id {
     return Id._(uuid);
   }
 
-  @override 
+  @override
   String toString() {
     return value.uuid.toString();
   }
-
 }
