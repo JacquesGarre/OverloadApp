@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:overload/infrastructure/pages/exercise/add_exercise_page.dart';
 import 'package:overload/infrastructure/pages/exercise/exercises_page.dart';
 import 'package:overload/infrastructure/pages/home_page.dart';
 import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
