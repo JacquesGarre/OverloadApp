@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
+import 'package:provider/provider.dart';
 
 class ExerciseCardWidget extends StatelessWidget {
   final Exercise exercise;
@@ -56,7 +58,7 @@ class ExerciseCardWidget extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisSize: MainAxisSize.min, 
+              mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit),
@@ -69,7 +71,9 @@ class ExerciseCardWidget extends StatelessWidget {
                   icon: const Icon(Icons.delete),
                   color: AppColorScheme.primary,
                   onPressed: () {
-                    // Handle delete action
+                    ExerciseProvider exerciseProvider =
+                        Provider.of<ExerciseProvider>(context, listen: false);
+                    exerciseProvider.deleteExercice(exercise);
                   },
                 ),
               ],

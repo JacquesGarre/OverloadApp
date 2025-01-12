@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:overload/application/exercise/add_exercise_command/add_exercise_command.dart';
 import 'package:overload/application/exercise/add_exercise_command/add_exercise_command_handler.dart';
+import 'package:overload/application/exercise/delete_exercise_command/delete_exercise_command.dart';
+import 'package:overload/application/exercise/delete_exercise_command/delete_exercise_command_handler.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/name.dart';
 import 'package:overload/domain/exercise/unit.dart';
@@ -8,8 +10,12 @@ import 'package:overload/domain/exercise/units.dart';
 
 class ExerciseProvider with ChangeNotifier {
   final AddExerciseCommandHandler addExerciseCommandHandler;
+  final DeleteExerciseCommandHandler deleteExerciseCommandHandler;
 
-  ExerciseProvider({required this.addExerciseCommandHandler});
+  ExerciseProvider({
+    required this.addExerciseCommandHandler,
+    required this.deleteExerciseCommandHandler,
+  });
 
   final List<Exercise> _exercises = [
     Exercise.create(
@@ -41,4 +47,12 @@ class ExerciseProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteExercice(Exercise exercise) {
+    DeleteExerciseCommand command = DeleteExerciseCommand(
+      id: exercise.id.toString(),
+    );
+    deleteExerciseCommandHandler.invoke(command);
+    _exercises.removeWhere((ex) => ex.id.equals(exercise.id));
+    notifyListeners();
+  }
 }
