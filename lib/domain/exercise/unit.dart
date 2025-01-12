@@ -35,4 +35,16 @@ class Unit {
     }
     throw InvalidExerciseUnitException();
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is Unit) {
+      return equals(other);
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
 }

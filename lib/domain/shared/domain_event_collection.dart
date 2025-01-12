@@ -10,4 +10,8 @@ class DomainEventsCollection {
   flush() {
     domainEvents = [];
   }
+
+  all() {
+    return domainEvents;
+  }
 }
