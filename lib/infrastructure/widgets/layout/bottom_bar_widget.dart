@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:overload/infrastructure/layout/navigation_page.dart';
+import 'package:overload/infrastructure/layout/app_page.dart';
 
 class BottomBarWidget extends StatelessWidget {
-  final List<NavigationPage> pages;
+  final List<AppPage> pages;
   final int currentPageIndex;
   final ValueChanged<int> onPageChanged;
 

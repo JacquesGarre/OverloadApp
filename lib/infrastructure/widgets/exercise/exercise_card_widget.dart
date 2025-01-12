@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 
-class ExerciseCard extends StatelessWidget {
+class ExerciseCardWidget extends StatelessWidget {
   final Exercise exercise;
 
-  const ExerciseCard({super.key, required this.exercise});
+  const ExerciseCardWidget({super.key, required this.exercise});
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:overload/infrastructure/pages/exercises_page.dart';
+import 'package:overload/infrastructure/pages/exercise/add_exercise_page.dart';
+import 'package:overload/infrastructure/pages/exercise/exercises_page.dart';
 import 'package:overload/infrastructure/pages/home_page.dart';
 import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
-import 'package:overload/infrastructure/layout/navigation_page.dart';
+import 'package:overload/infrastructure/layout/app_page.dart';
 import 'package:overload/infrastructure/widgets/layout/bottom_bar_widget.dart';
 
 class AppLayout extends StatefulWidget {
@@ -13,16 +14,16 @@ class AppLayout extends StatefulWidget {
 }
 
 class _AppLayoutState extends State<AppLayout> {
-  late NavigationPage _currentPage;
+  late AppPage _currentPage;
   int _currentPageIndex = 1;
 
-  final List<NavigationPage> _pages = [
-    NavigationPage(
+  final List<AppPage> _pages = [
+    AppPage(
       title: HomePage.title,
       page: const HomePage(),
       icon: Icons.home_outlined,
     ),
-    NavigationPage(
+    AppPage(
       title: ExercisesPage.title,
       page: const ExercisesPage(),
       icon: Icons.fitness_center,

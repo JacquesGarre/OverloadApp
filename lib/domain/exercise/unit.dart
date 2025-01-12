@@ -8,4 +8,12 @@ class Unit {
 
   const Unit._(this.value);
 
+  static List<Unit> all() {
+    return [
+      Unit.kgs,
+      Unit.reps,
+      Unit.restTime
+    ];
+  }
+
 }
