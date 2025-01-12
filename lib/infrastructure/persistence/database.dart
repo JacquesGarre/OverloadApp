@@ -12,13 +12,13 @@ class Database {
       return await sqflite.openDatabase(
         path,
         version: 1,
-        onCreate: _createDatabase,
+        onCreate: createDatabase,
       );
     }
     return await sqflite.openDatabase(path);
   }
 
-  static FutureOr<void> _createDatabase(sqflite.Database db, int version) async {
+  static FutureOr<void> createDatabase(sqflite.Database db, int version) async {
     await db.execute('''
       CREATE TABLE ${ExerciseRepository.table} (
         id TEXT PRIMARY KEY,

@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:overload/application/exercise/update_exercise_command/update_exercise_command.dart';
 import 'package:overload/domain/exercise/exception/exercise_already_exists_exception.dart';
 import 'package:overload/domain/exercise/exception/exercise_not_found_exception.dart';
