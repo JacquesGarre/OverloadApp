@@ -8,7 +8,7 @@ class AppColorScheme {
   static Color onLightBackground = const Color(0xFF778DA9); 
   static Color primary = const Color(0xFF03A9F4);
   static Color onPrimary = Colors.white;
-  static Color secondary = const Color(0xFF004080);
+  static Color secondary = const Color(0xFF778DA9);
   static Color onSecondary = Colors.white;
   static Color error = Colors.red;
   static Color onError = Colors.white;
