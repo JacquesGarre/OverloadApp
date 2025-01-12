@@ -14,19 +14,10 @@ class ExercisesPage extends StatefulWidget {
 }
 
 class _ExercisesPageState extends State<ExercisesPage> {
-
-  Future<void> _navigateToAddExercisePage() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AddExercisePage(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(context);
+    final ExerciseProvider exerciseProvider =
+        Provider.of<ExerciseProvider>(context);
     return Stack(
       children: [
         Padding(
@@ -34,7 +25,8 @@ class _ExercisesPageState extends State<ExercisesPage> {
           child: ListView.separated(
             itemCount: exerciseProvider.exercises.length,
             itemBuilder: (context, index) {
-              return ExerciseCardWidget(exercise: exerciseProvider.exercises[index]);
+              return ExerciseCardWidget(
+                  exercise: exerciseProvider.exercises[index]);
             },
             separatorBuilder: (context, index) => const SizedBox(height: 8),
           ),
@@ -43,7 +35,14 @@ class _ExercisesPageState extends State<ExercisesPage> {
           bottom: 16,
           right: 16,
           child: FloatingActionButton(
-            onPressed: _navigateToAddExercisePage,
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddExercisePage(),
+                ),
+              )
+            },
             tooltip: 'Add Exercise',
             child: const Icon(Icons.add),
           ),

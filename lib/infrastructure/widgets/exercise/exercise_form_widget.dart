@@ -90,10 +90,10 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 30),
             const Text(
               'Select units you want to track',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
             Wrap(
