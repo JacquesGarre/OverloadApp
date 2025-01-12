@@ -10,12 +10,16 @@ class Unit {
   const Unit._(this.value);
 
   static List<Unit> all() {
-    return [Unit.kgs, Unit.reps, Unit.restTime];
+    return [
+      Unit.kgs,
+      Unit.reps,
+      Unit.restTime,
+    ];
   }
 
   static Unit fromString(String value) {
     assertValid(value);
-    return Unit._(value); 
+    return Unit._(value);
   }
 
   bool equals(Unit unit) {
@@ -24,7 +28,7 @@ class Unit {
 
   static assertValid(String value) {
     Unit unit = Unit._(value);
-    for(Unit availableUnit in all()) {
+    for (Unit availableUnit in all()) {
       if (availableUnit.equals(unit)) {
         return;
       }
