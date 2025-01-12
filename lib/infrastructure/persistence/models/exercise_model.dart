@@ -4,6 +4,7 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/id.dart';
 import 'package:overload/domain/exercise/name.dart';
 import 'package:overload/domain/exercise/units.dart';
+import 'package:overload/domain/shared/domain_event_collection.dart';
 
 class ExerciseModel {
   final String id;
@@ -41,6 +42,7 @@ class ExerciseModel {
     Name exerciseName = Name.fromString(name);
     Units exerciseUnits = Units.fromStringList(units);
     return Exercise(
+      domainEvents: DomainEventsCollection(),
       id: exerciseId,
       name: exerciseName,
       units: exerciseUnits,

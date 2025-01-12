@@ -1,6 +1,6 @@
 import 'package:overload/application/exercise/get_exercises_query/get_exercises_query.dart';
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/exercise/exercise_repository_interface.dart';
+import 'package:overload/domain/exercise/interface/exercise_repository_interface.dart';
 
 class GetExercisesQueryHandler {
   final ExerciseRepositoryInterface repository;

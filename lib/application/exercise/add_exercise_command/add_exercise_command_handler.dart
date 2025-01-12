@@ -1,14 +1,17 @@
 import 'package:overload/application/exercise/add_exercise_command/add_exercise_command.dart';
 import 'package:overload/domain/exercise/exception/exercise_already_exists_exception.dart';
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/exercise/exercise_repository_interface.dart';
+import 'package:overload/domain/exercise/interface/exercise_repository_interface.dart';
 import 'package:overload/domain/exercise/name.dart';
 import 'package:overload/domain/exercise/units.dart';
+import 'package:overload/domain/shared/domain_event_bus_interface.dart';
 
 class AddExerciseCommandHandler {
-  final ExerciseRepositoryInterface repository;
 
-  AddExerciseCommandHandler({required this.repository});
+  final ExerciseRepositoryInterface repository;
+  final DomainEventBusInterface domainEventBus;
+
+  AddExerciseCommandHandler({required this.repository, required this.domainEventBus});
 
   Future<void> invoke(AddExerciseCommand command) async {
     Name name = Name.fromString(command.name);
@@ -22,7 +25,7 @@ class AddExerciseCommandHandler {
     if (existingExercise != null) {
       throw ExerciseAlreadyExistsException();
     }
-    // TODO : publish events
     await repository.add(exercise);
+    domainEventBus.publish(exercise.domainEvents);
   }
 }

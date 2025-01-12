@@ -1,5 +1,5 @@
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/exercise/exercise_repository_interface.dart';
+import 'package:overload/domain/exercise/interface/exercise_repository_interface.dart';
 import 'package:overload/domain/exercise/id.dart';
 import 'package:overload/domain/exercise/name.dart';
 import 'package:overload/infrastructure/persistence/models/exercise_model.dart';
