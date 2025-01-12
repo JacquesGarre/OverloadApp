@@ -1,0 +1,1 @@
+class InvalidExerciseUnitException implements Exception {}

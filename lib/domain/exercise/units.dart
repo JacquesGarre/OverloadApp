@@ -1,3 +1,4 @@
+import 'package:overload/domain/exercise/exception/duplicate_exercise_unit_exception.dart';
 import 'package:overload/domain/exercise/unit.dart';
 
 class Units {
@@ -6,8 +7,8 @@ class Units {
   Units._({required this.value});
 
   static Units fromUnitList(List<Unit> value) {
+    assertValid(value);
     return Units._(value: value);
-    // TODO validate that no duplicates
   }
 
   List<String> toStringList() {
@@ -27,7 +28,14 @@ class Units {
     for (String unit in units) {
       value.add(Unit.fromString(unit));
     }
+    assertValid(value);
     return Units._(value: value);
-    // TODO validate that no duplicates
+  }
+
+  static void assertValid(List<Unit> value) {
+    final set = value.map((unit) => unit.value).toSet();
+    if (set.length != value.length) {
+      throw DuplicateExerciseUnitException();
+    }
   }
 }

@@ -1,0 +1,1 @@
+class DuplicateExerciseUnitException implements Exception {}

@@ -22,8 +22,6 @@ class AddExerciseCommandHandler {
     if (existingExercise != null) {
       throw ExerciseAlreadyExistsException();
     }
-
-    // TODO :validate not twice the same unit (in domain)
     // TODO : Handle exceptions in view
     // TODO : publish events
     await repository.add(exercise);

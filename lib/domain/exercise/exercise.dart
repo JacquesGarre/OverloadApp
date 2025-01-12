@@ -11,7 +11,7 @@ class Exercise {
     required this.id,
     required this.name,
     required this.units,
-  }); // TODO make private after having done the handlers
+  });
 
   static Exercise create(Name name, Units units) {
     return Exercise(

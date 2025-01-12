@@ -1,3 +1,5 @@
+import 'package:overload/domain/exercise/exception/invalid_exercise_unit_exception.dart';
+
 class Unit {
   final String value;
 
@@ -12,6 +14,21 @@ class Unit {
   }
 
   static Unit fromString(String value) {
-    return Unit._(value); // TODO validate that it exists
+    assertValid(value);
+    return Unit._(value); 
+  }
+
+  bool equals(Unit unit) {
+    return value == unit.value;
+  }
+
+  static assertValid(String value) {
+    Unit unit = Unit._(value);
+    for(Unit availableUnit in all()) {
+      if (availableUnit.equals(unit)) {
+        return;
+      }
+    }
+    throw InvalidExerciseUnitException();
   }
 }
