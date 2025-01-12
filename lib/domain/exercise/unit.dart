@@ -16,4 +16,8 @@ class Unit {
     ];
   }
 
+  static Unit fromString(String value) {
+    return Unit._(value);
+  }
+
 }

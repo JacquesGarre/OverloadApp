@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/exercise/name.dart';
-import 'package:overload/domain/exercise/unit.dart';
-import 'package:overload/domain/exercise/units.dart';
 import 'package:overload/infrastructure/pages/exercise/add_exercise_page.dart';
+import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_card_widget.dart';
+import 'package:provider/provider.dart';
 
 class ExercisesPage extends StatefulWidget {
   const ExercisesPage({super.key});
@@ -17,53 +15,26 @@ class ExercisesPage extends StatefulWidget {
 
 class _ExercisesPageState extends State<ExercisesPage> {
 
-  final List<Exercise> _exercises = [
-    Exercise.create(
-      Name.fromString("Chest press"),
-      Units.fromUnitList([
-        Unit.reps,
-        Unit.kgs,
-        Unit.restTime,
-      ]),
-    ),
-    Exercise.create(
-      Name.fromString("Shoulder press"),
-      Units.fromUnitList([
-        Unit.reps,
-        Unit.kgs,
-        Unit.restTime,
-      ]),
-    ),
-  ];
-
-  void _addExercise(Exercise newExercise) {
-    setState(() {
-      _exercises.add(newExercise);
-    });
-  }
-
   Future<void> _navigateToAddExercisePage() async {
-    final newExercise = await Navigator.push<Exercise>(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const AddExercisePage(),
       ),
     );
-    if (newExercise != null) {
-      _addExercise(newExercise);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(context);
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 0),
           child: ListView.separated(
-            itemCount: _exercises.length,
+            itemCount: exerciseProvider.exercises.length,
             itemBuilder: (context, index) {
-              return ExerciseCardWidget(exercise: _exercises[index]);
+              return ExerciseCardWidget(exercise: exerciseProvider.exercises[index]);
             },
             separatorBuilder: (context, index) => const SizedBox(height: 8),
           ),

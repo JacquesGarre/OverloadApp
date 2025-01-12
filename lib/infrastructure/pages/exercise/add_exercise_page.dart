@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:overload/application/exercise/add_exercise_command/add_exercise_command.dart';
+import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_form_widget.dart';
 import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
+import 'package:provider/provider.dart';
 
 class AddExercisePage extends StatefulWidget {
   const AddExercisePage({super.key});
@@ -14,13 +15,11 @@ class AddExercisePage extends StatefulWidget {
 }
 
 class _AddExercisePageState extends State<AddExercisePage> {
+
   void _handleFormSubmit(Map<String, dynamic> formData) {
-    AddExerciseCommand command = AddExerciseCommand(
-      name: formData["name"],
-      units: formData["units"],
-    );
-    Logger().i(command);
-    //Navigator.pop(context, formData);
+    ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(context, listen: false);
+    exerciseProvider.addExercise(formData);
+    Navigator.pop(context);
   }
 
   @override

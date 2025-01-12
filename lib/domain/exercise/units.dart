@@ -21,4 +21,12 @@ class Units {
     return Units._(value: Unit.all());
   }
 
+  static Units fromStringList(List<String> units) {
+    List<Unit> value = [];
+    for(String unit in units) {
+      value.add(Unit.fromString(unit));
+    }
+    return Units._(value: value);
+  }
+
 }
