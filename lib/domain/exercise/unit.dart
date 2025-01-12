@@ -17,7 +17,7 @@ class Unit {
   }
 
   static Unit fromString(String value) {
-    return Unit._(value);
+    return Unit._(value); // TODO validate that it exists
   }
 
 }

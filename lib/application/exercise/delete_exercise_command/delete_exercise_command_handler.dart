@@ -5,6 +5,7 @@ class DeleteExerciseCommandHandler {
 
   void invoke(DeleteExerciseCommand command) {
     Id id = Id.fromString(command.id);
+    // TODO : have a delete in domain
   }
 
 }

@@ -7,6 +7,7 @@ class Units {
 
   static Units fromUnitList(List<Unit> value) {
     return Units._(value: value);
+    // TODO validate that no duplicates
   }
 
   List<String> toStringList() {
@@ -27,6 +28,7 @@ class Units {
       value.add(Unit.fromString(unit));
     }
     return Units._(value: value);
+    // TODO validate that no duplicates
   }
 
 }

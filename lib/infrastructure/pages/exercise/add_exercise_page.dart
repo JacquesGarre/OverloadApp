@@ -15,7 +15,7 @@ class AddExercisePage extends StatefulWidget {
 
 class _AddExercisePageState extends State<AddExercisePage> {
 
-  void _handleFormSubmit(Map<String, dynamic> formData) {
+  void _handleCreate(Map<String, dynamic> formData) {
     ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(context, listen: false);
     exerciseProvider.addExercise(formData);
     Navigator.pop(context);
@@ -26,7 +26,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
     return Scaffold(
       appBar: const AppBarWidget(title: AddExercisePage.title),
       body: ExerciseFormWidget(
-        onSubmit: _handleFormSubmit,
+        onSubmit: _handleCreate,
       ),
     );
   }

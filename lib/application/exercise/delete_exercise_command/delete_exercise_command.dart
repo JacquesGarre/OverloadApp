@@ -1,5 +1,7 @@
 class DeleteExerciseCommand {
   final String id;
 
-  DeleteExerciseCommand({required this.id});
+  DeleteExerciseCommand({
+    required this.id,
+  });
 }

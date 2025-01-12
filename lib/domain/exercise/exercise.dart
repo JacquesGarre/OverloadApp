@@ -8,13 +8,23 @@ class Exercise {
   final Name name;
   final Units units;
 
-  Exercise._({required this.id, required this.name, required this.units});
+  Exercise({required this.id, required this.name, required this.units}); // TODO make private after having done the handlers
 
   static Exercise create(Name name, Units units) {
-    return Exercise._(
+    return Exercise(
       id: Id.create(),
       name: name,
       units: units,
     );
+    // TODO domain event
+  }
+
+  Exercise update(Name newName, Units newUnits) {
+    return Exercise(
+      id: id,
+      name: newName,
+      units: newUnits,
+    );
+    // TODO domain event
   }
 }

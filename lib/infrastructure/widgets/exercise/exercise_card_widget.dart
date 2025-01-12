@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/infrastructure/pages/exercise/update_exercise_page.dart';
 import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +65,13 @@ class ExerciseCardWidget extends StatelessWidget {
                   icon: const Icon(Icons.edit),
                   color: AppColorScheme.primary,
                   onPressed: () {
-                    // Handle edit action
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            UpdateExercisePage(exercise: exercise),
+                      ),
+                    );
                   },
                 ),
                 IconButton(

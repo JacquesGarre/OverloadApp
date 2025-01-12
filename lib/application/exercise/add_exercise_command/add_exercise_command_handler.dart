@@ -8,7 +8,7 @@ class AddExerciseCommandHandler {
   Exercise invoke(AddExerciseCommand command) {
     Name name = Name.fromString(command.name);
     Units units = Units.fromStringList(command.units);
-    Exercise exercise = Exercise.create(name, units);
+    Exercise exercise = Exercise.create(name, units); // TODO : events
 
     // validate not twice the same unit
     // validate id not existing already

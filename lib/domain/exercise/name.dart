@@ -5,5 +5,6 @@ class Name {
 
   static Name fromString(String value) {
     return Name._(value: value);
+    // TODO validate that at least 1 character
   }
 }

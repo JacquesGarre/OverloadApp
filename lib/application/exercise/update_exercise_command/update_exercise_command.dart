@@ -1,8 +1,10 @@
-class AddExerciseCommand {
+class UpdateExerciseCommand {
+  final String id;
   final String name;
   final List<String> units;
 
-  AddExerciseCommand({
+  UpdateExerciseCommand({
+    required this.id,
     required this.name,
     required this.units,
   });
