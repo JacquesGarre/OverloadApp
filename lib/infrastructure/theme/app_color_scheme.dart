@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 
 class AppColorScheme {
-  static ColorScheme get midnightOcean {
-    return const ColorScheme(
+
+  static Color background = const Color(0xFF0D1B2A); 
+  static Color onBackground = Colors.white;
+  static Color lightBackground = const Color(0xFF1B263B); 
+  static Color onLightBackground = const Color(0xFF778DA9); 
+  static Color primary = const Color(0xFF03A9F4);
+  static Color onPrimary = Colors.white;
+  static Color secondary = const Color(0xFF004080);
+  static Color onSecondary = Colors.white;
+  static Color error = Colors.red;
+  static Color onError = Colors.white;
+
+  static ColorScheme get colorScheme {
+    return ColorScheme(
       brightness: Brightness.light,
-      primary: Color(0xFF004080), 
-      onPrimary: Colors.white, 
-      secondary: Color(0xFF0073E6), 
-      onSecondary: Colors.white, 
-      surface: Color(0xFF001F3F),
-      onSurface: Colors.white, 
-      error: Colors.red,
-      onError: Colors.white,
+      primary: primary, 
+      onPrimary: onPrimary, 
+      secondary: secondary, 
+      onSecondary: onSecondary, 
+      surface: background,
+      onSurface: onBackground, 
+      error: error,
+      onError: onError,
     );
   }
 }

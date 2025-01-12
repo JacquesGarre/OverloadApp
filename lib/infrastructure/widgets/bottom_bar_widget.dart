@@ -20,7 +20,9 @@ class BottomBarWidget extends StatelessWidget {
       selectedIndex: currentPageIndex,
       destinations: pages.map((page) {
         return NavigationDestination(
-          icon: Icon(page.icon),
+          icon: Icon(
+            page.icon,
+          ),
           label: page.title,
         );
       }).toList(),
