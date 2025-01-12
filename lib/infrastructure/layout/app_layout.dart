@@ -25,7 +25,7 @@ class _AppLayoutState extends State<AppLayout> {
     NavigationPage(
       title: ExercisesPage.title,
       page: const ExercisesPage(),
-      icon: Icons.sports_gymnastics,
+      icon: Icons.fitness_center,
     ),
   ];
 
