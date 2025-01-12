@@ -10,7 +10,6 @@ import 'package:overload/application/exercise/update_exercise_command/update_exe
 import 'package:overload/domain/exercise/exercise.dart';
 
 class ExerciseProvider with ChangeNotifier {
-  
   final GetExercisesQueryHandler getExercisesQueryHandler;
   final AddExerciseCommandHandler addExerciseCommandHandler;
   final DeleteExerciseCommandHandler deleteExerciseCommandHandler;
@@ -33,12 +32,16 @@ class ExerciseProvider with ChangeNotifier {
   }
 
   Future<void> addExercise(Map<String, dynamic> formData) async {
-    AddExerciseCommand command = AddExerciseCommand(
-      name: formData["name"],
-      units: formData["units"],
-    );
-    await addExerciseCommandHandler.invoke(command);
-    loadExercises();
+    try {
+      AddExerciseCommand command = AddExerciseCommand(
+        name: formData["name"],
+        units: formData["units"],
+      );
+      await addExerciseCommandHandler.invoke(command);
+      await loadExercises();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> deleteExercice(Exercise exercise) async {
@@ -49,13 +52,20 @@ class ExerciseProvider with ChangeNotifier {
     loadExercises();
   }
 
-  Future<void> updateExercise(Exercise exercise, Map<String, dynamic> formData) async {
-    UpdateExerciseCommand command = UpdateExerciseCommand(
-      id: exercise.id.toString(),
-      name: formData["name"],
-      units: formData["units"],
-    );
-    await updateExerciseCommandHandler.invoke(command);
-    loadExercises();
+  Future<void> updateExercise(
+    Exercise exercise,
+    Map<String, dynamic> formData,
+  ) async {
+    try {
+      UpdateExerciseCommand command = UpdateExerciseCommand(
+        id: exercise.id.toString(),
+        name: formData["name"],
+        units: formData["units"],
+      );
+      await updateExerciseCommandHandler.invoke(command);
+      loadExercises();
+    } catch (e) {
+      rethrow;
+    }
   }
 }

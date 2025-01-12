@@ -6,8 +6,9 @@ class Name {
   Name._({required this.value});
 
   static Name fromString(String value) {
-    assertValid(value);
-    return Name._(value: value);
+    String trimmedValue = value.trim();
+    assertValid(trimmedValue);
+    return Name._(value: trimmedValue);
   }
 
   bool equals(Name name) {
@@ -18,7 +19,6 @@ class Name {
     if (value.isNotEmpty) {
       return;
     }
-    throw InvalidExerciseNameException(); // TODO : handle exception in view
+    throw InvalidExerciseNameException();
   }
-
 }

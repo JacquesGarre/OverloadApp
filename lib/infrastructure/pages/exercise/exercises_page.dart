@@ -14,12 +14,14 @@ class ExercisesPage extends StatefulWidget {
 }
 
 class _ExercisesPageState extends State<ExercisesPage> {
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ExerciseProvider>(context, listen: false).loadExercises();
+      Provider.of<ExerciseProvider>(
+        context,
+        listen: false,
+      ).loadExercises();
     });
   }
 
@@ -30,7 +32,12 @@ class _ExercisesPageState extends State<ExercisesPage> {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 0),
+          padding: const EdgeInsets.fromLTRB(
+            12.0,
+            0,
+            12.0,
+            0,
+          ),
           child: ListView.separated(
             itemCount: exerciseProvider.exercises.length,
             itemBuilder: (context, index) {

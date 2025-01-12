@@ -16,20 +16,20 @@ class UpdateExerciseCommandHandler {
     Id id = Id.fromString(command.id);
     Exercise? exercise = await repository.ofId(id);
     if (exercise == null) {
-      throw ExerciseNotFoundException(); // TODO : handle exception in view
+      throw ExerciseNotFoundException();
     }
     Name newName = Name.fromString(command.name);
     Units units = Units.fromStringList(command.units);
-
     if (!newName.equals(exercise.name)) {
       Exercise? existingExercise = await repository.ofName(newName);
       if (existingExercise != null) {
-        throw ExerciseAlreadyExistsException(); // TODO : handle exception in view
+        throw ExerciseAlreadyExistsException();
       }
     }
-
-    Exercise updatedExercise =
-        exercise.update(newName, units); // TODO : publish event
+    Exercise updatedExercise = exercise.update(
+      newName,
+      units,
+    ); // TODO : publish event
     await repository.update(updatedExercise);
   }
 }

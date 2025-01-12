@@ -13,7 +13,7 @@ class DeleteExerciseCommandHandler {
     Id id = Id.fromString(command.id);
     Exercise? exercise = await repository.ofId(id);
     if (exercise == null) {
-      throw ExerciseNotFoundException(); // TODO : handle exception in view
+      throw ExerciseNotFoundException();
     }
     exercise.delete(); // TODO: Publish event
     await repository.delete(exercise);

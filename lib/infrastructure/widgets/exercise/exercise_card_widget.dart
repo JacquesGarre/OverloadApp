@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/pages/exercise/update_exercise_page.dart';
 import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
@@ -77,10 +78,18 @@ class ExerciseCardWidget extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.delete),
                   color: AppColorScheme.primary,
-                  onPressed: () {
-                    ExerciseProvider exerciseProvider =
-                        Provider.of<ExerciseProvider>(context, listen: false);
-                    exerciseProvider.deleteExercice(exercise);
+                  onPressed: () async {
+                    try {
+                      ExerciseProvider exerciseProvider =
+                          Provider.of<ExerciseProvider>(
+                        context,
+                        listen: false,
+                      );
+                      await exerciseProvider.deleteExercice(exercise);
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ExceptionHandler().handleException(context, e);
+                    }
                   },
                 ),
               ],
