@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/pages/exercise/add_exercise_page.dart';
-import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
+import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_card_widget.dart';
 import 'package:provider/provider.dart';
 

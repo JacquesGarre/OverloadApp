@@ -9,7 +9,7 @@ import 'package:overload/domain/shared/domain_event_bus_interface.dart';
 import 'package:overload/infrastructure/bus/domain_event_bus.dart';
 import 'package:overload/infrastructure/persistence/database.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';
-import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
+import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 GetIt container = GetIt.instance;

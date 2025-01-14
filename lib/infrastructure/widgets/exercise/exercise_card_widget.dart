@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/pages/exercise/update_exercise_page.dart';
-import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
+import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:provider/provider.dart';
 

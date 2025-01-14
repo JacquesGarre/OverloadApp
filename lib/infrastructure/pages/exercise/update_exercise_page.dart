@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
-import 'package:overload/infrastructure/providers/exercise/exercise_provider.dart';
+import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_form_widget.dart';
 import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
 import 'package:provider/provider.dart';
