@@ -1,10 +1,10 @@
 import 'package:overload/domain/exercise/unit.dart';
 
-class Record {
+class Metric {
   final num value;
   final Unit unit;
 
-  Record({
+  Metric({
     required this.value,
     required this.unit,
   });

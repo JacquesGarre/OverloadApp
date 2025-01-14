@@ -1,16 +1,14 @@
 import 'package:overload/domain/exercise/unit.dart';
-import 'package:overload/domain/workout/objective/operator.dart';
+import 'package:overload/domain/workout/goal/operator.dart';
 
-class EvolutionRule {
-
+class MetricProgression {
   final Operator operator;
-  final Unit unit;
   final num value;
+  final Unit unit;
 
-  EvolutionRule({
+  MetricProgression({
     required this.operator,
-    required this.unit,
     required this.value,
+    required this.unit,
   });
-
 }

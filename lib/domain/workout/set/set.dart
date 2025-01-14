@@ -1,12 +1,12 @@
-import 'package:overload/domain/workout/set/index.dart';
-import 'package:overload/domain/workout/set/records.dart';
+import 'package:overload/domain/workout/set/set_index.dart';
+import 'package:overload/domain/workout/set/metrics.dart';
 
 class Set {
-  final Index index;
-  final Records records;
+  final SetIndex index;
+  final Metrics metrics;
 
   Set({
     required this.index,
-    required this.records,
+    required this.metrics,
   });
 }

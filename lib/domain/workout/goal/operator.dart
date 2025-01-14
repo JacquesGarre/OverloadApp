@@ -1,5 +1,4 @@
 class Operator {
-
   final String value;
 
   static const Operator add = Operator._('increase');
@@ -8,5 +7,4 @@ class Operator {
   static const Operator divide = Operator._('divide');
 
   const Operator._(this.value);
-
 }
