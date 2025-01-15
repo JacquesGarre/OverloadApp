@@ -10,6 +10,7 @@ import 'package:overload/infrastructure/bus/domain_event_bus.dart';
 import 'package:overload/infrastructure/persistence/database.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
+import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 GetIt container = GetIt.instance;
@@ -78,5 +79,8 @@ Future<void> registerProviders() async {
       deleteExerciseCommandHandler: container<DeleteExerciseCommandHandler>(),
       updateExerciseCommandHandler: container<UpdateExerciseCommandHandler>(),
     ),
+  );
+  container.registerSingleton<WorkoutProvider>(
+    WorkoutProvider(),
   );
 }

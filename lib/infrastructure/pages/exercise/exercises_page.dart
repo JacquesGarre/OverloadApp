@@ -42,7 +42,8 @@ class _ExercisesPageState extends State<ExercisesPage> {
             itemCount: exerciseProvider.exercises.length,
             itemBuilder: (context, index) {
               return ExerciseCardWidget(
-                  exercise: exerciseProvider.exercises[index]);
+                exercise: exerciseProvider.exercises[index],
+              );
             },
             separatorBuilder: (context, index) => const SizedBox(height: 8),
           ),

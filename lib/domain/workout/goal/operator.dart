@@ -7,4 +7,13 @@ class Operator {
   static const Operator divide = Operator._('divide');
 
   const Operator._(this.value);
+
+  static List<Operator> all() {
+    return [
+      add,
+      subtract,
+      multiply,
+      divide
+    ];
+  }
 }

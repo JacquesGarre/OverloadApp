@@ -7,22 +7,25 @@ import 'package:overload/domain/exercise/name.dart';
 import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/exercise/units.dart';
 
+import '../../../stubs/domain/exercise/name_stub.dart';
+import '../../../stubs/domain/exercise/units_stub.dart';
+
 void main() {
   group('Exercise class tests', () {
     late Name name;
     late Units units;
 
     setUp(() {
-      name = Name.fromString('Test Exercise');
-      units = Units.fromUnitList([Unit.kgs, Unit.reps]);
+      name = NameStub.random();
+      units = UnitsStub.random();
     });
 
     test('create generates a valid Exercise and publishes an event', () {
       final exercise = Exercise.create(name, units);
 
       // Verify properties
-      expect(exercise.name.value, 'Test Exercise');
-      expect(exercise.units.value, containsAll([Unit.kgs, Unit.reps]));
+      expect(exercise.name.value, name.value);
+      expect(exercise.units.value, containsAll(units.value));
       expect(exercise.id, isNotNull);
 
       // Verify domain event
@@ -37,14 +40,14 @@ void main() {
 
     test('update creates a new Exercise with updated properties and publishes an event', () {
       final exercise = Exercise.create(name, units);
-      final newName = Name.fromString('Updated Exercise');
-      final newUnits = Units.fromUnitList([Unit.restTime]);
+      final newName = NameStub.random();
+      final newUnits = UnitsStub.random();
 
       final updatedExercise = exercise.update(newName, newUnits);
 
       // Verify new Exercise properties
-      expect(updatedExercise.name.value, 'Updated Exercise');
-      expect(updatedExercise.units.value, contains(Unit.restTime));
+      expect(updatedExercise.name.value, newName.value);
+      expect(updatedExercise.units.value, containsAll(newUnits.value));
       expect(updatedExercise.id, exercise.id); // ID should remain the same
 
       // Verify domain event
@@ -54,7 +57,7 @@ void main() {
 
       final event = events.last as ExerciseUpdatedDomainEvent;
       expect(event.aggregateId(), exercise.id.value);
-      expect(event.exercise.name.value, 'Updated Exercise');
+      expect(event.exercise.name.value, newName.value);
     });
 
     test('delete publishes an ExerciseDeletedDomainEvent', () {

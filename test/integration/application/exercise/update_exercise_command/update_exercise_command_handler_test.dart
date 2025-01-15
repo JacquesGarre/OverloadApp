@@ -14,6 +14,10 @@ import 'package:overload/infrastructure/persistence/database.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite_ffi;
 
+import '../../../../stubs/domain/exercise/exercise_stub.dart';
+import '../../../../stubs/domain/exercise/name_stub.dart';
+import '../../../../stubs/domain/exercise/units_stub.dart';
+
 void main() {
   late sqflite_ffi.Database db;
   late ExerciseRepositoryInterface repository;
@@ -42,24 +46,22 @@ void main() {
 
   test('updates an exercise successfully', () async {
     // Add an initial exercise to the database
-    Name name = Name.fromString('Test Exercise');
-    Units units = Units.fromUnitList([Unit.kgs, Unit.reps]);
-    final exercise = Exercise.create(name, units);
+    final exercise = ExerciseStub.random();
     await repository.add(exercise);
 
     // Update the exercise
     final command = UpdateExerciseCommand(
       id: exercise.id.toString(),
-      name: 'Updated Exercise',
-      units: ['Rest time'],
+      name: NameStub.random().value,
+      units: UnitsStub.random().toStringList(),
     );
     await handler.invoke(command);
 
     // Verify the exercise is updated
     final exercises = await repository.findAll();
     expect(exercises.length, 1);
-    expect(exercises.first.name.value, 'Updated Exercise');
-    expect(exercises.first.units.toStringList(), ['Rest time']);
+    expect(exercises.first.name.value, command.name);
+    expect(exercises.first.units.toStringList(), command.units);
   });
 
   test('throws ExerciseNotFoundException for non-existent exercise', () async {
@@ -78,21 +80,16 @@ void main() {
       () async {
 
     // Add two exercises to the database
-    Name name = Name.fromString('Existing Exercise');
-    Units units = Units.fromUnitList([Unit.kgs, Unit.reps]);
-    final exercise = Exercise.create(name, units);
+    final exercise = ExerciseStub.random();
     await repository.add(exercise);
-
-    Name otherName = Name.fromString('Other Exercise');
-    Units otherUnits = Units.fromUnitList([Unit.kgs, Unit.reps]);
-    final exerciseToUpdate = Exercise.create(otherName, otherUnits);
+    final exerciseToUpdate = ExerciseStub.random();
     await repository.add(exerciseToUpdate);
 
     // Attempt to update the second exercise to the same name as the first
     final command = UpdateExerciseCommand(
       id: exerciseToUpdate.id.toString(),
       name: exercise.name.value,
-      units: ['Kgs'],
+      units: UnitsStub.random().toStringList(),
     );
 
     expect(
@@ -103,7 +100,7 @@ void main() {
     // Verify no changes occurred
     final exercises = await repository.findAll();
     expect(exercises.length, 2);
-    expect(exercises.any((e) => e.name.value == 'Other Exercise'), isTrue);
-    expect(exercises.any((e) => e.name.value == 'Existing Exercise'), isTrue);
+    expect(exercises.any((e) => e.name.value == exercise.name.value), isTrue);
+    expect(exercises.any((e) => e.name.value == exerciseToUpdate.name.value), isTrue);
   });
 }
