@@ -7,14 +7,12 @@ class WorkoutExercise {
   
   final Exercise exercise;
   final Sets sets;
-  final Sets? lastSessionSets;
   final Notes? notes;
   final Goal? goal;
   
   WorkoutExercise({
     required this.exercise,
     required this.sets,
-    this.lastSessionSets,
     this.notes,
     this.goal,
   });
