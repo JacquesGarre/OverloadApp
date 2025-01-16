@@ -4,11 +4,7 @@ import 'package:overload/application/exercise/update_exercise_command/update_exe
 import 'package:overload/application/exercise/update_exercise_command/update_exercise_command_handler.dart';
 import 'package:overload/domain/exercise/exception/exercise_already_exists_exception.dart';
 import 'package:overload/domain/exercise/exception/exercise_not_found_exception.dart';
-import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/interface/exercise_repository_interface.dart';
-import 'package:overload/domain/exercise/name.dart';
-import 'package:overload/domain/exercise/unit.dart';
-import 'package:overload/domain/exercise/units.dart';
 import 'package:overload/infrastructure/bus/domain_event_bus.dart';
 import 'package:overload/infrastructure/persistence/database.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';

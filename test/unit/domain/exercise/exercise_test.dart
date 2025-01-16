@@ -4,7 +4,6 @@ import 'package:overload/domain/exercise/domain_events/exercise_deleted_domain_e
 import 'package:overload/domain/exercise/domain_events/exercise_updated_domain_event.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/name.dart';
-import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/exercise/units.dart';
 
 import '../../../stubs/domain/exercise/name_stub.dart';
