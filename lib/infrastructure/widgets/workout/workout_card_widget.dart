@@ -24,8 +24,27 @@ class WorkoutCardWidget extends StatelessWidget {
                   Text(
                     workout.name.value,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  if (workout.notes != null)
+                    const SizedBox(height: 5.0),
+                    Text(
+                      workout.notes!.value,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColorScheme.onLightBackground,
+                      ),
+                    ),
+                  const SizedBox(height: 5.0),
+                  Text(
+                    '${workout.exercisesCount()} exercise${workout.exercisesCount() > 1 ? 's' : ''}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColorScheme.primary,
                     ),
                   ),
                 ],

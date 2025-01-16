@@ -28,7 +28,7 @@ class ExerciseCardWidget extends StatelessWidget {
                   Text(
                     exercise.name.value,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

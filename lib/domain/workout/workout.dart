@@ -16,5 +16,9 @@ class Workout {
     required this.exercises,
     this.notes
   });
+
+  int exercisesCount() {
+    return exercises.value.length;
+  }
   
 }

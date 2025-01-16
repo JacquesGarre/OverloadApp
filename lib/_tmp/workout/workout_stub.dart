@@ -1,3 +1,4 @@
+import 'package:overload/_tmp/workout/notes_stub.dart';
 import 'package:overload/domain/workout/workout.dart';
 import 'id_stub.dart';
 import 'name_stub.dart';
@@ -9,6 +10,7 @@ class WorkoutStub {
       id: IdStub.random(),
       name: NameStub.random(),
       exercises: WorkoutExercisesStub.random(),
+      notes: NotesStub.random()
     );
   }
 }
