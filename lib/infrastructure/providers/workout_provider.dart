@@ -12,7 +12,19 @@ class WorkoutProvider with ChangeNotifier {
     _workouts = [
       WorkoutStub.random(),
       WorkoutStub.random(),
-      WorkoutStub.random()
+      WorkoutStub.random(),
+      WorkoutStub.random(),
+      WorkoutStub.random(),
+      WorkoutStub.random(),
+      WorkoutStub.random(),
+      WorkoutStub.random(),
+      WorkoutStub.random(),      
+      WorkoutStub.random(),
+      WorkoutStub.random(),      
+      WorkoutStub.random(),
+      WorkoutStub.random(),      
+      WorkoutStub.random(),
+      WorkoutStub.random(),
     ];
     notifyListeners();
   }

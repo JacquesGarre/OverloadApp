@@ -19,17 +19,21 @@ class WorkoutFormWidget extends StatefulWidget {
 class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _notesController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _nameController.text =
         widget.workout != null ? widget.workout!.name.value : '';
+    _notesController.text =
+        widget.workout != null && widget.workout!.notes != null ? widget.workout!.notes!.value : '';
   }
 
   @override
   void dispose() {
     _nameController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -39,6 +43,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     if (isFormValid) {
       widget.onSubmit({
         'name': _nameController.text,
+        'notes': _notesController.text,
       });
     }
   }
@@ -64,6 +69,16 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                 }
                 return null;
               },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _notesController,
+              maxLines: 5,
+              decoration: const InputDecoration(
+                labelText: 'Notes',
+                border: OutlineInputBorder(),
+                alignLabelWithHint: true,
+              ),
             ),
             const SizedBox(height: 16),
             Align(

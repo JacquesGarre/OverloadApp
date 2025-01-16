@@ -32,9 +32,12 @@ class _AddWorkoutPageState extends State<AddWorkoutPage> {
       appBar: const AppBarWidget(
         title: AddWorkoutPage.title,
       ),
-      body: WorkoutFormWidget(
-        onSubmit: _handleCreate,
+      body: SingleChildScrollView(
+        child: WorkoutFormWidget(
+          onSubmit: _handleCreate,
+        ),
       ),
+      resizeToAvoidBottomInset: true,
     );
   }
 }
