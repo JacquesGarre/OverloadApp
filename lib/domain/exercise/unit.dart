@@ -47,4 +47,9 @@ class Unit {
 
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return value;
+  }
 }

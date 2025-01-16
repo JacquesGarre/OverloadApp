@@ -23,6 +23,19 @@ class Sets {
     return false;
   }
 
+  Set? findByIndex(SetIndex index) {
+    for(Set set in value) {
+      if (set.index.equals(index)) {
+        return set;
+      }
+    }
+    return null;
+  }
+
+  int count() {
+    return value.length;
+  }
+
   static Sets empty() {
     return Sets(value: []);
   }
