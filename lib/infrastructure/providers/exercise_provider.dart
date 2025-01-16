@@ -31,6 +31,12 @@ class ExerciseProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<Exercise>> searchByName(String query) async {
+    return exercises.where((Exercise exercise) {
+      return exercise.name.value.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+  }
+
   Future<void> addExercise(Map<String, dynamic> formData) async {
     try {
       AddExerciseCommand command = AddExerciseCommand(

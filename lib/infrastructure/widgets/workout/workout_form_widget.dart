@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/workout/workout.dart';
+import 'package:overload/infrastructure/pages/workout/add_workout_exercise_page.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 
 class WorkoutFormWidget extends StatefulWidget {
@@ -27,7 +28,9 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     _nameController.text =
         widget.workout != null ? widget.workout!.name.value : '';
     _notesController.text =
-        widget.workout != null && widget.workout!.notes != null ? widget.workout!.notes!.value : '';
+        widget.workout != null && widget.workout!.notes != null
+            ? widget.workout!.notes!.value
+            : '';
   }
 
   @override
@@ -73,11 +76,37 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _notesController,
-              maxLines: 5,
+              maxLines: 3,
               decoration: const InputDecoration(
                 labelText: 'Notes',
                 border: OutlineInputBorder(),
                 alignLabelWithHint: true,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    foregroundColor: WidgetStatePropertyAll(
+                      AppColorScheme.onSecondary,
+                    ),
+                    backgroundColor: WidgetStatePropertyAll(
+                      AppColorScheme.secondary,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddWorkoutExercisePage(),
+                      ),
+                    );
+                  },
+                  child: const Text('Add exercise'),
+                ),
               ),
             ),
             const SizedBox(height: 16),
