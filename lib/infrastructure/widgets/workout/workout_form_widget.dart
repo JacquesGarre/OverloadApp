@@ -62,9 +62,14 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: AppColorScheme.lightBackground,
                 labelText: 'Name',
-                border: OutlineInputBorder(),
+                labelStyle: const TextStyle(
+                  fontSize: 14.0,
+                ),
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -77,9 +82,14 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
             TextFormField(
               controller: _notesController,
               maxLines: 3,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: AppColorScheme.lightBackground,
                 labelText: 'Notes',
-                border: OutlineInputBorder(),
+                labelStyle: const TextStyle(
+                  fontSize: 14.0,
+                ),
+                border: const OutlineInputBorder(),
                 alignLabelWithHint: true,
               ),
             ),

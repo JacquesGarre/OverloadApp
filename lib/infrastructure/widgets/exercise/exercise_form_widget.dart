@@ -79,9 +79,14 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: AppColorScheme.lightBackground,
                 labelText: 'Name',
-                border: OutlineInputBorder(),
+                labelStyle: const TextStyle(
+                  fontSize: 14.0,
+                ),
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {

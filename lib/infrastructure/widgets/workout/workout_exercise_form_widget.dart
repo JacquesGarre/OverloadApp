@@ -51,7 +51,9 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
           children: [
             ExerciseDropdownWidget(
               onChange: (Exercise? exercise) {
-                Logger().i("Exercise selected : $exercise");
+                if (exercise != null) {
+                  Logger().i("Exercise selected : $exercise");
+                }
               }
             ),
             const SizedBox(height: 16),
