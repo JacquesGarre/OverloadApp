@@ -55,6 +55,11 @@ class _ExerciseDropdownWidgetState extends State<ExerciseDropdownWidget> {
               hintStyle: TextStyle(
                 color: AppTheme.theme.inputDecorationTheme.hintStyle?.color,
               ),
+              listItemDecoration: ListItemDecoration(
+                selectedColor: AppColorScheme.lightBackground,
+                splashColor: AppColorScheme.lightBackground,
+                highlightColor: AppColorScheme.lightBackground,
+              ),
               searchFieldDecoration: SearchFieldDecoration(
                 fillColor: AppColorScheme.lightBackground,
                 textStyle: TextStyle(
