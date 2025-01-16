@@ -8,4 +8,8 @@ class Metric {
     required this.value,
     required this.unit,
   });
+
+  static Metric fromUnit(Unit unit) {
+    return Metric(value: 0, unit: unit);
+  }
 }
