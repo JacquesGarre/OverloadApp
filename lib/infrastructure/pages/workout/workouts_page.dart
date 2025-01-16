@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:overload/infrastructure/pages/workout/add_workout_page.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:overload/infrastructure/widgets/workout/workout_card_widget.dart';
 import 'package:provider/provider.dart';
@@ -52,12 +53,12 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
           right: 16,
           child: FloatingActionButton(
             onPressed: () => {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const AddExercisePage(),
-              //   ),
-              // )
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddWorkoutPage(),
+                ),
+              )
             },
             tooltip: 'Add workout',
             child: const Icon(Icons.add),

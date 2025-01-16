@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class AddExercisePage extends StatefulWidget {
   const AddExercisePage({super.key});
 
-  static const String title = 'Add exercise';
+  static const String title = 'New exercise';
 
   @override
   State<AddExercisePage> createState() => _AddExercisePageState();

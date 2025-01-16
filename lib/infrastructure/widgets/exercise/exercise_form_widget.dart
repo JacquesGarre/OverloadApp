@@ -80,7 +80,7 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(
-                labelText: 'Exercise Name',
+                labelText: 'Name',
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
