@@ -4,6 +4,7 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/workout_exercise.dart';
+import 'package:overload/infrastructure/pages/workout/add_goal_progressions_page.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_dropdown_widget.dart';
 import 'package:number_selector/number_selector.dart';
@@ -137,7 +138,14 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                       AppColorScheme.primary,
                     ),
                   ),
-                  onPressed: _submitForm,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddGoalProgressionsPage(),
+                      ),
+                    );
+                  },
                   child: const Text('Next'),
                 ),
               ),
