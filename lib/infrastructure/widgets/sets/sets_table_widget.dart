@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:overload/domain/exercise/exception/unknown_exercise_unit_type_exception.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/unit.dart';
-import 'package:overload/domain/exercise/unit_type.dart';
 import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/helpers/first_where_or_null.dart';
@@ -31,7 +29,7 @@ class SetsTableWidget extends StatefulWidget {
 class _SetsTableWidgetState extends State<SetsTableWidget> {
   List<PlutoColumn> columns = <PlutoColumn>[];
   List<PlutoRow> rows = [];
-  PlutoGridStateManager? stateManager; // Store the state manager
+  PlutoGridStateManager? stateManager;
 
   void generateColumns() {
     columns.clear();
@@ -82,18 +80,15 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void initState() {
     super.initState();
     generateColumns();
-    Logger().e("INIT STATE CALLED");
   }
 
   @override
   void didUpdateWidget(covariant SetsTableWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     if (widget.exercise != oldWidget.exercise ||
         widget.sets != oldWidget.sets) {
-      Logger().e("DID UPDATE WIDGET CALLED");
       generateColumns();
-      generateRows(); // Generate new rows and update state manager
+      generateRows();
       setState(() {});
     }
   }
@@ -160,8 +155,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
             Logger().i(event);
           },
           onLoaded: (PlutoGridOnLoadedEvent event) {
-            stateManager = event.stateManager; // Store the state manager
-            generateRows(); // Generate rows once the state manager is available
+            stateManager = event.stateManager; 
+            generateRows(); 
           },
         ),
       ),

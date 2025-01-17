@@ -146,6 +146,5 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
         ),
       ),
     );
-    ;
   }
 }
