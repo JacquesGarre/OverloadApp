@@ -6,23 +6,12 @@ void main() {
   group('Exercise Unit class tests', () {
     test('fromString creates a valid Unit instance for predefined units', () {
       final unit = Unit.fromString('Kgs');
-      expect(unit.value, 'Kgs');
+      expect(unit.name, 'Kgs');
     });
 
     test('fromString throws InvalidExerciseUnitException for invalid unit', () {
       expect(
         () => Unit.fromString('InvalidUnit'),
-        throwsA(isA<InvalidExerciseUnitException>()),
-      );
-    });
-
-    test('assertValid does not throw for valid unit', () {
-      expect(() => Unit.assertValid('Reps'), returnsNormally);
-    });
-
-    test('assertValid throws InvalidExerciseUnitException for invalid unit', () {
-      expect(
-        () => Unit.assertValid('InvalidUnit'),
         throwsA(isA<InvalidExerciseUnitException>()),
       );
     });
@@ -41,10 +30,11 @@ void main() {
 
     test('all returns the list of predefined units', () {
       final units = Unit.all();
-      expect(units.length, 3);
+      expect(units.length, 2);
       expect(units.contains(Unit.kgs), isTrue);
       expect(units.contains(Unit.reps), isTrue);
-      expect(units.contains(Unit.restTime), isTrue);
     });
+
+    // TODO: Test format, negative
   });
 }

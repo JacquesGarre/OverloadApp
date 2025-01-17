@@ -43,7 +43,7 @@ class ExerciseCardWidget extends StatelessWidget {
                           vertical: 0.0,
                         ),
                         label: Text(
-                          unit.value,
+                          unit.name,
                           style: TextStyle(
                             color: AppColorScheme.onSecondary,
                             fontSize: 12,

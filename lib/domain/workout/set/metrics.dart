@@ -16,4 +16,13 @@ class Metrics {
     }
     return Metrics(value: value);
   }
+
+  Metric? findByUnit(Unit unit) {
+    for (Metric metric in value) {
+      if (metric.unit.equals(unit)) {
+        return metric;
+      }
+    }
+    return null;
+  }
 }

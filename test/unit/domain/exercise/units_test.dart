@@ -9,12 +9,10 @@ void main() {
       final units = Units.fromUnitList([
         Unit.kgs,
         Unit.reps,
-        Unit.restTime,
       ]);
-      expect(units.value.length, 3);
+      expect(units.value.length, 2);
       expect(units.value.contains(Unit.kgs), isTrue);
       expect(units.value.contains(Unit.reps), isTrue);
-      expect(units.value.contains(Unit.restTime), isTrue);
     });
 
     test('fromUnitList throws DuplicateExerciseUnitException for duplicate units', () {
@@ -25,11 +23,10 @@ void main() {
     });
 
     test('fromStringList creates a valid Units instance from strings', () {
-      final units = Units.fromStringList(['Kgs', 'Reps', 'Rest time']);
-      expect(units.value.length, 3);
+      final units = Units.fromStringList(['Kgs', 'Reps']);
+      expect(units.value.length, 2);
       expect(units.value.contains(Unit.kgs), isTrue);
       expect(units.value.contains(Unit.reps), isTrue);
-      expect(units.value.contains(Unit.restTime), isTrue);
     });
 
     test('fromStringList throws DuplicateExerciseUnitException for duplicate strings', () {
@@ -43,10 +40,9 @@ void main() {
       final units = Units.fromUnitList([
         Unit.kgs,
         Unit.reps,
-        Unit.restTime,
       ]);
       final strings = units.toStringList();
-      expect(strings, ['Kgs', 'Reps', 'Rest time']);
+      expect(strings, ['Kgs', 'Reps']);
     });
 
     test('all returns all predefined units', () {

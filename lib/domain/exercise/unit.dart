@@ -1,39 +1,46 @@
 import 'package:overload/domain/exercise/exception/invalid_exercise_unit_exception.dart';
+import 'package:overload/domain/exercise/unit_type.dart';
 
 class Unit {
-  final String value;
+  final String name;
+  final bool canBeNegative;
+  final UnitType type;
 
-  static const Unit kgs = Unit._('Kgs');
-  static const Unit reps = Unit._('Reps');
-  static const Unit restTime = Unit._('Rest time');
+  static const Unit kgs = Unit._(
+    name: 'Kgs',
+    canBeNegative: true,
+    type: UnitType.double,
+  );
+  static const Unit reps = Unit._(
+    name: 'Reps',
+    canBeNegative: false,
+    type: UnitType.integer,
+  );
 
-  const Unit._(this.value);
+  const Unit._({
+    required this.name,
+    required this.canBeNegative,
+    required this.type,
+  });
 
   static List<Unit> all() {
     return [
       Unit.kgs,
       Unit.reps,
-      Unit.restTime,
     ];
   }
 
-  static Unit fromString(String value) {
-    assertValid(value);
-    return Unit._(value);
-  }
-
-  bool equals(Unit unit) {
-    return value == unit.value;
-  }
-
-  static assertValid(String value) {
-    Unit unit = Unit._(value);
+  static Unit fromString(String name) {
     for (Unit availableUnit in all()) {
-      if (availableUnit.equals(unit)) {
-        return;
+      if (availableUnit.name == name) {
+        return availableUnit;
       }
     }
     throw InvalidExerciseUnitException();
+  }
+
+  bool equals(Unit unit) {
+    return name == unit.name;
   }
 
   @override
@@ -46,10 +53,10 @@ class Unit {
   }
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => name.hashCode;
 
   @override
   String toString() {
-    return value;
+    return name;
   }
 }

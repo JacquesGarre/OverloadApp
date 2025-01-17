@@ -8,7 +8,7 @@ import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_dropdown_widget.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/workout/set/set.dart';
-import 'package:overload/infrastructure/widgets/workout/set_list_item_widget.dart';
+import 'package:overload/infrastructure/widgets/sets/sets_table_widget.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
   final WorkoutExercise? workoutExercise;
@@ -30,7 +30,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
 
   Exercise? exercise;
   Sets sets = Sets.empty();
-  int numberOfSets = 0;
+  int numberOfSets = 1;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
     sets = widget.workoutExercise != null
         ? widget.workoutExercise!.sets
         : Sets.empty();
-    numberOfSets = sets.count();
+    numberOfSets = widget.workoutExercise != null ? sets.count() : 1;
   }
 
   @override
@@ -54,8 +54,6 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
   }
 
   void onChange(Exercise? exerciseSelected, int numberOfSetsSelected) {
-    Logger().i(exerciseSelected);
-    Logger().i(numberOfSetsSelected);
     Sets newSets = Sets.empty();
     if (exerciseSelected != null) {
       for (int i = 1; i <= numberOfSetsSelected; i++) {
@@ -65,12 +63,12 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
         newSets = newSets.add(newSet);
       }
     }
+    Logger().i(newSets);
     setState(() {
       exercise = exerciseSelected;
       numberOfSets = numberOfSetsSelected;
       sets = newSets;
     });
-    Logger().i(sets.value.length);
   }
 
   @override
@@ -111,20 +109,22 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                   onChange(exercise, number);
                 },
               ),
-              const SizedBox(height: 16.0),
-              const Text("Define your next progression"),
-              const SizedBox(height: 5.0),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: sets.count(),
-                itemBuilder: (context, index) {
-                  return SetListItemWidget(
-                    set: sets.value[index],
-                  );
-                },
-                separatorBuilder: (context, index) => const SizedBox(height: 0),
-              ),
+              const SizedBox(height: 30.0),
+              if (sets.count() > 0)
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Define your next progression",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              if (sets.count() > 0) const SizedBox(height: 10.0),
+              if (sets.count() > 0 && exercise != null)
+                SetsTableWidget(
+                  exercise: exercise!,
+                  sets: sets,
+                  checkable: false,
+                ),
               const SizedBox(height: 16.0),
               Align(
                 alignment: Alignment.centerRight,

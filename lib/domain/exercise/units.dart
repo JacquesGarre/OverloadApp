@@ -14,7 +14,7 @@ class Units {
   List<String> toStringList() {
     List<String> strings = [];
     for (Unit unit in value) {
-      strings.add(unit.value);
+      strings.add(unit.name);
     }
     return strings;
   }
@@ -33,7 +33,7 @@ class Units {
   }
 
   static void assertValid(List<Unit> value) {
-    final set = value.map((unit) => unit.value).toSet();
+    final set = value.map((unit) => unit.name).toSet();
     if (set.length != value.length) {
       throw DuplicateExerciseUnitException();
     }
