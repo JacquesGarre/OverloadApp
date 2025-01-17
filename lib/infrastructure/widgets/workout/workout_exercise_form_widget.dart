@@ -114,7 +114,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                 const Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Define your current progression",
+                    "Set your next session goals",
                     textAlign: TextAlign.center,
                   ),
                 ),
