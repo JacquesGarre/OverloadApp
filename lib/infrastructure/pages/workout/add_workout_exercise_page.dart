@@ -5,7 +5,7 @@ import 'package:overload/infrastructure/widgets/workout/workout_exercise_form_wi
 class AddWorkoutExercisePage extends StatefulWidget {
   const AddWorkoutExercisePage({super.key});
 
-  static const String title = 'Add exercise';
+  static const String title = 'Add exercise to your workout';
 
   @override
   State<AddWorkoutExercisePage> createState() => _AddWorkoutExercisePageState();

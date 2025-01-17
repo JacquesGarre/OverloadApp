@@ -93,6 +93,7 @@ class SetsTableColumns {
       title: unit.name,
       field: unit.name,
       type: PlutoColumnType.number(
+        defaultValue: null,
         negative: unit.canBeNegative,
         format: unit.type.format,
         applyFormatOnInit: true,

@@ -58,8 +58,15 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
           rowsToAdd.add(generateRowFromSet(set));
         }
       }
-      stateManager!.removeRows(stateManager!.rows); 
+      stateManager!.removeRows(stateManager!.rows);
       stateManager!.appendRows(rowsToAdd);
+      // for (var row in stateManager!.rows) {
+      //   for (var cell in row.cells.values) {
+      //     if (cell.value == 0) {
+      //       cell.value = '';
+      //     }
+      //   }
+      // }
       stateManager!.notifyListeners();
     }
   }
@@ -100,8 +107,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
       child: SizedBox(
         height: (widget.sets.count() + 1) * 50,
         child: PlutoGrid(
-          mode: PlutoGridMode.normal,
           configuration: PlutoGridConfiguration(
+            enterKeyAction: PlutoGridEnterKeyAction.toggleEditing,
             columnSize: const PlutoGridColumnSizeConfig(
               resizeMode: PlutoResizeMode.none,
               autoSizeMode: PlutoAutoSizeMode.scale,
@@ -151,12 +158,33 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
           ),
           columns: columns,
           rows: rows,
+          mode: PlutoGridMode.normal,
+          onSelected: (PlutoGridOnSelectedEvent event) {
+            Logger().i("onSelected");
+          },
+          onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+            Logger().i("onRowDoubleTap");
+          },
+          onRowChecked: (PlutoGridOnRowCheckedEvent event) {
+            Logger().i("onRowChecked");
+          },
           onChanged: (PlutoGridOnChangedEvent event) {
-            Logger().i(event);
+            Logger().i("onChanged");
           },
           onLoaded: (PlutoGridOnLoadedEvent event) {
-            stateManager = event.stateManager; 
-            generateRows(); 
+            event.stateManager.setAutoEditing(true);
+            event.stateManager.addListener(() {
+              final currentCell = event.stateManager.currentCell;
+              if (event.stateManager.isEditing && currentCell != null) {
+                if (currentCell.value == 0 || currentCell.value == '0') {
+                  currentCell.value = ''; // Clear default value when editing
+                  event.stateManager.notifyListeners();
+                }
+              }
+            });
+            event.stateManager.notifyListeners();
+            stateManager = event.stateManager;
+            generateRows();
           },
         ),
       ),

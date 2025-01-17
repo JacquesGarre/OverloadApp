@@ -115,7 +115,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                       ),
                     );
                   },
-                  child: const Text('Add exercise'),
+                  child: const Text('Add exercise to your workout'),
                 ),
               ),
             ),
