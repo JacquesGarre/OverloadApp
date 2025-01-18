@@ -14,7 +14,7 @@ class WorkoutExerciseStub {
     return WorkoutExercise(
       exercise: exercise,
       sets: sets,
-      goal: GoalStub.fromExerciseAndSets(exercise, sets),
+      currentGoal: GoalStub.fromSets(sets),
       notes: NotesStub.random(),
     );
   }

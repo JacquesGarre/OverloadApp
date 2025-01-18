@@ -4,7 +4,7 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/workout_exercise.dart';
-import 'package:overload/infrastructure/pages/workout/add_goal_progressions_page.dart';
+import 'package:overload/infrastructure/pages/workout/add_goals_page.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_dropdown_widget.dart';
 import 'package:number_selector/number_selector.dart';
@@ -115,8 +115,12 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                 const Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Set your next session goals",
+                    "Set your next session goal",
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               if (sets.count() > 0) const SizedBox(height: 10.0),
@@ -126,29 +130,34 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                   sets: sets,
                   checkable: false,
                 ),
-              const SizedBox(height: 16.0),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    foregroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.onPrimary,
-                    ),
-                    backgroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.primary,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddGoalProgressionsPage(),
+              if (sets.count() > 0 && exercise != null)
+                const SizedBox(height: 16.0),
+              if (sets.count() > 0 && exercise != null)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: WidgetStatePropertyAll(
+                        AppColorScheme.onPrimary,
                       ),
-                    );
-                  },
-                  child: const Text('Next'),
+                      backgroundColor: WidgetStatePropertyAll(
+                        AppColorScheme.primary,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddGoalsPage(
+                            exercise: exercise!,
+                            sets: sets,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('Next'),
+                  ),
                 ),
-              ),
             ],
           ),
         ),

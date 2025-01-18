@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
-import 'package:overload/infrastructure/widgets/workout/goal_progressions_form_widget.dart';
+import 'package:overload/infrastructure/widgets/workout/goals_timeline_widget.dart';
 
-class AddGoalProgressionsPage extends StatefulWidget {
-  const AddGoalProgressionsPage({super.key});
+class AddGoalsPage extends StatefulWidget {
 
-  static const String title = 'After reaching your goal'; // TODO: Center title here (And maybe everywhere on "subpages"?)
+  final Exercise exercise;
+  final Sets sets;
+
+  const AddGoalsPage({
+    super.key,
+    required this.exercise,
+    required this.sets    
+  });
+
+  static const String title = 'Set your objectives'; // TODO: Center title here (And maybe everywhere on "subpages"?)
 
   @override
-  State<AddGoalProgressionsPage> createState() => _AddGoalProgressionsPageState();
+  State<AddGoalsPage> createState() => _AddGoalsPageState();
 }
 
-class _AddGoalProgressionsPageState extends State<AddGoalProgressionsPage> {
+class _AddGoalsPageState extends State<AddGoalsPage> {
   void _handleAdd(Map<String, dynamic> formData) async {
     // try {
     //   ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(
@@ -30,11 +40,12 @@ class _AddGoalProgressionsPageState extends State<AddGoalProgressionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(
-        title: AddGoalProgressionsPage.title,
+        title: AddGoalsPage.title,
       ),
       body: SingleChildScrollView(
-        child: GoalProgressionsFormWidget(
-          onSubmit: _handleAdd,
+        child: GoalsTimelineWidget(
+          exercise: widget.exercise,
+          sets: widget.sets,
         ),
       ),
       resizeToAvoidBottomInset: true,
