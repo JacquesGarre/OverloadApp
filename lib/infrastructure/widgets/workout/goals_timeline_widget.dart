@@ -30,8 +30,16 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     super.initState();
     goals = Goals([
       GoalStub.fromSets(widget.sets),
-      GoalStub.fromSets(widget.sets),
     ]);
+  }
+
+  void _addGoal() {
+    setState(() {
+      goals = Goals([
+        ...goals!.value,
+        GoalStub.fromSets(widget.sets), // Add a new goal to the list
+      ]);
+    });
   }
 
   @override
@@ -50,7 +58,7 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
           indicatorTheme: IndicatorThemeData(
             // Theme of the circle on the line
             color: AppColorScheme.onLightBackground,
-            position: 0.08,
+            position: 0.09,
             size: 15.0,
           ),
           connectorTheme: ConnectorThemeData(
@@ -61,53 +69,86 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
         ),
         builder: TimelineTileBuilder.connected(
           connectionDirection: ConnectionDirection.before,
-          itemCount: goals!.count(),
+          itemCount: goals!.count() + 1, // Add one extra for the button
           contentsBuilder: (_, index) {
-            Goal goal = goals!.value[index];
-            bool goalIsAchieved = false; // TODO: Goal is achieved = false
-            if (goalIsAchieved) return null;
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 15.0),
-              child: Card(
-                shadowColor: Colors.transparent,
-                color: AppColorScheme.lightBackground,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 15.0, 0.0, 5.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Objective ${index + 1}",
-                        style: TextStyle(
+            if (index < goals!.count()) {
+              // Render existing goals
+              Goal goal = goals!.value[index];
+              bool goalIsAchieved = false; // TODO: Goal is achieved = false
+              if (goalIsAchieved) return null;
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 15.0),
+                child: Card(
+                  shadowColor: Colors.transparent,
+                  color: AppColorScheme.lightBackground,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15.0, 15.0, 0.0, 5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Objective ${index + 1}",
+                          style: TextStyle(
                             color: AppColorScheme.onLightBackground,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SetsTableWidget(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SetsTableWidget(
                           exercise: widget.exercise,
                           sets: goal.sets,
-                          checkable: false)
-                      //_InnerTimeline(messages: processes[index].messages),
-                    ],
+                          checkable: false,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
-          indicatorBuilder: (_, index) {
-            bool goalIsAchieved = false;
-            if (goalIsAchieved) {
-              // TODO: If goal is achieved
-              return const DotIndicator(
-                color: Color(0xff66c97f),
-                child: Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 12.0,
                 ),
               );
             } else {
+              // Render "Add an Objective" button
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 15.0),
+                child: ElevatedButton(
+                  onPressed: _addGoal,
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      AppColorScheme.lightBackground,
+                    ),
+                    foregroundColor: WidgetStatePropertyAll(
+                      AppColorScheme.primary,
+                    ),
+                  ),
+                  child: const Text(
+                    "Add",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
+          indicatorBuilder: (_, index) {
+            if (index < goals!.count()) {
+              bool goalIsAchieved = false;
+              if (goalIsAchieved) {
+                return const DotIndicator(
+                  color: Color(0xff66c97f),
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.white,
+                    size: 12.0,
+                  ),
+                );
+              } else {
+                return const OutlinedDotIndicator(
+                  borderWidth: 1.5,
+                );
+              }
+            } else {
+              // Add indicator for the button
               return const OutlinedDotIndicator(
                 borderWidth: 1.5,
               );
