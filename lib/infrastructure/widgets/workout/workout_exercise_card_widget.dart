@@ -117,7 +117,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
-                              color: AppColorScheme.primary,
+                              color: AppColorScheme.onLightBackground,
                             ),
                           ),
                         ),
@@ -135,7 +135,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
-                              color: AppColorScheme.onLightBackground,
+                              color: AppColorScheme.primary,
                             ),
                           ),
                         ),
