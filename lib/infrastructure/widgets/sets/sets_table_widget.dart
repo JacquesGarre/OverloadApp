@@ -5,7 +5,6 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/sets.dart';
-import 'package:overload/infrastructure/helpers/first_where_or_null.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/sets/sets_table_columns.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -29,10 +28,52 @@ class SetsTableWidget extends StatefulWidget {
 
 class _SetsTableWidgetState extends State<SetsTableWidget> {
   static double rowHeight = 35;
-
+  Sets? sets;
   List<PlutoColumn> columns = <PlutoColumn>[];
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
+
+  @override
+  void initState() {
+    super.initState();
+    sets = widget.sets;
+    generateColumns();
+    generateRows();
+  }
+
+  @override
+  void didUpdateWidget(covariant SetsTableWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.exercise != oldWidget.exercise ||
+        widget.sets != oldWidget.sets) {
+      generateColumns();
+      generateRows();
+      setState(() {});
+    }
+  }
+
+  void generateSets(int number) {
+    if (number > sets!.count()) {
+      addSet();
+    }
+    if (number < sets!.count()) {
+      removeSet();
+    }
+  }
+
+  void addSet() {
+    setState(() {
+      sets = sets!.addSetFromExercise(widget.exercise);
+    });
+    generateRows();
+  }
+
+  void removeSet() {
+    setState(() {
+      sets = sets!.removeLastSet();
+    });
+    generateRows();
+  }
 
   void generateColumns() {
     columns.clear();
@@ -48,18 +89,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void generateRows() {
     if (stateManager != null) {
       List<PlutoRow> rowsToAdd = [];
-      for (Set set in widget.sets.value) {
-        PlutoRow? existingRow =
-            stateManager!.rows.firstWhereOrNull((PlutoRow row) {
-          final setIndexValue =
-              row.cells[SetsTableColumns.setIndexColumnField]?.value;
-          return setIndexValue == set.index.value;
-        });
-        if (existingRow != null) {
-          rowsToAdd.add(existingRow);
-        } else {
-          rowsToAdd.add(generateRowFromSet(set));
-        }
+      for (Set set in sets!.value) {
+        rowsToAdd.add(generateRowFromSet(set));
       }
       stateManager!.removeRows(stateManager!.rows);
       stateManager!.appendRows(rowsToAdd);
@@ -80,33 +111,13 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    generateColumns();
-    generateRows();
-  }
-
-  @override
-  void didUpdateWidget(covariant SetsTableWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.exercise != oldWidget.exercise ||
-        widget.sets != oldWidget.sets) {
-      generateColumns();
-      generateRows();
-      setState(() {});
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(0),
       child: Column(
         children: [
           SizedBox(
-            height: stateManager != null
-                ? (stateManager!.rows.length + 1) * rowHeight + 16
-                : (widget.sets.count() + 1) * rowHeight,
+            height: (sets!.count() + 1) * rowHeight,
             child: PlutoGrid(
               configuration: PlutoGridConfiguration(
                 enterKeyAction: PlutoGridEnterKeyAction.toggleEditing,
@@ -172,7 +183,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                 Logger().i("onRowChecked");
               },
               onChanged: (PlutoGridOnChangedEvent event) {
-                Logger().i("onChanged");
+                Logger().i(
+                    "onChanged"); // TODO: <- This should update the Sets object with the according value
               },
               onLoaded: (PlutoGridOnLoadedEvent event) {
                 event.stateManager.setAutoEditing(true);
@@ -180,8 +192,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                   final currentCell = event.stateManager.currentCell;
                   if (event.stateManager.isEditing && currentCell != null) {
                     if (currentCell.value == 0 || currentCell.value == '0') {
-                      currentCell.value =
-                          ''; // Clear default value when editing
+                      currentCell.value = '';
                       event.stateManager.notifyListeners();
                     }
                   }
@@ -193,7 +204,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(6.0, 20.0, 5.0, 15.0),
+            padding: const EdgeInsets.fromLTRB(6.0, 20.0, 5.0, 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -213,47 +224,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                       : widget.sets.count(),
                   min: 1,
                   max: 30,
-                  onUpdate: (number) {
-                    setState(() {
-                      if (stateManager != null) {
-                        int currentRowCount = stateManager!.rows.length;
-
-                        if (number > currentRowCount) {
-                          // Add rows
-                          for (int i = currentRowCount + 1; i <= number; i++) {
-                            stateManager!.appendRows([
-                              PlutoRow(
-                                cells: {
-                                  SetsTableColumns.setIndexColumnField:
-                                      PlutoCell(value: i),
-                                  ...widget.exercise.units.value
-                                      .asMap()
-                                      .map((_, unit) => MapEntry(
-                                            unit.name,
-                                            PlutoCell(
-                                                value:
-                                                    ''), // Default empty values for new row
-                                          )),
-                                  if (widget.checkable)
-                                    SetsTableColumns.checkboxColumnField:
-                                        PlutoCell(value: ''),
-                                },
-                              ),
-                            ]);
-                          }
-                        } else if (number < currentRowCount) {
-                          // Remove rows
-                          int rowsToRemove = currentRowCount - number;
-                          List<PlutoRow> rowsToDelete = stateManager!.rows
-                              .sublist(currentRowCount - rowsToRemove);
-                          stateManager!.removeRows(rowsToDelete);
-                        }
-
-                        stateManager!
-                            .notifyListeners(); // Notify the grid to update
-                      }
-                    });
-                  },
+                  onUpdate: generateSets,
                 ),
               ],
             ),

@@ -36,7 +36,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     setState(() {
       goals = Goals([
         ...goals!.value,
-        Goal.fromSets(widget.sets), // Add a new goal to the list
+        Goal.fromSets(widget.sets),
       ]);
     });
   }
@@ -87,8 +87,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween, // Align title and button
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
