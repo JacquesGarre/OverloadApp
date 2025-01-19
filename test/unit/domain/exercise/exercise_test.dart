@@ -34,7 +34,7 @@ void main() {
 
       final event = events.first as ExerciseCreatedDomainEvent;
       expect(event.aggregateId(), exercise.id().value());
-      expect(event.exercise.name().value(), exercise.name().value());
+      expect(event.exercise().name().value(), exercise.name().value());
     });
 
     test('update creates a new Exercise with updated properties and publishes an event', () {
@@ -56,7 +56,7 @@ void main() {
 
       final event = events.last as ExerciseUpdatedDomainEvent;
       expect(event.aggregateId(), exercise.id().value());
-      expect(event.exercise.name().value, newName.value());
+      expect(event.exercise().name().value, newName.value());
     });
 
     test('delete publishes an ExerciseDeletedDomainEvent', () {

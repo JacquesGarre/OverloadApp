@@ -6,6 +6,14 @@ class Unit {
   final bool _canBeNegative;
   final UnitType _type;
 
+  const Unit._({
+    required String name,
+    required bool canBeNegative,
+    required UnitType type,
+  })  : _name = name,
+        _canBeNegative = canBeNegative,
+        _type = type;
+
   static const Unit kgs = Unit._(
     name: 'Kgs',
     canBeNegative: true,
@@ -26,14 +34,6 @@ class Unit {
     canBeNegative: false,
     type: UnitType.double,
   );
-
-  const Unit._({
-    required name,
-    required canBeNegative,
-    required type,
-  })  : _name = name,
-        _canBeNegative = canBeNegative,
-        _type = type;
 
   String name() {
     return _name;

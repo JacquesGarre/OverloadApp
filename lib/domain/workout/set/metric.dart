@@ -5,8 +5,8 @@ class Metric {
   final Unit _unit;
 
   Metric({
-    required value,
-    required unit,
+    required num value,
+    required Unit unit,
   })  : _value = value,
         _unit = unit;
 

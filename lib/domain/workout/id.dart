@@ -5,7 +5,7 @@ class Id {
   final UuidValue _value;
 
   Id._({
-    required value,
+    required UuidValue value,
   }) : _value = value;
 
   UuidValue value() {

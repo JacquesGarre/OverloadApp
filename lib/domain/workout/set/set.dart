@@ -8,8 +8,8 @@ class Set {
   final Metrics _metrics;
 
   Set({
-    required index,
-    required metrics,
+    required SetIndex index,
+    required Metrics metrics,
   }) : _index = index, _metrics = metrics;
 
   SetIndex index() {

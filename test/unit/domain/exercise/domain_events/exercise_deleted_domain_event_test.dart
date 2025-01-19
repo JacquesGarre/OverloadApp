@@ -21,8 +21,8 @@ void main() {
       final event = ExerciseDeletedDomainEvent.fromExercise(exercise);
       expect(event.aggregateId(), exercise.id().value());
       expect(event.eventName(), 'ExerciseDeletedDomainEvent');
-      expect(event.exercise.name().value(), exercise.name().value());
-      expect(event.exercise.units().value(), exercise.units().value());
+      expect(event.exercise().name().value(), exercise.name().value());
+      expect(event.exercise().units().value(), exercise.units().value());
       expect(event.occuredAt().isBefore(DateTime.now()), isTrue);
       expect(event.eventId(), isA<UuidValue>());
     });

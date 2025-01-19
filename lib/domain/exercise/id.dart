@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 class Id {
   final UuidValue _value;
 
-  Id._({required value}) : _value = value;
+  Id._({required UuidValue value}) : _value = value;
 
   static Id create() {
     String uuid = const Uuid().v4();

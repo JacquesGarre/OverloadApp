@@ -3,7 +3,7 @@ import 'package:overload/domain/workout/exception/invalid_workout_name_exception
 class Name {
   final String _value;
 
-  Name._({required value}) : _value = value;
+  Name._({required String value}) : _value = value;
 
   String value() {
     return _value;

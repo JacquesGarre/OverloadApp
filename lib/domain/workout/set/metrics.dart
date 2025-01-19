@@ -6,7 +6,7 @@ class Metrics {
   final List<Metric> _value;
 
   Metrics({
-    required value,
+    required List<Metric> value,
   }) : _value = List.unmodifiable(value);
 
   List<Metric> value() {

@@ -21,7 +21,7 @@ class SetsTableWidget extends StatefulWidget {
     required this.exercise,
     required Sets sets,
     required this.checkable,
-  }) : sets = Sets(value: sets.value);
+  }) : sets = Sets(value: sets.value());
 
   @override
   State<SetsTableWidget> createState() => _SetsTableWidgetState();
@@ -37,7 +37,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   @override
   void initState() {
     super.initState();
-    sets = Sets(value: widget.sets.value);
+    sets = Sets(value: widget.sets.value());
     generateColumns();
     generateRows();
   }

@@ -1,7 +1,7 @@
 class SetIndex {
   final int _value;
 
-  SetIndex({required value}) : _value = value;
+  SetIndex({required int value}) : _value = value;
 
   bool equals(SetIndex index) {
     return _value == index.value();

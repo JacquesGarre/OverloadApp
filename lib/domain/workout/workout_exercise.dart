@@ -11,8 +11,13 @@ class WorkoutExercise {
   final Goal? _currentGoal;
   final Goals? _goals;
 
-  WorkoutExercise({required exercise, required sets, notes, currentGoal, goals})
-      : _exercise = exercise,
+  WorkoutExercise({
+    required Exercise exercise,
+    required Sets sets,
+    Notes? notes,
+    Goal? currentGoal,
+    Goals? goals,
+  })  : _exercise = exercise,
         _sets = sets,
         _notes = notes,
         _currentGoal = currentGoal,

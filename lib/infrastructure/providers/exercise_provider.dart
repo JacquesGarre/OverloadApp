@@ -52,7 +52,7 @@ class ExerciseProvider with ChangeNotifier {
 
   Future<void> deleteExercice(Exercise exercise) async {
     DeleteExerciseCommand command = DeleteExerciseCommand(
-      id: exercise.id.toString(),
+      id: exercise.id().toString(),
     );
     await deleteExerciseCommandHandler.invoke(command);
     loadExercises();
@@ -64,7 +64,7 @@ class ExerciseProvider with ChangeNotifier {
   ) async {
     try {
       UpdateExerciseCommand command = UpdateExerciseCommand(
-        id: exercise.id.toString(),
+        id: exercise.id().toString(),
         name: formData["name"],
         units: formData["units"],
       );

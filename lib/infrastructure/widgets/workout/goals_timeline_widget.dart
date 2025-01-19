@@ -16,7 +16,7 @@ class GoalsTimelineWidget extends StatefulWidget {
     super.key,
     required this.exercise,
     required Sets sets,
-  }) : sets = Sets(value: sets.value);
+  }) : sets = Sets(value: sets.value());
 
   @override
   State<GoalsTimelineWidget> createState() => GoalsTimelineWidgetState();

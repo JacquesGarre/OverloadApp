@@ -4,7 +4,7 @@ class WorkoutExercises {
   final List<WorkoutExercise> _value;
 
   WorkoutExercises({
-    required value,
+    required List<WorkoutExercise> value,
   }) : _value = List.unmodifiable(value);
 
   List<WorkoutExercise> value() {

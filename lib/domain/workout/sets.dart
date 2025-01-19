@@ -8,7 +8,7 @@ class Sets {
   final List<Set> _value;
 
   Sets({
-    required value,
+    required List<Set> value,
   }) : _value = List.unmodifiable(value);
 
   List<Set> value() {

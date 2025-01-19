@@ -13,10 +13,10 @@ class Exercise {
   final Units _units;
 
   Exercise({
-    required domainEvents,
-    required id,
-    required name,
-    required units,
+    required DomainEventsCollection domainEvents,
+    required Id id,
+    required Name name,
+    required Units units,
   })  : _domainEvents = domainEvents,
         _id = id,
         _name = name,

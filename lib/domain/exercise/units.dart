@@ -4,7 +4,7 @@ import 'package:overload/domain/exercise/unit.dart';
 class Units {
   final List<Unit> _value;
 
-  Units._({required value}) : _value = List.unmodifiable(value);
+  Units._({required List<Unit> value}) : _value = List.unmodifiable(value);
 
   static Units fromUnitList(List<Unit> value) {
     assertValid(value);

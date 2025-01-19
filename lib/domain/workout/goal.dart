@@ -4,7 +4,7 @@ class Goal {
   final Sets _sets;
 
   Goal({
-    required sets,
+    required Sets sets,
   }) : _sets = sets;
 
   Sets sets() {

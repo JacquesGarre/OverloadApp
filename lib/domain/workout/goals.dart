@@ -4,7 +4,7 @@ class Goals {
   final List<Goal> _value;
 
   Goals({
-    required value,
+    required List<Goal> value,
   }) : _value = List.unmodifiable(value);
 
   List<Goal> value() {

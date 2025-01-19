@@ -58,4 +58,8 @@ class ExerciseCreatedDomainEvent implements DomainEventInterface {
   String toString() {
     return jsonEncode(this);
   }
+
+  Exercise exercise() {
+    return _exercise;
+  }
 }

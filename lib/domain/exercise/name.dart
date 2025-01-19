@@ -3,7 +3,7 @@ import 'package:overload/domain/exercise/exception/invalid_exercise_name_excepti
 class Name {
   final String _value;
 
-  Name._({required value}) : _value = value;
+  Name._({required String value}) : _value = value;
 
   static Name fromString(String value) {
     String trimmedValue = value.trim();
