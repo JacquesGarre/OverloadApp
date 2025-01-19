@@ -111,27 +111,6 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                 },
               ),
               const SizedBox(height: 30.0),
-              if (sets.count() > 0)
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Set your next session goal",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              if (sets.count() > 0) const SizedBox(height: 10.0),
-              if (sets.count() > 0 && exercise != null)
-                SetsTableWidget(
-                  exercise: exercise!,
-                  sets: sets,
-                  checkable: false,
-                ),
-              if (sets.count() > 0 && exercise != null)
-                const SizedBox(height: 16.0),
               if (sets.count() > 0 && exercise != null)
                 Align(
                   alignment: Alignment.centerRight,

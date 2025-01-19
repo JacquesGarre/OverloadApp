@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:overload/_tmp/workout/goal/goal_stub.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
@@ -29,7 +28,7 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
   void initState() {
     super.initState();
     goals = Goals([
-      GoalStub.fromSets(widget.sets),
+      Goal.fromSets(widget.sets),
     ]);
   }
 
@@ -37,7 +36,7 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     setState(() {
       goals = Goals([
         ...goals!.value,
-        GoalStub.fromSets(widget.sets), // Add a new goal to the list
+        Goal.fromSets(widget.sets), // Add a new goal to the list
       ]);
     });
   }
@@ -58,7 +57,7 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
           indicatorTheme: IndicatorThemeData(
             // Theme of the circle on the line
             color: AppColorScheme.onLightBackground,
-            position: 0.09,
+            position: 0.35,
             size: 15.0,
           ),
           connectorTheme: ConnectorThemeData(
@@ -154,7 +153,7 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
               );
             }
           },
-          connectorBuilder: (_, index, ___) {
+          connectorBuilder: (_, index, ___) { // The line style
             bool goalIsAchieved = false; // TODO: Update based on your logic
             return goalIsAchieved
                 ? const SolidLineConnector(

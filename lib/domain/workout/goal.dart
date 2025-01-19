@@ -6,4 +6,10 @@ class Goal {
   Goal({
     required this.sets,
   });
+
+  static Goal fromSets(Sets sets) {
+    return Goal(
+      sets: sets,
+    );
+  }
 }
