@@ -11,10 +11,13 @@ import 'package:overload/infrastructure/widgets/sets/sets_table_columns.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:overload/domain/workout/set/set.dart';
 
+// TODO: Pouvoir passer un goal, pour l'afficher à chaque set? Is it useful
 class SetsTableWidget extends StatefulWidget {
   final Exercise exercise;
   final Sets sets;
   final bool checkable;
+  final bool setsNumberSelector;
+  final bool readonly;
   final void Function(Sets updatedSets) onSetsUpdated;
 
   SetsTableWidget({
@@ -22,7 +25,9 @@ class SetsTableWidget extends StatefulWidget {
     required this.exercise,
     required Sets sets,
     required this.checkable,
+    required this.setsNumberSelector,
     required this.onSetsUpdated,
+    required this.readonly,
   }) : sets = Sets(value: sets.value());
 
   @override
@@ -30,7 +35,7 @@ class SetsTableWidget extends StatefulWidget {
 }
 
 class _SetsTableWidgetState extends State<SetsTableWidget> {
-  static double rowHeight = 35;
+  static double rowHeight = 50;
   Sets? sets;
   List<PlutoColumn> columns = <PlutoColumn>[];
   List<PlutoRow> rows = [];
@@ -96,7 +101,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     columns.clear();
     columns.add(SetsTableColumns.setIndexColumn());
     for (Unit unit in widget.exercise.units().value()) {
-      columns.add(SetsTableColumns.unitColumn(unit));
+      columns.add(SetsTableColumns.unitColumn(unit, widget.readonly));
     }
     if (widget.checkable) {
       columns.add(SetsTableColumns.checkboxColumn());
@@ -219,32 +224,33 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(6.0, 20.0, 5.0, 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                NumberSelector.plain(
-                  width: 150,
-                  height: 40,
-                  iconColor: AppColorScheme.primary,
-                  borderRadius: 5.0,
-                  backgroundColor: AppColorScheme.lightBackground,
-                  borderColor: Colors.transparent,
-                  showMinMax: false,
-                  showSuffix: false,
-                  hasDividers: false,
-                  hasBorder: true,
-                  current: stateManager != null
-                      ? stateManager!.rows.length
-                      : widget.sets.count(),
-                  min: 1,
-                  max: 30,
-                  onUpdate: generateSets,
-                ),
-              ],
+          if (widget.setsNumberSelector)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(6.0, 20.0, 5.0, 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  NumberSelector.plain(
+                    width: 150,
+                    height: 40,
+                    iconColor: AppColorScheme.primary,
+                    borderRadius: 5.0,
+                    backgroundColor: AppColorScheme.lightBackground,
+                    borderColor: Colors.transparent,
+                    showMinMax: false,
+                    showSuffix: false,
+                    hasDividers: false,
+                    hasBorder: true,
+                    current: stateManager != null
+                        ? stateManager!.rows.length
+                        : widget.sets.count(),
+                    min: 1,
+                    max: 30,
+                    onUpdate: generateSets,
+                  ),
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

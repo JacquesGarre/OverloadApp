@@ -5,11 +5,18 @@ import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/sets/sets_table_widget.dart';
 
 class WorkoutExerciseCardWidget extends StatelessWidget {
-
   final WorkoutExercise workoutExercise;
   final bool checkable;
+  final bool setsNumberSelector;
+  final bool readonly;
 
-  const WorkoutExerciseCardWidget({super.key, required this.workoutExercise, required this.checkable});
+  const WorkoutExerciseCardWidget({
+    super.key,
+    required this.workoutExercise,
+    required this.checkable,
+    required this.setsNumberSelector,
+    required this.readonly,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +34,14 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        workoutExercise.exercise().name().value(),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
+                        child: Text(
+                          workoutExercise.exercise().name().value(),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 5.0),
@@ -57,8 +67,12 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
             ),
             SetsTableWidget(
               exercise: workoutExercise.exercise(),
-              sets: workoutExercise.sets(),
+              sets: workoutExercise.goals()!.count() > 0
+                  ? workoutExercise.goals()!.value().first.sets()
+                  : workoutExercise.sets(),
               checkable: checkable,
+              setsNumberSelector: setsNumberSelector,
+              readonly: readonly,
               onSetsUpdated: (Sets sets) {
                 // TODO
               },

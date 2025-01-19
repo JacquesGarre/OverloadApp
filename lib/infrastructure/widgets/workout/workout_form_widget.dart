@@ -114,6 +114,8 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                   WorkoutExerciseCardWidget(
                     workoutExercise: workoutExercise,
                     checkable: false,
+                    setsNumberSelector: false,
+                    readonly: true,
                   ),
                   const SizedBox(height: 16), 
                 ],
@@ -126,10 +128,10 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     foregroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.onPrimary,
+                      AppColorScheme.primary,
                     ),
                     backgroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.primary,
+                      AppColorScheme.lightBackground,
                     ),
                   ),
                   onPressed: _navigateToAddExercisePage,

@@ -134,6 +134,8 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                           exercise: widget.exercise,
                           sets: goal.sets(),
                           checkable: false,
+                          setsNumberSelector: true,
+                          readonly: false,
                           onSetsUpdated: (updatedSets) {
                             _updateGoal(index, updatedSets);
                           }

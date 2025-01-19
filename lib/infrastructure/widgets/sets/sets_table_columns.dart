@@ -40,11 +40,11 @@ class SetsTableColumns {
     );
   }
 
-  static PlutoColumn unitColumn(Unit unit) {
+  static PlutoColumn unitColumn(Unit unit, bool readOnly) {
     switch (unit.type()) {
       case UnitType.integer:
       case UnitType.double:
-        return SetsTableColumns.numberColumn(unit);
+        return SetsTableColumns.numberColumn(unit, readOnly);
       default:
         throw UnknownExerciseUnitTypeException();
     }
@@ -83,12 +83,13 @@ class SetsTableColumns {
     );
   }
 
-  static PlutoColumn numberColumn(Unit unit) {
+  static PlutoColumn numberColumn(Unit unit, bool readOnly) {
     return PlutoColumn(
       width: 5.0,
       enableSetColumnsMenuItem: false,
       textAlign: PlutoColumnTextAlign.center,
       titleTextAlign: PlutoColumnTextAlign.center,
+      readOnly: readOnly,
       enableColumnDrag: false,
       enableSorting: false,
       enableContextMenu: false,
