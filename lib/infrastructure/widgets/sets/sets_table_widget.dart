@@ -35,7 +35,7 @@ class SetsTableWidget extends StatefulWidget {
 }
 
 class _SetsTableWidgetState extends State<SetsTableWidget> {
-  static double rowHeight = 50;
+  static double rowHeight = 35;
   Sets? sets;
   List<PlutoColumn> columns = <PlutoColumn>[];
   List<PlutoRow> rows = [];
@@ -52,7 +52,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   @override
   void didUpdateWidget(covariant SetsTableWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.exercise != oldWidget.exercise || widget.sets != oldWidget.sets) {
+    if (widget.exercise != oldWidget.exercise ||
+        widget.sets != oldWidget.sets) {
       generateColumns();
       generateRows();
       setState(() {});
@@ -64,6 +65,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     Unit unit = widget.exercise.units().value()[columnIdx - 1];
     Metric metric = Metric(value: value, unit: unit);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || stateManager == null) return;
       setState(() {
         sets = sets!.updateSet(setIndex, metric);
         widget.onSetsUpdated(sets!);
@@ -109,20 +111,22 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   }
 
   void generateRows() {
-    if (stateManager != null) {
-      List<PlutoRow> rowsToAdd = [];
-      for (Set set in sets!.value()) {
-        rowsToAdd.add(generateRowFromSet(set));
-      }
-      stateManager!.removeRows(stateManager!.rows);
-      stateManager!.appendRows(rowsToAdd);
-      stateManager!.notifyListeners();
+    if (stateManager == null || !mounted) {
+      return;
     }
+    List<PlutoRow> rowsToAdd = [];
+    for (Set set in sets!.value()) {
+      rowsToAdd.add(generateRowFromSet(set));
+    }
+    stateManager?.removeRows(stateManager!.rows);
+    stateManager?.appendRows(rowsToAdd);
+    stateManager?.notifyListeners();
   }
 
   PlutoRow generateRowFromSet(Set set) {
     Map<String, PlutoCell> cells = {
-      SetsTableColumns.setIndexColumnField: PlutoCell(value: set.index().value()),
+      SetsTableColumns.setIndexColumnField:
+          PlutoCell(value: set.index().value()),
       SetsTableColumns.checkboxColumnField: PlutoCell(value: ''),
     };
     for (Unit unit in widget.exercise.units().value()) {
@@ -149,7 +153,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                 ),
                 style: PlutoGridStyleConfig(
                   columnHeight: rowHeight,
-                  rowHeight: rowHeight,
+                  rowHeight: rowHeight - 4,
                   checkedColor: AppColorScheme.primary,
                   gridBackgroundColor: Colors.transparent,
                   rowColor: AppColorScheme.lightBackground,
@@ -194,7 +198,9 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
               ),
               columns: columns,
               rows: rows,
-              mode: PlutoGridMode.normal,
+              mode: !widget.readonly
+                  ? PlutoGridMode.normal
+                  : PlutoGridMode.selectWithOneTap,
               onSelected: (PlutoGridOnSelectedEvent event) {
                 Logger().i("onSelected");
               },
@@ -208,8 +214,10 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                 updateSet(event.rowIdx, event.columnIdx, event.value);
               },
               onLoaded: (PlutoGridOnLoadedEvent event) {
+                if (!mounted) return;
                 event.stateManager.setAutoEditing(true);
                 event.stateManager.addListener(() {
+                  if (!mounted) return;
                   final currentCell = event.stateManager.currentCell;
                   if (event.stateManager.isEditing && currentCell != null) {
                     if (currentCell.value == 0 || currentCell.value == '0') {
@@ -226,7 +234,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
           ),
           if (widget.setsNumberSelector)
             Padding(
-              padding: const EdgeInsets.fromLTRB(6.0, 20.0, 5.0, 15.0),
+              padding: const EdgeInsets.fromLTRB(6.0, 10.0, 5.0, 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

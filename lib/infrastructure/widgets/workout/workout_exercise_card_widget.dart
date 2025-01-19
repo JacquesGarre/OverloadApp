@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/workout/sets.dart';
-import 'package:overload/domain/workout/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/sets/sets_table_widget.dart';
 
@@ -9,6 +10,7 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
   final bool checkable;
   final bool setsNumberSelector;
   final bool readonly;
+  final void Function(WorkoutExercise workoutExercise) onWorkoutExerciseRemoved;
 
   const WorkoutExerciseCardWidget({
     super.key,
@@ -16,7 +18,12 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
     required this.checkable,
     required this.setsNumberSelector,
     required this.readonly,
+    required this.onWorkoutExerciseRemoved
   });
+
+  _removeWorkoutExercise() {
+    onWorkoutExerciseRemoved(workoutExercise);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,7 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
                         child: Text(
-                          workoutExercise.exercise().name().value(),
+                          "${workoutExercise.exercise().name().value()} (index:${workoutExercise.index()})}",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -59,15 +66,16 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.close),
                       color: AppColorScheme.primary,
-                      onPressed: () async {},
+                      onPressed: _removeWorkoutExercise,
                     ),
                   ],
                 ),
               ],
             ),
             SetsTableWidget(
+              key: ValueKey(workoutExercise.id().value()),
               exercise: workoutExercise.exercise(),
-              sets: workoutExercise.goals()!.count() > 0
+              sets: workoutExercise.goals() != null && workoutExercise.goals()!.count() > 0
                   ? workoutExercise.goals()!.value().first.sets()
                   : workoutExercise.sets(),
               checkable: checkable,

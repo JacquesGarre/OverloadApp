@@ -4,17 +4,21 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goals.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/sets.dart';
-import 'package:overload/domain/workout/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
 import 'package:overload/infrastructure/widgets/workout/goals_timeline_widget.dart';
 
 class AddGoalsPage extends StatefulWidget {
+
+  final WorkoutExerciseIndex index;
   final Exercise exercise;
   final Sets sets;
   final Notes? notes;
 
   const AddGoalsPage({
     super.key,
+    required this.index,
     required this.exercise,
     required this.sets,
     this.notes,
@@ -36,12 +40,12 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
     Goals? goals = goalsKey.currentState?.goals;
     setState(() {
       workoutExercise = WorkoutExercise(
+        index: widget.index,
         exercise: widget.exercise,
         sets: widget.sets,
         notes: widget.notes,
         goals: goals,
       );
-      Logger().e(workoutExercise);
     });
     Navigator.pop(context, workoutExercise);
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/workout/workout.dart';
-import 'package:overload/domain/workout/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/pages/workout/add_workout_exercise_page.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
@@ -56,10 +58,13 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   }
 
   void _navigateToAddExercisePage() async {
+    WorkoutExerciseIndex index = workoutExercises.last() != null
+        ? workoutExercises.last()!.index().next()
+        : WorkoutExerciseIndex(value: 1);
     WorkoutExercise? newExercise = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const AddWorkoutExercisePage(),
+        builder: (context) => AddWorkoutExercisePage(index: index),
       ),
     );
     if (newExercise != null) {
@@ -67,6 +72,12 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
         workoutExercises = workoutExercises.add(newExercise);
       });
     }
+  }
+
+  void _removeWorkoutExercise(WorkoutExercise workoutExercise) {
+    setState(() {
+      workoutExercises = workoutExercises.remove(workoutExercise);
+    });
   }
 
   @override
@@ -112,12 +123,14 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
               return Column(
                 children: [
                   WorkoutExerciseCardWidget(
+                    key: ValueKey(workoutExercise.id().value()),
                     workoutExercise: workoutExercise,
                     checkable: false,
                     setsNumberSelector: false,
                     readonly: true,
+                    onWorkoutExerciseRemoved: _removeWorkoutExercise,
                   ),
-                  const SizedBox(height: 16), 
+                  const SizedBox(height: 16),
                 ],
               );
             }),

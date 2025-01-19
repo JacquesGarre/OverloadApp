@@ -1,5 +1,5 @@
 import 'package:faker/faker.dart';
-import 'package:overload/domain/workout/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercises.dart';
 
 import 'workout_exercise_stub.dart';

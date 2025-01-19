@@ -3,7 +3,8 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
-import 'package:overload/domain/workout/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 import 'package:overload/infrastructure/pages/workout/add_goals_page.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_dropdown_widget.dart';
@@ -11,10 +12,13 @@ import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/workout/set/set.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
+
+  final WorkoutExerciseIndex index;
   final WorkoutExercise? workoutExercise;
 
   const WorkoutExerciseFormWidget({
     super.key,
+    required this.index,
     this.workoutExercise,
   });
 
@@ -78,6 +82,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
       context,
       MaterialPageRoute(
         builder: (context) => AddGoalsPage(
+          index: widget.index,
           exercise: exercise,
           sets: sets,
           notes: notes,
