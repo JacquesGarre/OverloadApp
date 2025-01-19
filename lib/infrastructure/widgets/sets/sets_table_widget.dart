@@ -63,13 +63,6 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
       }
       stateManager!.removeRows(stateManager!.rows);
       stateManager!.appendRows(rowsToAdd);
-      // for (var row in stateManager!.rows) {
-      //   for (var cell in row.cells.values) {
-      //     if (cell.value == 0) {
-      //       cell.value = '';
-      //     }
-      //   }
-      // }
       stateManager!.notifyListeners();
     }
   }
