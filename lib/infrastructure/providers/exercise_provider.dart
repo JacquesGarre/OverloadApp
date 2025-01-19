@@ -33,7 +33,7 @@ class ExerciseProvider with ChangeNotifier {
 
   Future<List<Exercise>> searchByName(String query) async {
     return exercises.where((Exercise exercise) {
-      return exercise.name.value.toLowerCase().contains(query.toLowerCase());
+      return exercise.name().value().toLowerCase().contains(query.toLowerCase());
     }).toList();
   }
 

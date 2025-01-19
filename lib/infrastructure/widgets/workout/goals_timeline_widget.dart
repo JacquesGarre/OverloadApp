@@ -23,7 +23,8 @@ class GoalsTimelineWidget extends StatefulWidget {
 }
 
 class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
-  late Goals goals;
+
+  Goals goals = Goals.empty();
   late Sets sets;
 
   @override
@@ -31,9 +32,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     super.initState();
     setState(() {
       sets = widget.sets;
-      goals = Goals([
-        Goal.fromSets(sets),
-      ]);
+      goals = goals.add(Goal.fromSets(sets));
       Logger().i("WIDGETS SETS initState : ${sets.count()}");
     });
   }
@@ -82,7 +81,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
           contentsBuilder: (_, index) {
             if (index < goals.count()) {
               // Render existing goals
-              Goal goal = goals.value[index];
+              Goal goal = goals.value()[index];
               bool goalIsAchieved = false; // TODO: Goal is achieved = false
               if (goalIsAchieved) return null;
               return Padding(
@@ -128,7 +127,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                         ),
                         SetsTableWidget(
                           exercise: widget.exercise,
-                          sets: goal.sets,
+                          sets: goal.sets(),
                           checkable: false,
                         ),
                       ],

@@ -1,24 +1,33 @@
 import 'package:overload/domain/workout/goal.dart';
 
 class Goals {
-  final List<Goal> value;
+  final List<Goal> _value;
 
-  Goals(this.value);
+  Goals({
+    required value,
+  }) : _value = List.unmodifiable(value);
+
+  List<Goal> value() {
+    return _value;
+  }
 
   int count() {
-    return value.length;
+    return _value.length;
+  }
+
+  static Goals empty() {
+    return Goals(value: []);
   }
 
   Goals add(Goal goal) {
-    List<Goal> newValue = value;
+    List<Goal> newValue = List.from(_value);
     newValue.add(goal);
-    return Goals(newValue);
+    return Goals(value: newValue);
   }
 
   Goals removeAt(int index) {
-    List<Goal> newValue = value;
+    List<Goal> newValue = List.from(_value);
     newValue.removeAt(index);
-    return Goals(newValue);
+    return Goals(value: newValue);
   }
-
 }

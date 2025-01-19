@@ -22,16 +22,16 @@ class WorkoutCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    workout.name.value,
+                    workout.name().value(),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (workout.notes != null)
+                  if (workout.notes() != null)
                     const SizedBox(height: 5.0),
                     Text(
-                      workout.notes!.value,
+                      workout.notes()!.value(),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,

@@ -2,19 +2,23 @@ import 'package:overload/domain/exercise/exception/duplicate_exercise_unit_excep
 import 'package:overload/domain/exercise/unit.dart';
 
 class Units {
-  final List<Unit> value;
+  final List<Unit> _value;
 
-  Units._({required this.value});
+  Units._({required value}) : _value = List.unmodifiable(value);
 
   static Units fromUnitList(List<Unit> value) {
     assertValid(value);
     return Units._(value: value);
   }
 
+  List<Unit> value() {
+    return _value;
+  }
+
   List<String> toStringList() {
     List<String> strings = [];
-    for (Unit unit in value) {
-      strings.add(unit.name);
+    for (Unit unit in value()) {
+      strings.add(unit.name());
     }
     return strings;
   }

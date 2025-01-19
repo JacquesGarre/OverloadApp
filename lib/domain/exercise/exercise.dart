@@ -7,18 +7,36 @@ import 'package:overload/domain/exercise/units.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 
 class Exercise {
-
-  final DomainEventsCollection domainEvents;
-  final Id id;
-  final Name name;
-  final Units units;
+  final DomainEventsCollection _domainEvents;
+  final Id _id;
+  final Name _name;
+  final Units _units;
 
   Exercise({
-    required this.domainEvents,
-    required this.id,
-    required this.name,
-    required this.units,
-  });
+    required domainEvents,
+    required id,
+    required name,
+    required units,
+  })  : _domainEvents = domainEvents,
+        _id = id,
+        _name = name,
+        _units = units;
+
+  DomainEventsCollection domainEvents() {
+    return _domainEvents;
+  }
+
+  Id id() {
+    return _id;
+  }
+
+  Name name() {
+    return _name;
+  }
+
+  Units units() {
+    return _units;
+  }
 
   static Exercise create(Name name, Units units) {
     Exercise exercise = Exercise(
@@ -27,7 +45,7 @@ class Exercise {
       name: name,
       units: units,
     );
-    exercise.domainEvents.publish(ExerciseCreatedDomainEvent.fromExercise(exercise));
+    exercise.domainEvents().publish(ExerciseCreatedDomainEvent.fromExercise(exercise));
     return exercise;
   }
 
@@ -38,16 +56,16 @@ class Exercise {
       name: newName,
       units: newUnits,
     );
-    exercise.domainEvents.publish(ExerciseUpdatedDomainEvent.fromExercise(exercise));
+    exercise.domainEvents().publish(ExerciseUpdatedDomainEvent.fromExercise(exercise));
     return exercise;
   }
 
   delete() {
-    domainEvents.publish(ExerciseDeletedDomainEvent.fromExercise(this));
+    domainEvents().publish(ExerciseDeletedDomainEvent.fromExercise(this));
   }
 
   @override
   String toString() {
-    return name.value;
+    return name().value();
   }
 }

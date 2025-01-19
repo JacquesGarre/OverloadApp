@@ -17,15 +17,15 @@ class AddExerciseCommandHandler {
     Name name = Name.fromString(command.name);
     Units units = Units.fromStringList(command.units);
     Exercise exercise = Exercise.create(name, units);
-    Exercise? existingExercise = await repository.ofId(exercise.id);
+    Exercise? existingExercise = await repository.ofId(exercise.id());
     if (existingExercise != null) {
       throw ExerciseAlreadyExistsException();
     }
-    existingExercise = await repository.ofName(exercise.name);
+    existingExercise = await repository.ofName(exercise.name());
     if (existingExercise != null) {
       throw ExerciseAlreadyExistsException();
     }
     await repository.add(exercise);
-    domainEventBus.publish(exercise.domainEvents);
+    domainEventBus.publish(exercise.domainEvents());
   }
 }

@@ -23,18 +23,18 @@ void main() {
       final exercise = Exercise.create(name, units);
 
       // Verify properties
-      expect(exercise.name.value, name.value);
-      expect(exercise.units.value, containsAll(units.value));
+      expect(exercise.name().value(), name.value());
+      expect(exercise.units().value(), containsAll(units.value()));
       expect(exercise.id, isNotNull);
 
       // Verify domain event
-      final events = exercise.domainEvents.all();
+      final events = exercise.domainEvents().all();
       expect(events.length, 1);
       expect(events.first, isA<ExerciseCreatedDomainEvent>());
 
       final event = events.first as ExerciseCreatedDomainEvent;
-      expect(event.aggregateId(), exercise.id.value);
-      expect(event.exercise.name.value, exercise.name.value);
+      expect(event.aggregateId(), exercise.id().value());
+      expect(event.exercise.name().value(), exercise.name().value());
     });
 
     test('update creates a new Exercise with updated properties and publishes an event', () {
@@ -45,18 +45,18 @@ void main() {
       final updatedExercise = exercise.update(newName, newUnits);
 
       // Verify new Exercise properties
-      expect(updatedExercise.name.value, newName.value);
-      expect(updatedExercise.units.value, containsAll(newUnits.value));
+      expect(updatedExercise.name().value(), newName.value());
+      expect(updatedExercise.units().value(), containsAll(newUnits.value()));
       expect(updatedExercise.id, exercise.id); // ID should remain the same
 
       // Verify domain event
-      final events = updatedExercise.domainEvents.all();
+      final events = updatedExercise.domainEvents().all();
       expect(events.length, 2); // Should include created + updated events
       expect(events.last, isA<ExerciseUpdatedDomainEvent>());
 
       final event = events.last as ExerciseUpdatedDomainEvent;
-      expect(event.aggregateId(), exercise.id.value);
-      expect(event.exercise.name.value, newName.value);
+      expect(event.aggregateId(), exercise.id().value());
+      expect(event.exercise.name().value, newName.value());
     });
 
     test('delete publishes an ExerciseDeletedDomainEvent', () {
@@ -65,12 +65,12 @@ void main() {
       exercise.delete();
 
       // Verify domain event
-      final events = exercise.domainEvents.all();
+      final events = exercise.domainEvents().all();
       expect(events.length, 2); // Should include created + deleted events
       expect(events.last, isA<ExerciseDeletedDomainEvent>());
 
       final event = events.last as ExerciseDeletedDomainEvent;
-      expect(event.aggregateId(), exercise.id.value);
+      expect(event.aggregateId(), exercise.id().value());
     });
   });
 }

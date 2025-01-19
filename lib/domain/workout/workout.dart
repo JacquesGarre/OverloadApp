@@ -5,20 +5,36 @@ import 'package:overload/domain/workout/workout_exercises.dart';
 
 class Workout {
 
-  final Id id;
-  final Name name;
-  final WorkoutExercises exercises;
-  final Notes? notes;
+  final Id _id;
+  final Name _name;
+  final WorkoutExercises _exercises;
+  final Notes? _notes;
 
   Workout({
-    required this.id,
-    required this.name,
-    required this.exercises,
-    this.notes
-  });
+    required id,
+    required name,
+    required exercises,
+    notes
+  }) : _id = id, _name = name, _exercises = exercises, _notes = notes;
+
+  Id id() {
+    return _id;
+  }
+
+  Name name() {
+    return _name;
+  }
+
+  WorkoutExercises exercises() {
+    return _exercises;
+  }
+
+  Notes? notes() {
+    return _notes;
+  }
 
   int exercisesCount() {
-    return exercises.value.length;
+    return _exercises.count();
   }
   
 }

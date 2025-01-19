@@ -54,7 +54,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
 
   void updateSet(int rowIdx, int columnIdx, num value) {
     SetIndex setIndex = SetIndex(value: rowIdx + 1);
-    Unit unit = widget.exercise.units.value[columnIdx - 1];
+    Unit unit = widget.exercise.units().value()[columnIdx - 1];
     Metric metric = Metric(value: value, unit: unit);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -93,7 +93,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void generateColumns() {
     columns.clear();
     columns.add(SetsTableColumns.setIndexColumn());
-    for (Unit unit in widget.exercise.units.value) {
+    for (Unit unit in widget.exercise.units().value()) {
       columns.add(SetsTableColumns.unitColumn(unit));
     }
     if (widget.checkable) {
@@ -104,7 +104,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void generateRows() {
     if (stateManager != null) {
       List<PlutoRow> rowsToAdd = [];
-      for (Set set in sets!.value) {
+      for (Set set in sets!.value()) {
         rowsToAdd.add(generateRowFromSet(set));
       }
       stateManager!.removeRows(stateManager!.rows);
@@ -115,12 +115,12 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
 
   PlutoRow generateRowFromSet(Set set) {
     Map<String, PlutoCell> cells = {
-      SetsTableColumns.setIndexColumnField: PlutoCell(value: set.index.value),
+      SetsTableColumns.setIndexColumnField: PlutoCell(value: set.index().value()),
       SetsTableColumns.checkboxColumnField: PlutoCell(value: ''),
     };
-    for (Unit unit in widget.exercise.units.value) {
-      Metric? metric = set.metrics.findByUnit(unit);
-      cells[unit.name] = PlutoCell(value: metric?.value);
+    for (Unit unit in widget.exercise.units().value()) {
+      Metric? metric = set.metrics().findByUnit(unit);
+      cells[unit.name()] = PlutoCell(value: metric?.value);
     }
     return PlutoRow(cells: cells);
   }

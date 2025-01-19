@@ -20,6 +20,6 @@ class DeleteExerciseCommandHandler {
     }
     exercise.delete(); 
     await repository.delete(exercise);
-    domainEventBus.publish(exercise.domainEvents);
+    domainEventBus.publish(exercise.domainEvents());
   }
 }

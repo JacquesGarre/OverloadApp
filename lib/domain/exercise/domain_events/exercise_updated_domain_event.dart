@@ -37,7 +37,7 @@ class ExerciseUpdatedDomainEvent implements DomainEventInterface {
     String uuid = const Uuid().v4();
     UuidValue eventId = UuidValue.fromString(uuid);
     DateTime occuredAt = DateTime.now();
-    return ExerciseUpdatedDomainEvent._(exercise.id.value, eventId, occuredAt, exercise);
+    return ExerciseUpdatedDomainEvent._(exercise.id().value(), eventId, occuredAt, exercise);
   }
 
   Map<String, dynamic> toJson() {
@@ -48,8 +48,8 @@ class ExerciseUpdatedDomainEvent implements DomainEventInterface {
       'occuredAt': _occuredAt.toString(),
       'exercise': {
         'id': exercise.id.toString(),
-        'name': exercise.name.value,
-        'units': exercise.units.toStringList()
+        'name': exercise.name().value(),
+        'units': exercise.units().toStringList()
       }
     };
   }

@@ -2,9 +2,9 @@ import 'package:overload/domain/exercise/exception/invalid_exercise_unit_excepti
 import 'package:overload/domain/exercise/unit_type.dart';
 
 class Unit {
-  final String name;
-  final bool canBeNegative;
-  final UnitType type;
+  final String _name;
+  final bool _canBeNegative;
+  final UnitType _type;
 
   static const Unit kgs = Unit._(
     name: 'Kgs',
@@ -28,10 +28,24 @@ class Unit {
   );
 
   const Unit._({
-    required this.name,
-    required this.canBeNegative,
-    required this.type,
-  });
+    required name,
+    required canBeNegative,
+    required type,
+  })  : _name = name,
+        _canBeNegative = canBeNegative,
+        _type = type;
+
+  String name() {
+    return _name;
+  }
+
+  bool canBeNegative() {
+    return _canBeNegative;
+  }
+
+  UnitType type() {
+    return _type;
+  }
 
   static List<Unit> all() {
     return [
@@ -44,7 +58,7 @@ class Unit {
 
   static Unit fromString(String name) {
     for (Unit availableUnit in all()) {
-      if (availableUnit.name == name) {
+      if (availableUnit.name() == name) {
         return availableUnit;
       }
     }
@@ -52,7 +66,7 @@ class Unit {
   }
 
   bool equals(Unit unit) {
-    return name == unit.name;
+    return name() == unit.name();
   }
 
   @override
@@ -69,6 +83,6 @@ class Unit {
 
   @override
   String toString() {
-    return name;
+    return name();
   }
 }

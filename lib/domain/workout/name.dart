@@ -1,9 +1,13 @@
 import 'package:overload/domain/workout/exception/invalid_workout_name_exception.dart';
 
 class Name {
-  final String value;
+  final String _value;
 
-  Name._({required this.value});
+  Name._({required value}) : _value = value;
+
+  String value() {
+    return _value;
+  }
 
   static Name fromString(String value) {
     String trimmedValue = value.trim();
@@ -12,7 +16,7 @@ class Name {
   }
 
   bool equals(Name name) {
-    return value == name.value;
+    return value() == name.value();
   }
 
   static void assertValid(String value) {

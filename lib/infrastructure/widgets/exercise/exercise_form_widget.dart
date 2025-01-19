@@ -28,9 +28,9 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
   void initState() {
     super.initState();
     _nameController.text =
-        widget.exercise != null ? widget.exercise!.name.value : '';
+        widget.exercise != null ? widget.exercise!.name().value() : '';
     _selectedUnits =
-        widget.exercise != null ? widget.exercise!.units.toStringList() : [];
+        widget.exercise != null ? widget.exercise!.units().toStringList() : [];
   }
 
   @override

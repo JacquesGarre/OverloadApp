@@ -2,15 +2,19 @@ import 'package:overload/domain/exercise/exception/invalid_exercise_id_exception
 import 'package:uuid/uuid.dart';
 
 class Id {
-  final UuidValue value;
+  final UuidValue _value;
 
-  Id._(this.value);
+  Id._({required value}) : _value = value;
 
   static Id create() {
     String uuid = const Uuid().v4();
     assertValid(uuid);
     UuidValue value = UuidValue.fromString(uuid);
-    return Id._(value);
+    return Id._(value: value);
+  }
+
+  UuidValue value() {
+    return _value;
   }
 
   bool equals(Id id) {
@@ -20,7 +24,7 @@ class Id {
   static Id fromString(String value) {
     assertValid(value);
     UuidValue uuid = UuidValue.fromString(value);
-    return Id._(uuid);
+    return Id._(value: uuid);
   }
 
   static assertValid(String value) {
@@ -32,6 +36,6 @@ class Id {
 
   @override
   String toString() {
-    return value.uuid.toString();
+    return _value.uuid.toString();
   }
 }

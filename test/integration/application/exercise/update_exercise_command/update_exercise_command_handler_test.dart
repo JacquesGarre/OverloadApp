@@ -48,7 +48,7 @@ void main() {
     // Update the exercise
     final command = UpdateExerciseCommand(
       id: exercise.id.toString(),
-      name: NameStub.random().value,
+      name: NameStub.random().value(),
       units: UnitsStub.random().toStringList(),
     );
     await handler.invoke(command);
@@ -56,8 +56,8 @@ void main() {
     // Verify the exercise is updated
     final exercises = await repository.findAll();
     expect(exercises.length, 1);
-    expect(exercises.first.name.value, command.name);
-    expect(exercises.first.units.toStringList(), command.units);
+    expect(exercises.first.name().value(), command.name);
+    expect(exercises.first.units().toStringList(), command.units);
   });
 
   test('throws ExerciseNotFoundException for non-existent exercise', () async {
@@ -84,7 +84,7 @@ void main() {
     // Attempt to update the second exercise to the same name as the first
     final command = UpdateExerciseCommand(
       id: exerciseToUpdate.id.toString(),
-      name: exercise.name.value,
+      name: exercise.name().value(),
       units: UnitsStub.random().toStringList(),
     );
 
@@ -96,7 +96,7 @@ void main() {
     // Verify no changes occurred
     final exercises = await repository.findAll();
     expect(exercises.length, 2);
-    expect(exercises.any((e) => e.name.value == exercise.name.value), isTrue);
-    expect(exercises.any((e) => e.name.value == exerciseToUpdate.name.value), isTrue);
+    expect(exercises.any((e) => e.name().value() == exercise.name().value()), isTrue);
+    expect(exercises.any((e) => e.name().value() == exerciseToUpdate.name().value()), isTrue);
   });
 }

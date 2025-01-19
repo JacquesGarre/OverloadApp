@@ -1,30 +1,30 @@
-import 'dart:ffi';
-
-import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/workout/exception/set_not_found_exception.dart';
 import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/metrics.dart';
 import 'package:overload/domain/workout/set/set.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 
 class Sets {
-  final List<Set> value;
+  final List<Set> _value;
 
   Sets({
-    required this.value,
-  });
+    required value,
+  }) : _value = List.unmodifiable(value);
+
+  List<Set> value() {
+    return _value;
+  }
 
   Sets add(Set set) {
-    List<Set> newValue = value;
+    List<Set> newValue = List.from(_value);
     newValue.add(set);
     return Sets(value: newValue);
   }
 
   Sets addSetFromExercise(Exercise exercise) {
-    List<Set> newValue = value;
+    List<Set> newValue = List.from(_value);
     Set? set = lastSet();
-    SetIndex index = SetIndex.nextFromSetIndex(set?.index);
+    SetIndex index = SetIndex.nextFromSetIndex(set?.index());
     Metrics metrics = Metrics.fromExercise(exercise);
     Set newSet = Set(index: index, metrics: metrics);
     newValue.add(newSet);
@@ -32,7 +32,7 @@ class Sets {
   }
 
   Sets removeLastSet() {
-    List<Set> newValue = value;
+    List<Set> newValue = List.from(_value);
     if (newValue.isEmpty) {
       return Sets(value: []);
     }
@@ -41,19 +41,19 @@ class Sets {
   }
 
   Sets updateSet(SetIndex index, Metric metric) {
-    List<Set> newValue = value;
+    List<Set> newValue = List.from(_value);
     for (int i = 0; i < newValue.length; i++) {
-      if (newValue[i].index.equals(index)) {
+      if (newValue[i].index().equals(index)) {
         newValue[i] = newValue[i].updateMetric(metric);
         break;
       }
     }
-    return Sets(value: newValue);
+    return Sets(value: List.unmodifiable(newValue));
   }
 
   bool has(SetIndex index) {
-    for(Set set in value) {
-      if (set.index.equals(index)) {
+    for(Set set in _value) {
+      if (set.index().equals(index)) {
         return true;
       }
     }
@@ -61,8 +61,8 @@ class Sets {
   }
 
   Set? findByIndex(SetIndex index) {
-    for(Set set in value) {
-      if (set.index.equals(index)) {
+    for(Set set in _value) {
+      if (set.index().equals(index)) {
         return set;
       }
     }
@@ -70,14 +70,14 @@ class Sets {
   }
 
   Set? lastSet() {
-    if (value.isEmpty) {
+    if (_value.isEmpty) {
       return null;
     }
-    return value.last;
+    return _value.last;
   }
 
   int count() {
-    return value.length;
+    return _value.length;
   }
 
   static Sets empty() {
@@ -87,7 +87,7 @@ class Sets {
   @override
   String toString() {
     String string = "SETS";
-    for(Set set in value) {
+    for(Set set in _value) {
       string = "$string | ${set.toString()}";
     }
     return string;

@@ -1,7 +1,10 @@
 class Notes {
 
-  final String value;
+  final String _value;
 
-  Notes({required this.value});
+  Notes({required value}) : _value = value;
 
+  String value() {
+    return _value;
+  }
 }

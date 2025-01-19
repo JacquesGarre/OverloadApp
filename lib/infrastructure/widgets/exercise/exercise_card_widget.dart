@@ -26,7 +26,7 @@ class ExerciseCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    exercise.name.value,
+                    exercise.name().value(),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -36,14 +36,14 @@ class ExerciseCardWidget extends StatelessWidget {
                   Wrap(
                     spacing: 5.0,
                     runSpacing: 0.0,
-                    children: exercise.units.value.map((unit) {
+                    children: exercise.units().value().map((unit) {
                       return Chip(
                         labelPadding: const EdgeInsets.symmetric(
                           horizontal: 6.0,
                           vertical: 0.0,
                         ),
                         label: Text(
-                          unit.name,
+                          unit.name(),
                           style: TextStyle(
                             color: AppColorScheme.onSecondary,
                             fontSize: 12,

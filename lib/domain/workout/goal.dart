@@ -1,14 +1,18 @@
 import 'package:overload/domain/workout/sets.dart';
 
 class Goal {
-  final Sets sets;
+  final Sets _sets;
 
   Goal({
-    required this.sets,
-  });
+    required sets,
+  }) : _sets = sets;
+
+  Sets sets() {
+    return _sets;
+  }
 
   static Goal fromSets(Sets sets) {
-    Sets newSets = Sets(value: List.from(sets.value));
+    Sets newSets = Sets(value: List.unmodifiable(sets.value()));
     return Goal(
       sets: newSets,
     );
@@ -16,7 +20,7 @@ class Goal {
 
   @override
   String toString() {
-    return "Goal | ${sets.toString()}";
+    return "Goal | ${_sets.toString()}";
   }
 
 }

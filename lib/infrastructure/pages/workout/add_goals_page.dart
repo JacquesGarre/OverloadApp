@@ -3,9 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
-import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/sets.dart';
-import 'package:overload/domain/workout/set/set.dart';
 import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
 import 'package:overload/infrastructure/widgets/workout/goals_timeline_widget.dart';
 
@@ -29,7 +27,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
   _handleAddExercise() {
     Goals? goals = goalsKey.currentState?.goals;
     if(goals != null) {
-      for(Goal goal in goals.value) {
+      for(Goal goal in goals.value()) {
         Logger().i(goal.toString());
       }
     }

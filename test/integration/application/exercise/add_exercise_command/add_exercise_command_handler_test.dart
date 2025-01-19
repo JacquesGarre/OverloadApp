@@ -45,8 +45,8 @@ void main() {
     // Verify the exercise is stored in the database
     final exercises = await repository.findAll();
     expect(exercises.length, 1);
-    expect(exercises.first.name.value, 'Test Exercise');
-    expect(exercises.first.units.toStringList(), ['Kgs', 'Reps']);
+    expect(exercises.first.name().value(), 'Test Exercise');
+    expect(exercises.first.units().toStringList(), ['Kgs', 'Reps']);
   });
 
   test('throws ExerciseAlreadyExistsException for duplicate exercise name',

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
@@ -36,7 +35,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
   void initState() {
     super.initState();
     sets = widget.workoutExercise != null
-        ? widget.workoutExercise!.sets
+        ? widget.workoutExercise!.sets()
         : Sets.empty();
     numberOfSets = widget.workoutExercise != null ? sets.count() : 1;
   }

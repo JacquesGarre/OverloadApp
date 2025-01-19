@@ -41,7 +41,7 @@ class SetsTableColumns {
   }
 
   static PlutoColumn unitColumn(Unit unit) {
-    switch (unit.type) {
+    switch (unit.type()) {
       case UnitType.integer:
       case UnitType.double:
         return SetsTableColumns.numberColumn(unit);
@@ -93,12 +93,12 @@ class SetsTableColumns {
       enableSorting: false,
       enableContextMenu: false,
       enableDropToResize: false,
-      title: unit.name,
-      field: unit.name,
+      title: unit.name(),
+      field: unit.name(),
       type: PlutoColumnType.number(
         defaultValue: null,
-        negative: unit.canBeNegative,
-        format: unit.type.format,
+        negative: unit.canBeNegative(),
+        format: unit.type().format(),
         applyFormatOnInit: true,
       ),
       applyFormatterInEditing: true,

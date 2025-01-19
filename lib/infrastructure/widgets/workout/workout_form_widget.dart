@@ -26,10 +26,10 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   void initState() {
     super.initState();
     _nameController.text =
-        widget.workout != null ? widget.workout!.name.value : '';
+        widget.workout != null ? widget.workout!.name().value() : '';
     _notesController.text =
-        widget.workout != null && widget.workout!.notes != null
-            ? widget.workout!.notes!.value
+        widget.workout != null && widget.workout!.notes() != null
+            ? widget.workout!.notes()!.value()
             : '';
   }
 

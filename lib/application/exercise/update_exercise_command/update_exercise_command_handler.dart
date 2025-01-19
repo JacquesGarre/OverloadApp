@@ -23,7 +23,7 @@ class UpdateExerciseCommandHandler {
     }
     Name newName = Name.fromString(command.name);
     Units units = Units.fromStringList(command.units);
-    if (!newName.equals(exercise.name)) {
+    if (!newName.equals(exercise.name())) {
       Exercise? existingExercise = await repository.ofName(newName);
       if (existingExercise != null) {
         throw ExerciseAlreadyExistsException();
@@ -34,6 +34,6 @@ class UpdateExerciseCommandHandler {
       units,
     ); 
     await repository.update(updatedExercise);
-    domainEventBus.publish(updatedExercise.domainEvents);
+    domainEventBus.publish(updatedExercise.domainEvents());
   }
 }

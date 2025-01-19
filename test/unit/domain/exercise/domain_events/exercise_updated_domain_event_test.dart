@@ -19,10 +19,10 @@ void main() {
 
     test('fromExercise creates a valid ExerciseUpdatedDomainEvent', () {
       final event = ExerciseUpdatedDomainEvent.fromExercise(exercise);
-      expect(event.aggregateId(), exercise.id.value);
+      expect(event.aggregateId(), exercise.id().value());
       expect(event.eventName(), 'ExerciseUpdatedDomainEvent');
-      expect(event.exercise.name.value, exercise.name.value);
-      expect(event.exercise.units.value, exercise.units.value);
+      expect(event.exercise.name().value(), exercise.name().value());
+      expect(event.exercise.units().value(), exercise.units().value());
       expect(event.occuredAt().isBefore(DateTime.now()), isTrue);
       expect(event.eventId(), isA<UuidValue>());
     });
@@ -31,11 +31,11 @@ void main() {
       final event = ExerciseUpdatedDomainEvent.fromExercise(exercise);
       final json = event.toJson();
       expect(json['eventName'], 'ExerciseUpdatedDomainEvent');
-      expect(json['aggregateId'], exercise.id.toString());
+      expect(json['aggregateId'], exercise.id().toString());
       expect(json['eventId'], isNotNull);
       expect(json['occuredAt'], isNotNull);
-      expect(json['exercise']['id'], exercise.id.toString());
-      expect(json['exercise']['name'], exercise.name.value);
+      expect(json['exercise']['id'], exercise.id().toString());
+      expect(json['exercise']['name'], exercise.name().value);
       expect(json['exercise']['units'], ['Kgs', 'Reps']);
     });
 

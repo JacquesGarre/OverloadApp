@@ -5,19 +5,36 @@ import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/sets.dart';
 
 class WorkoutExercise {
-  
-  final Exercise exercise;
-  final Sets sets;
-  final Notes? notes;
-  final Goal? currentGoal;
-  final Goals? goals;
-  
-  WorkoutExercise({
-    required this.exercise,
-    required this.sets,
-    this.notes,
-    this.currentGoal,
-    this.goals
-  });
+  final Exercise _exercise;
+  final Sets _sets;
+  final Notes? _notes;
+  final Goal? _currentGoal;
+  final Goals? _goals;
 
+  WorkoutExercise({required exercise, required sets, notes, currentGoal, goals})
+      : _exercise = exercise,
+        _sets = sets,
+        _notes = notes,
+        _currentGoal = currentGoal,
+        _goals = goals;
+
+  Exercise exercise() {
+    return _exercise;
+  }
+
+  Sets sets() {
+    return _sets;
+  }
+
+  Notes? notes() {
+    return _notes;
+  }
+
+  Goal? currentGoal() {
+    return _currentGoal;
+  }
+
+  Goals? goals() {
+    return _goals;
+  }
 }
