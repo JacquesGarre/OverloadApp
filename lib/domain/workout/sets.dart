@@ -1,4 +1,9 @@
+import 'dart:ffi';
+
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/domain/workout/exception/set_not_found_exception.dart';
+import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/metrics.dart';
 import 'package:overload/domain/workout/set/set.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
@@ -35,6 +40,17 @@ class Sets {
     return Sets(value: newValue);
   }
 
+  Sets updateSet(SetIndex index, Metric metric) {
+    List<Set> newValue = value;
+    for (int i = 0; i < newValue.length; i++) {
+      if (newValue[i].index.equals(index)) {
+        newValue[i] = newValue[i].updateMetric(metric);
+        break;
+      }
+    }
+    return Sets(value: newValue);
+  }
+
   bool has(SetIndex index) {
     for(Set set in value) {
       if (set.index.equals(index)) {
@@ -66,5 +82,14 @@ class Sets {
 
   static Sets empty() {
     return Sets(value: []);
+  }
+
+  @override
+  String toString() {
+    String string = "SETS";
+    for(Set set in value) {
+      string = "$string | ${set.toString()}";
+    }
+    return string;
   }
 }

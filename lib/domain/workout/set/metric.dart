@@ -12,4 +12,9 @@ class Metric {
   static Metric fromUnit(Unit unit) {
     return Metric(value: 0, unit: unit);
   }
+
+  @override
+  String toString() {
+    return "$value ${unit.name}";
+  }
 }

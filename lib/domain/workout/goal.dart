@@ -17,14 +17,7 @@ class Goal {
 
   @override
   String toString() {
-    String string = "Goal ";
-    for(Set set in sets.value) {
-      string = '$string | Set ${set.index.value} : ';
-      for(Metric metric in set.metrics.value) {
-        string = '$string${metric.value} ${metric.unit.name} ';
-      }
-    }
-    return string;
+    return "Goal | ${sets.toString()}";
   }
 
 }

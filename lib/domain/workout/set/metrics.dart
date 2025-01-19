@@ -25,4 +25,25 @@ class Metrics {
     }
     return null;
   }
+
+  Metrics updateMetric(Metric metric) {
+    List<Metric> newValue = value;
+    for (int i = 0; i < newValue.length; i++) {
+      if (newValue[i].unit.equals(metric.unit)) {
+        newValue[i] = metric;
+        break;
+      }
+    }
+    return Metrics(value: newValue);
+  }
+
+  @override 
+  String toString() {
+    String string = "";
+    for(Metric metric in value) {
+      string = "${metric.toString()} | ";
+    }
+    return string;
+  }
+
 }

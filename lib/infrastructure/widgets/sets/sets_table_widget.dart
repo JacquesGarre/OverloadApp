@@ -4,6 +4,7 @@ import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/workout/set/metric.dart';
+import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/sets/sets_table_columns.dart';
@@ -50,6 +51,18 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
       generateRows();
       setState(() {});
     }
+  }
+
+  void updateSet(int rowIdx, int columnIdx, num value) {
+    SetIndex setIndex = SetIndex(value: rowIdx+1);
+    Unit unit = widget.exercise.units.value[columnIdx-1];
+    Metric metric = Metric(value: value, unit: unit);
+    setState(() {
+      sets = sets!.updateSet(setIndex, metric);
+      Logger().i(sets);
+      Logger().i(sets!.count());
+    });
+    generateRows();
   }
 
   void generateSets(int number) {
@@ -183,8 +196,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                 Logger().i("onRowChecked");
               },
               onChanged: (PlutoGridOnChangedEvent event) {
-                Logger().i(
-                    "onChanged"); // TODO: <- This should update the Sets object with the according value
+                updateSet(event.rowIdx, event.columnIdx, event.value);
               },
               onLoaded: (PlutoGridOnLoadedEvent event) {
                 event.stateManager.setAutoEditing(true);

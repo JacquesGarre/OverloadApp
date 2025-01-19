@@ -1,0 +1,1 @@
+class SetNotFoundException implements Exception {}
