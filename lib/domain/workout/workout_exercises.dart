@@ -31,16 +31,27 @@ class WorkoutExercises {
     List<WorkoutExercise> filteredList = _value.where((workoutExercise) {
       return !workoutExercise.index().equals(exercise.index());
     }).toList();
-    List<WorkoutExercise> updatedList = [];
+    List<WorkoutExercise> newValue = [];
     for (int i = 0; i < filteredList.length; i++) {
       WorkoutExercise workoutExercise = filteredList[i];
-      updatedList.add(WorkoutExercise(
-        index: WorkoutExerciseIndex(value: i + 1), 
+      newValue.add(WorkoutExercise(
+        index: WorkoutExerciseIndex(value: i + 1),
         exercise: workoutExercise.exercise(),
         sets: workoutExercise.sets(),
       ));
     }
-    return WorkoutExercises(value: updatedList);
+    return WorkoutExercises(value: newValue);
+  }
+
+  WorkoutExercises update(WorkoutExercise exercise) {
+    List<WorkoutExercise> newValue = List.from(_value);
+    for (int i = 0; i < newValue.length; i++) {
+      if (newValue[i].index().equals(exercise.index())) {
+        newValue[i] = exercise;
+        break;
+      }
+    }
+    return WorkoutExercises(value: newValue);
   }
 
   WorkoutExercise? last() {
@@ -48,5 +59,14 @@ class WorkoutExercises {
       return null;
     }
     return _value.last;
+  }
+
+  @override
+  String toString() {
+    String string = "Workout exercises \n";
+    for(WorkoutExercise workoutExercise in _value) {
+      string = "$string $workoutExercise";
+    }
+    return string;
   }
 }

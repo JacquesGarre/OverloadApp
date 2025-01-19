@@ -12,6 +12,7 @@ class WorkoutExerciseCardWidget extends StatefulWidget {
   final bool setsNumberSelector;
   final bool readonly;
   final void Function(WorkoutExercise workoutExercise) onWorkoutExerciseRemoved;
+  final void Function(WorkoutExercise workoutExercise) onWorkoutExerciseUpdated;
 
   const WorkoutExerciseCardWidget({
     super.key,
@@ -20,6 +21,7 @@ class WorkoutExerciseCardWidget extends StatefulWidget {
     required this.setsNumberSelector,
     required this.readonly,
     required this.onWorkoutExerciseRemoved,
+    required this.onWorkoutExerciseUpdated,
   });
 
   @override
@@ -28,7 +30,6 @@ class WorkoutExerciseCardWidget extends StatefulWidget {
 }
 
 class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
-
   late WorkoutExercise workoutExercise;
 
   @override
@@ -38,7 +39,6 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
       workoutExercise = widget.workoutExercise;
     });
   }
-
 
   void _removeWorkoutExercise() {
     widget.onWorkoutExerciseRemoved(widget.workoutExercise);
@@ -56,6 +56,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
     if (updatedWorkoutExercise != null) {
       setState(() {
         workoutExercise = updatedWorkoutExercise;
+        widget.onWorkoutExerciseUpdated(updatedWorkoutExercise);
       });
     }
   }
@@ -76,16 +77,50 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
-                        child: Text(
-                          workoutExercise.exercise().name().value(),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                      Row(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 5.0),
+                            child: Text(
+                              workoutExercise.exercise().name().value(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 5.0),
+                            child: Text(
+                              "(X ${workoutExercise.sets().count()} set${workoutExercise.sets().count() > 1 ? 's' : ''})",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                                color: AppColorScheme.primary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (workoutExercise.notes() != null)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            6.0,
+                            0.0,
+                            0.0,
+                            10.0,
+                          ),
+                          child: Text(
+                            'Notes: ${workoutExercise.notes()!.value()}',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              color: AppColorScheme.primary,
+                            ),
                           ),
                         ),
-                      ),
                       const SizedBox(height: 5.0),
                       if (workoutExercise.goals() != null)
                         Padding(
@@ -96,11 +131,11 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                             0.0,
                           ),
                           child: Text(
-                            '${workoutExercise.goals()!.count()} objective${workoutExercise.goals()!.count() > 1 ? 's' : ''}',
+                            'Next goal:',
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
-                              color: AppColorScheme.primary,
+                              color: AppColorScheme.onLightBackground,
                             ),
                           ),
                         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
@@ -79,6 +80,12 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     });
   }
 
+  void _updateWorkoutExercise(WorkoutExercise workoutExercise) {
+    setState(() {
+      workoutExercises = workoutExercises.update(workoutExercise);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -128,6 +135,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                     setsNumberSelector: false,
                     readonly: true,
                     onWorkoutExerciseRemoved: _removeWorkoutExercise,
+                    onWorkoutExerciseUpdated: _updateWorkoutExercise,
                   ),
                   const SizedBox(height: 16),
                 ],
