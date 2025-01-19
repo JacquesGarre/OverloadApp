@@ -16,8 +16,8 @@ class SetsTableColumns {
       title: setIndexColumnTitle,
       field: setIndexColumnField,
       type: PlutoColumnType.number(),
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
+      textAlign: PlutoColumnTextAlign.start,
+      titleTextAlign: PlutoColumnTextAlign.start,
       enableColumnDrag: false,
       enableSorting: false,
       enableContextMenu: false,
@@ -25,12 +25,15 @@ class SetsTableColumns {
       width: 5.0,
       readOnly: true,
       renderer: (rendererContext) {
-        return Text(
-          rendererContext.cell.value.toString(),
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(1.0, 0.0, 0.0, 0.0),
+          child: Text(
+            rendererContext.cell.value.toString(),
+            textAlign: TextAlign.start,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         );
       },

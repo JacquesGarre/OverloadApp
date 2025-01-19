@@ -81,18 +81,44 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                   shadowColor: Colors.transparent,
                   color: AppColorScheme.lightBackground,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15.0, 15.0, 0.0, 5.0),
+                    padding: const EdgeInsets.fromLTRB(15.0, 5.0, 5.0, 0.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          "Objective ${index + 1}",
-                          style: TextStyle(
-                            color: AppColorScheme.onLightBackground,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment
+                              .spaceBetween, // Align title and button
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                6.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                              ),
+                              child: Text(
+                                "Objective ${index + 1}",
+                                style: TextStyle(
+                                  color: AppColorScheme.onLightBackground,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  goals!.value.removeAt(index);
+                                  goals = Goals([...goals!.value]);
+                                });
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                color: AppColorScheme.primary,
+                              ),
+                            ),
+                          ],
                         ),
                         SetsTableWidget(
                           exercise: widget.exercise,
@@ -153,7 +179,8 @@ class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
               );
             }
           },
-          connectorBuilder: (_, index, ___) { // The line style
+          connectorBuilder: (_, index, ___) {
+            // The line style
             bool goalIsAchieved = false; // TODO: Update based on your logic
             return goalIsAchieved
                 ? const SolidLineConnector(

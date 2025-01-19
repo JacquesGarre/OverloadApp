@@ -15,7 +15,7 @@ class AddGoalsPage extends StatefulWidget {
     required this.sets    
   });
 
-  static const String title = 'Set your objectives'; // TODO: Center title here (And maybe everywhere on "subpages"?)
+  static const String title = 'Set your goals'; // TODO: Center title here (And maybe everywhere on "subpages"?)
 
   @override
   State<AddGoalsPage> createState() => _AddGoalsPageState();
