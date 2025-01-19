@@ -7,7 +7,6 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 
 class ExerciseDropdownWidget extends StatefulWidget {
-  
   final ValueChanged<Exercise?> onChange;
   final Exercise? initialExercise;
 
@@ -52,6 +51,18 @@ class _ExerciseDropdownWidgetState extends State<ExerciseDropdownWidget> {
             ),
           ),
           child: CustomDropdown<Exercise>.searchRequest(
+            disabledDecoration: CustomDropdownDisabledDecoration(
+              suffixIcon: null,
+              fillColor: AppColorScheme.lightBackground,
+              headerStyle: TextStyle(
+                fontSize: 16.0,
+                color: AppColorScheme.onLightBackground,
+              ),
+              hintStyle: TextStyle(
+                color: AppColorScheme.onLightBackground,
+              ),
+            ),
+            enabled: widget.initialExercise == null,
             initialItem: widget.initialExercise,
             decoration: CustomDropdownDecoration(
               closedFillColor: AppColorScheme.lightBackground,

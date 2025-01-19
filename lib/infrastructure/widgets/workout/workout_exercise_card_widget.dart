@@ -28,12 +28,24 @@ class WorkoutExerciseCardWidget extends StatefulWidget {
 }
 
 class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
+
+  late WorkoutExercise workoutExercise;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      workoutExercise = widget.workoutExercise;
+    });
+  }
+
+
   void _removeWorkoutExercise() {
     widget.onWorkoutExerciseRemoved(widget.workoutExercise);
   }
 
   void _navigateToEditExercisePage() async {
-    WorkoutExercise? newExercise = await Navigator.push(
+    WorkoutExercise? updatedWorkoutExercise = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EditWorkoutExercisePage(
@@ -41,11 +53,9 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
         ),
       ),
     );
-    if (newExercise != null) {
+    if (updatedWorkoutExercise != null) {
       setState(() {
-        // If you need to update the workoutExercise locally after editing
-        // Note: Only do this if it's safe to mutate locally
-        Logger().i('Updated workout exercise: $newExercise');
+        workoutExercise = updatedWorkoutExercise;
       });
     }
   }
@@ -69,7 +79,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
                         child: Text(
-                          widget.workoutExercise.exercise().name().value(),
+                          workoutExercise.exercise().name().value(),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -77,7 +87,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                         ),
                       ),
                       const SizedBox(height: 5.0),
-                      if (widget.workoutExercise.goals() != null)
+                      if (workoutExercise.goals() != null)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(
                             6.0,
@@ -86,7 +96,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                             0.0,
                           ),
                           child: Text(
-                            '${widget.workoutExercise.goals()!.count()} objective${widget.workoutExercise.goals()!.count() > 1 ? 's' : ''} left',
+                            '${workoutExercise.goals()!.count()} objective${workoutExercise.goals()!.count() > 1 ? 's' : ''}',
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,

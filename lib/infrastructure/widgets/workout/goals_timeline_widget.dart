@@ -11,11 +11,13 @@ import 'package:timelines_plus/timelines_plus.dart';
 class GoalsTimelineWidget extends StatefulWidget {
   final Exercise exercise;
   final Sets sets;
+  final Goals? existingGoals;
 
   GoalsTimelineWidget({
     super.key,
     required this.exercise,
     required Sets sets,
+    this.existingGoals
   }) : sets = Sets(value: sets.value());
 
   @override
@@ -32,7 +34,11 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     super.initState();
     setState(() {
       sets = widget.sets;
-      goals = goals.add(Goal.fromSets(sets));
+      if (widget.existingGoals != null) {
+        goals = widget.existingGoals!;
+      } else {
+        goals = goals.add(Goal.fromSets(sets));
+      }
     });
   }
 
