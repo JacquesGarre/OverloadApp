@@ -20,7 +20,6 @@ class Goal {
 
   @override
   String toString() {
-    return "Goal | ${_sets.toString()}";
+    return _sets.toString();
   }
-
 }

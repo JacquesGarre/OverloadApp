@@ -7,4 +7,9 @@ class Notes {
   String value() {
     return _value;
   }
+
+  @override 
+  String toString() {
+    return _value;
+  }
 }

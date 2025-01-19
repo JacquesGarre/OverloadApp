@@ -77,15 +77,13 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text("Name"),
+            const SizedBox(height: 5.0),
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColorScheme.lightBackground,
-                labelText: 'Name',
-                labelStyle: const TextStyle(
-                  fontSize: 14.0,
-                ),
                 border: const OutlineInputBorder(),
               ),
               validator: (value) {
@@ -95,12 +93,9 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
                 return null;
               },
             ),
-            const SizedBox(height: 30),
-            const Text(
-              'Select units you want to track',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
+            const Text('Units'),
+            const SizedBox(height: 5),
             Wrap(
               spacing: 8.0,
               runSpacing: 4.0,
@@ -127,7 +122,7 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
                 ),
               ),
             const SizedBox(height: 16),
-            Align(
+            Align( // TODO: Floating action button
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 style: ButtonStyle(

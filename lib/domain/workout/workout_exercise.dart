@@ -35,4 +35,9 @@ class WorkoutExercise {
   Goals? goals() {
     return _goals;
   }
+
+  @override  
+  String toString() {
+    return "[Workout exercice] \n Exercise : $_exercise \n Sets $_sets \n Notes \n $_notes Goals \n $_goals";
+  }
 }

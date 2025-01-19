@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/workout_exercise.dart';
@@ -30,6 +31,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
   final _notesController = TextEditingController();
 
   Exercise? exercise;
+  Notes? notes;
   Sets sets = Sets.empty();
   int numberOfSets = 1;
 
@@ -49,14 +51,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
     super.dispose();
   }
 
-  void _submitForm() {
-    final isFormValid = _formKey.currentState!.validate();
-    if (isFormValid) {
-      widget.onSubmit({});
-    }
-  }
-
-  void onChange(Exercise? exerciseSelected, int numberOfSetsSelected) {
+  void _onChange(Exercise? exerciseSelected, int numberOfSetsSelected) {
     Sets newSets = Sets.empty();
     if (exerciseSelected != null) {
       for (int i = 1; i <= numberOfSetsSelected; i++) {
@@ -70,6 +65,12 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
       exercise = exerciseSelected;
       numberOfSets = numberOfSetsSelected;
       sets = newSets;
+    });
+  }
+
+  void _updateNotes(String value) {
+    setState(() {
+      notes = Notes(value: value);
     });
   }
 
@@ -87,7 +88,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
               const SizedBox(height: 5.0),
               ExerciseDropdownWidget(
                 onChange: (Exercise? exerciseSelected) {
-                  onChange(exerciseSelected, numberOfSets);
+                  _onChange(exerciseSelected, numberOfSets);
                 },
               ),
               const SizedBox(height: 16),
@@ -108,7 +109,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                 min: 1,
                 max: 30,
                 onUpdate: (number) {
-                  onChange(exercise, number);
+                  _onChange(exercise, number);
                 },
               ),
               const SizedBox(height: 16),
@@ -123,6 +124,9 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                   border: const OutlineInputBorder(),
                   alignLabelWithHint: true,
                 ),
+                onChanged: (String value) {
+                  _updateNotes(value);
+                }
               ),
               const SizedBox(height: 30.0),
               if (sets.count() > 0 && exercise != null)
@@ -144,6 +148,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                           builder: (context) => AddGoalsPage(
                             exercise: exercise!,
                             sets: sets,
+                            notes: notes,
                           ),
                         ),
                       );

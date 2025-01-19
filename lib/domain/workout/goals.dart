@@ -41,7 +41,7 @@ class Goals {
 
   @override
   String toString() {
-    String string = "Goals : ";
+    String string = "";
     for(Goal goal in _value) {
       string = "$string \n $goal";
     }
