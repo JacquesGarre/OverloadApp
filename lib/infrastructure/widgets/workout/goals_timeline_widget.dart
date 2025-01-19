@@ -18,10 +18,10 @@ class GoalsTimelineWidget extends StatefulWidget {
   });
 
   @override
-  State<GoalsTimelineWidget> createState() => _GoalsTimelineWidgetState();
+  State<GoalsTimelineWidget> createState() => GoalsTimelineWidgetState();
 }
 
-class _GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
+class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
   Goals? goals;
 
   @override

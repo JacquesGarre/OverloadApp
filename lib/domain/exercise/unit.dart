@@ -16,6 +16,16 @@ class Unit {
     canBeNegative: false,
     type: UnitType.integer,
   );
+  static const Unit kmh = Unit._(
+    name: 'Km/h',
+    canBeNegative: false,
+    type: UnitType.double,
+  );
+  static const Unit kms = Unit._(
+    name: 'Kms',
+    canBeNegative: false,
+    type: UnitType.double,
+  );
 
   const Unit._({
     required this.name,
@@ -27,6 +37,8 @@ class Unit {
     return [
       Unit.kgs,
       Unit.reps,
+      Unit.kmh,
+      Unit.kms,
     ];
   }
 
