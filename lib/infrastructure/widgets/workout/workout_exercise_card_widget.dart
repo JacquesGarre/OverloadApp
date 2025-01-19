@@ -2,26 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
+import 'package:overload/infrastructure/pages/workout/edit_workout_exercise_page.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/sets/sets_table_widget.dart';
 
-class WorkoutExerciseCardWidget extends StatelessWidget {
+class WorkoutExerciseCardWidget extends StatefulWidget {
   final WorkoutExercise workoutExercise;
   final bool checkable;
   final bool setsNumberSelector;
   final bool readonly;
   final void Function(WorkoutExercise workoutExercise) onWorkoutExerciseRemoved;
 
-  const WorkoutExerciseCardWidget(
-      {super.key,
-      required this.workoutExercise,
-      required this.checkable,
-      required this.setsNumberSelector,
-      required this.readonly,
-      required this.onWorkoutExerciseRemoved});
+  const WorkoutExerciseCardWidget({
+    super.key,
+    required this.workoutExercise,
+    required this.checkable,
+    required this.setsNumberSelector,
+    required this.readonly,
+    required this.onWorkoutExerciseRemoved,
+  });
 
-  _removeWorkoutExercise() {
-    onWorkoutExerciseRemoved(workoutExercise);
+  @override
+  State<WorkoutExerciseCardWidget> createState() =>
+      _WorkoutExerciseCardWidgetState();
+}
+
+class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
+  void _removeWorkoutExercise() {
+    widget.onWorkoutExerciseRemoved(widget.workoutExercise);
+  }
+
+  void _navigateToEditExercisePage() async {
+    WorkoutExercise? newExercise = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditWorkoutExercisePage(
+          workoutExercise: widget.workoutExercise,
+        ),
+      ),
+    );
+    if (newExercise != null) {
+      setState(() {
+        // If you need to update the workoutExercise locally after editing
+        // Note: Only do this if it's safe to mutate locally
+        Logger().i('Updated workout exercise: $newExercise');
+      });
+    }
   }
 
   @override
@@ -43,7 +69,7 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
                         child: Text(
-                          workoutExercise.exercise().name().value(),
+                          widget.workoutExercise.exercise().name().value(),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -51,7 +77,7 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 5.0),
-                      if (workoutExercise.goals() != null)
+                      if (widget.workoutExercise.goals() != null)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(
                             6.0,
@@ -60,7 +86,7 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
                             0.0,
                           ),
                           child: Text(
-                            '${workoutExercise.goals()!.count()} objective${workoutExercise.goals()!.count() > 1 ? 's' : ''} left',
+                            '${widget.workoutExercise.goals()!.count()} objective${widget.workoutExercise.goals()!.count() > 1 ? 's' : ''} left',
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
@@ -77,7 +103,7 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.edit),
                       color: AppColorScheme.primary,
-                      onPressed: () {},
+                      onPressed: _navigateToEditExercisePage,
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
@@ -89,17 +115,17 @@ class WorkoutExerciseCardWidget extends StatelessWidget {
               ],
             ),
             SetsTableWidget(
-              key: ValueKey(workoutExercise.id().value()),
-              exercise: workoutExercise.exercise(),
-              sets: workoutExercise.goals() != null &&
-                      workoutExercise.goals()!.count() > 0
-                  ? workoutExercise.goals()!.value().first.sets()
-                  : workoutExercise.sets(),
-              checkable: checkable,
-              setsNumberSelector: setsNumberSelector,
-              readonly: readonly,
+              key: ValueKey(widget.workoutExercise.id().value()),
+              exercise: widget.workoutExercise.exercise(),
+              sets: widget.workoutExercise.goals() != null &&
+                      widget.workoutExercise.goals()!.count() > 0
+                  ? widget.workoutExercise.goals()!.value().first.sets()
+                  : widget.workoutExercise.sets(),
+              checkable: widget.checkable,
+              setsNumberSelector: widget.setsNumberSelector,
+              readonly: widget.readonly,
               onSetsUpdated: (Sets sets) {
-                // TODO
+                Logger().i('Sets updated: $sets');
               },
             )
           ],

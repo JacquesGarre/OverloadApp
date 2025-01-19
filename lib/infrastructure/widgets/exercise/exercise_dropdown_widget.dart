@@ -7,11 +7,14 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 
 class ExerciseDropdownWidget extends StatefulWidget {
+  
   final ValueChanged<Exercise?> onChange;
+  final Exercise? initialExercise;
 
   const ExerciseDropdownWidget({
     super.key,
     required this.onChange,
+    this.initialExercise,
   });
 
   @override
@@ -49,6 +52,7 @@ class _ExerciseDropdownWidgetState extends State<ExerciseDropdownWidget> {
             ),
           ),
           child: CustomDropdown<Exercise>.searchRequest(
+            initialItem: widget.initialExercise,
             decoration: CustomDropdownDecoration(
               closedFillColor: AppColorScheme.lightBackground,
               expandedFillColor: AppColorScheme.lightBackground,

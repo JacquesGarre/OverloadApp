@@ -12,7 +12,6 @@ import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/workout/set/set.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
-
   final WorkoutExerciseIndex index;
   final WorkoutExercise? workoutExercise;
 
@@ -29,7 +28,6 @@ class WorkoutExerciseFormWidget extends StatefulWidget {
 
 // TODO: Add minuteur de repos
 class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
-
   final _formKey = GlobalKey<FormState>();
   final _notesController = TextEditingController();
 
@@ -45,7 +43,15 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
         ? widget.workoutExercise!.sets()
         : Sets.empty();
     numberOfSets = widget.workoutExercise != null ? sets.count() : 1;
-    _notesController.text = '';
+    _notesController.text = widget.workoutExercise != null &&
+            widget.workoutExercise!.notes() != null
+        ? widget.workoutExercise!.notes()!.value()
+        : "";
+    notes = widget.workoutExercise != null &&
+            widget.workoutExercise!.notes() != null
+        ? widget.workoutExercise!.notes()
+        : null;
+    exercise = widget.workoutExercise?.exercise();
   }
 
   @override
@@ -77,7 +83,8 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
     });
   }
 
-  void _navigateToAddGoalsPage(Exercise exercise, Sets sets, Notes? notes) async {
+  void _navigateToAddGoalsPage(
+      Exercise exercise, Sets sets, Notes? notes) async {
     WorkoutExercise? workoutExercise = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -108,6 +115,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
               const Text("Exercise"),
               const SizedBox(height: 5.0),
               ExerciseDropdownWidget(
+                initialExercise: widget.workoutExercise?.exercise(),
                 onChange: (Exercise? exerciseSelected) {
                   _onChange(exerciseSelected, numberOfSets);
                 },
@@ -137,18 +145,17 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
               const Text("Notes"),
               const SizedBox(height: 5.0),
               TextFormField(
-                controller: _notesController,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: AppColorScheme.lightBackground,
-                  border: const OutlineInputBorder(),
-                  alignLabelWithHint: true,
-                ),
-                onChanged: (String value) {
-                  _updateNotes(value);
-                }
-              ),
+                  controller: _notesController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: AppColorScheme.lightBackground,
+                    border: const OutlineInputBorder(),
+                    alignLabelWithHint: true,
+                  ),
+                  onChanged: (String value) {
+                    _updateNotes(value);
+                  }),
               const SizedBox(height: 30.0),
               if (sets.count() > 0 && exercise != null)
                 Align(
