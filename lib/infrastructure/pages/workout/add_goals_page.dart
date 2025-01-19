@@ -13,26 +13,30 @@ class AddGoalsPage extends StatefulWidget {
 
   const AddGoalsPage({super.key, required this.exercise, required this.sets});
 
-  static const String title =
-      'Set your goals'; // TODO: Center title here (And maybe everywhere on "subpages"?)
+  static const String title = 'Set your goals';
 
   @override
   State<AddGoalsPage> createState() => _AddGoalsPageState();
 }
 
 class _AddGoalsPageState extends State<AddGoalsPage> {
-  
-  final GlobalKey<GoalsTimelineWidgetState> goalsKey = GlobalKey<GoalsTimelineWidgetState>();
+  final GlobalKey<GoalsTimelineWidgetState> goalsKey =
+      GlobalKey<GoalsTimelineWidgetState>();
 
   _handleAddExercise() {
+    /*
+      final Exercise _exercise;
+      final Sets _sets;
+      final Notes? _notes;
+      final Goals? _goals;
+    */
     Goals? goals = goalsKey.currentState?.goals;
-    if(goals != null) {
-      for(Goal goal in goals.value()) {
-        Logger().i(goal.toString());
-      }
+    if (goals != null) {
+      Logger().e("[EXERCISE] ${widget.exercise}");
+      Logger().e("[SETS] ${widget.sets}");
+      Logger().e("[GOALS] $goals"); // WORKS
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +53,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       ),
       resizeToAvoidBottomInset: true,
       floatingActionButton: SizedBox(
-        height: 40.0, 
+        height: 40.0,
         child: FloatingActionButton.extended(
           onPressed: _handleAddExercise,
           label: const Text("Add exercise"),

@@ -8,19 +8,16 @@ class WorkoutExercise {
   final Exercise _exercise;
   final Sets _sets;
   final Notes? _notes;
-  final Goal? _currentGoal;
   final Goals? _goals;
 
   WorkoutExercise({
     required Exercise exercise,
     required Sets sets,
     Notes? notes,
-    Goal? currentGoal,
     Goals? goals,
   })  : _exercise = exercise,
         _sets = sets,
         _notes = notes,
-        _currentGoal = currentGoal,
         _goals = goals;
 
   Exercise exercise() {
@@ -34,11 +31,7 @@ class WorkoutExercise {
   Notes? notes() {
     return _notes;
   }
-
-  Goal? currentGoal() {
-    return _currentGoal;
-  }
-
+  
   Goals? goals() {
     return _goals;
   }

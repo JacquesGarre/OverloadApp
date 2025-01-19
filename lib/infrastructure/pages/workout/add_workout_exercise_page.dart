@@ -12,6 +12,7 @@ class AddWorkoutExercisePage extends StatefulWidget {
 }
 
 class _AddWorkoutExercisePageState extends State<AddWorkoutExercisePage> {
+
   void _handleAdd(Map<String, dynamic> formData) async {
     // try {
     //   ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(

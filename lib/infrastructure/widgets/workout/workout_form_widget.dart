@@ -60,15 +60,13 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text("Name"),
+            const SizedBox(height: 5.0),
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColorScheme.lightBackground,
-                labelText: 'Name',
-                labelStyle: const TextStyle(
-                  fontSize: 14.0,
-                ),
                 border: const OutlineInputBorder(),
               ),
               validator: (value) {
@@ -79,21 +77,19 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
               },
             ),
             const SizedBox(height: 16),
+            const Text("Notes"),
+            const SizedBox(height: 5.0),
             TextFormField(
               controller: _notesController,
               maxLines: 3,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColorScheme.lightBackground,
-                labelText: 'Notes',
-                labelStyle: const TextStyle(
-                  fontSize: 14.0,
-                ),
                 border: const OutlineInputBorder(),
                 alignLabelWithHint: true,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
@@ -120,7 +116,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
               ),
             ),
             const SizedBox(height: 16),
-            Align(
+            Align(  // TODO : as a floating action button
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 style: ButtonStyle(

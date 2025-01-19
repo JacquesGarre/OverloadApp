@@ -25,7 +25,9 @@ class WorkoutExerciseFormWidget extends StatefulWidget {
 }
 
 class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
+
   final _formKey = GlobalKey<FormState>();
+  final _notesController = TextEditingController();
 
   Exercise? exercise;
   Sets sets = Sets.empty();
@@ -38,10 +40,12 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
         ? widget.workoutExercise!.sets()
         : Sets.empty();
     numberOfSets = widget.workoutExercise != null ? sets.count() : 1;
+    _notesController.text = '';
   }
 
   @override
   void dispose() {
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -106,6 +110,19 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                 onUpdate: (number) {
                   onChange(exercise, number);
                 },
+              ),
+              const SizedBox(height: 16),
+              const Text("Notes"),
+              const SizedBox(height: 5.0),
+              TextFormField(
+                controller: _notesController,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: AppColorScheme.lightBackground,
+                  border: const OutlineInputBorder(),
+                  alignLabelWithHint: true,
+                ),
               ),
               const SizedBox(height: 30.0),
               if (sets.count() > 0 && exercise != null)

@@ -86,9 +86,9 @@ class Sets {
 
   @override
   String toString() {
-    String string = "SETS";
+    String string = "Sets";
     for(Set set in _value) {
-      string = "$string | ${set.toString()}";
+      string = "$string \n ${set.toString()}";
     }
     return string;
   }

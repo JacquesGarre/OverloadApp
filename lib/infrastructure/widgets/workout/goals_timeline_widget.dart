@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
@@ -44,6 +45,12 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
   void _removeGoal(int index) {
     setState(() {
       goals = goals.removeAt(index);
+    });
+  }
+
+  void _updateGoal(int index, Sets updatedSets) {
+    setState(() {
+      goals = goals.updatedAt(index, updatedSets);
     });
   }
 
@@ -127,6 +134,9 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                           exercise: widget.exercise,
                           sets: goal.sets(),
                           checkable: false,
+                          onSetsUpdated: (updatedSets) {
+                            _updateGoal(index, updatedSets);
+                          }
                         ),
                       ],
                     ),

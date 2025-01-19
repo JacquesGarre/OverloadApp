@@ -15,12 +15,14 @@ class SetsTableWidget extends StatefulWidget {
   final Exercise exercise;
   final Sets sets;
   final bool checkable;
+  final void Function(Sets updatedSets) onSetsUpdated;
 
   SetsTableWidget({
     super.key,
     required this.exercise,
     required Sets sets,
     required this.checkable,
+    required this.onSetsUpdated,
   }) : sets = Sets(value: sets.value());
 
   @override
@@ -59,6 +61,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         sets = sets!.updateSet(setIndex, metric);
+        widget.onSetsUpdated(sets!);
       });
       generateRows();
     });
@@ -76,6 +79,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void addSet() {
     setState(() {
       sets = sets!.addSetFromExercise(widget.exercise);
+      widget.onSetsUpdated(sets!);
     });
     generateRows();
   }
@@ -83,6 +87,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void removeSet() {
     setState(() {
       sets = sets!.removeLastSet();
+      widget.onSetsUpdated(sets!);
     });
     generateRows();
   }
