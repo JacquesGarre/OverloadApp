@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
@@ -33,18 +32,16 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     setState(() {
       sets = widget.sets;
       goals = goals.add(Goal.fromSets(sets));
-      Logger().i("WIDGETS SETS initState : ${sets.count()}");
     });
   }
 
   void _addGoal() {
-    Logger().i("WIDGETS SETS _addGoal: ${sets.count()}");
     setState(() {
       goals = goals.add(Goal.fromSets(sets));
     });
   }
 
-  void _removeGoal(int index) { // TODO: Fix this, it removes the last one it seems
+  void _removeGoal(int index) {
     setState(() {
       goals = goals.removeAt(index);
     });
@@ -77,7 +74,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
         ),
         builder: TimelineTileBuilder.connected(
           connectionDirection: ConnectionDirection.before,
-          itemCount: goals.count() + 1, // Add one extra for the button
+          itemCount: goals.count() + 1,
           contentsBuilder: (_, index) {
             if (index < goals.count()) {
               // Render existing goals
@@ -87,6 +84,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 15.0),
                 child: Card(
+                  key: ValueKey("goal_${goal.hashCode}"),
                   shadowColor: Colors.transparent,
                   color: AppColorScheme.lightBackground,
                   child: Padding(
@@ -150,7 +148,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                     ),
                   ),
                   child: const Text(
-                    "Add",
+                    "Add new goal",
                     style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w500,

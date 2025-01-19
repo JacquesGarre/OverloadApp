@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:overload/domain/workout/goal.dart';
 
 class Goals {
@@ -28,6 +29,16 @@ class Goals {
   Goals removeAt(int index) {
     List<Goal> newValue = List.from(_value);
     newValue.removeAt(index);
+    Logger().e(newValue);
     return Goals(value: newValue);
+  }
+
+  @override
+  String toString() {
+    String string = "GOALS : ";
+    for(Goal goal in _value) {
+      string = "$string $goal";
+    }
+    return string;
   }
 }
