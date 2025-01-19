@@ -24,7 +24,7 @@ class ExerciseRepository implements ExerciseRepositoryInterface {
     await db.delete(
       table,
       where: 'id = ?',
-      whereArgs: [exercise.id.toString()],
+      whereArgs: [exercise.id().toString()],
     );
   }
 
@@ -46,7 +46,7 @@ class ExerciseRepository implements ExerciseRepositoryInterface {
       table,
       model.toMap(),
       where: 'id = ?',
-      whereArgs: [exercise.id.toString()],
+      whereArgs: [exercise.id().toString()],
     );
   }
 
@@ -73,7 +73,7 @@ class ExerciseRepository implements ExerciseRepositoryInterface {
     List<Map<String, Object?>> exercisesMaps = await db.query(
       table,
       where: 'name = ?',
-      whereArgs: [name.value],
+      whereArgs: [name.value()],
     );    
     if(exercisesMaps.isEmpty){
       return null;

@@ -37,6 +37,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   @override
   void initState() {
     super.initState();
+    Logger().d("initState");
     sets = Sets(value: widget.sets.value());
     generateColumns();
     generateRows();
@@ -45,6 +46,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   @override
   void didUpdateWidget(covariant SetsTableWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+    Logger().d("didUpdateWidget");
     if (widget.exercise != oldWidget.exercise || widget.sets != oldWidget.sets) {
       generateColumns();
       generateRows();
@@ -56,12 +58,11 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     SetIndex setIndex = SetIndex(value: rowIdx + 1);
     Unit unit = widget.exercise.units().value()[columnIdx - 1];
     Metric metric = Metric(value: value, unit: unit);
-
+    Logger().i("UPDATED TO : $metric");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         sets = sets!.updateSet(setIndex, metric);
-        Logger().i(sets);
-        Logger().i(sets!.count());
+        Logger().i("sets UPDATED TO : $sets");
       });
       generateRows();
     });
@@ -105,6 +106,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     if (stateManager != null) {
       List<PlutoRow> rowsToAdd = [];
       for (Set set in sets!.value()) {
+        Logger().i("GENERATE TABLE ROW FOR $set");
         rowsToAdd.add(generateRowFromSet(set));
       }
       stateManager!.removeRows(stateManager!.rows);
@@ -120,7 +122,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     };
     for (Unit unit in widget.exercise.units().value()) {
       Metric? metric = set.metrics().findByUnit(unit);
-      cells[unit.name()] = PlutoCell(value: metric?.value);
+      cells[unit.name()] = PlutoCell(value: metric?.value());
     }
     return PlutoRow(cells: cells);
   }

@@ -31,7 +31,7 @@ class ExerciseModel {
 
   factory ExerciseModel.fromExercise(Exercise exercise) {
     return ExerciseModel._(
-      id: exercise.id.toString(),
+      id: exercise.id().toString(),
       name: exercise.name().value(),
       units: exercise.units().toStringList(),
     );

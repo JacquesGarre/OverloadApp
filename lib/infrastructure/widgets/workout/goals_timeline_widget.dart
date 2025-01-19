@@ -44,7 +44,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     });
   }
 
-  void _removeGoal(int index) {
+  void _removeGoal(int index) { // TODO: Fix this, it removes the last one it seems
     setState(() {
       goals = goals.removeAt(index);
     });
