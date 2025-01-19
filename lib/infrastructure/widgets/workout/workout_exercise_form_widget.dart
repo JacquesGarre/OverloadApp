@@ -12,12 +12,10 @@ import 'package:overload/domain/workout/set/set.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
   final WorkoutExercise? workoutExercise;
-  final ValueChanged<Map<String, dynamic>> onSubmit;
 
   const WorkoutExerciseFormWidget({
     super.key,
     this.workoutExercise,
-    required this.onSubmit,
   });
 
   @override
@@ -25,6 +23,7 @@ class WorkoutExerciseFormWidget extends StatefulWidget {
       _WorkoutExerciseFormWidgetState();
 }
 
+// TODO: Add minuteur de repos
 class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
 
   final _formKey = GlobalKey<FormState>();
@@ -72,6 +71,23 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
     setState(() {
       notes = Notes(value: value);
     });
+  }
+
+  void _navigateToAddGoalsPage(Exercise exercise, Sets sets, Notes? notes) async {
+    WorkoutExercise? workoutExercise = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddGoalsPage(
+          exercise: exercise,
+          sets: sets,
+          notes: notes,
+        ),
+      ),
+    );
+    if (workoutExercise != null) {
+      if (!mounted) return;
+      Navigator.pop(context, workoutExercise);
+    }
   }
 
   @override
@@ -142,16 +158,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddGoalsPage(
-                            exercise: exercise!,
-                            sets: sets,
-                            notes: notes,
-                          ),
-                        ),
-                      );
+                      _navigateToAddGoalsPage(exercise!, sets, notes);
                     },
                     child: const Text('Next'),
                   ),

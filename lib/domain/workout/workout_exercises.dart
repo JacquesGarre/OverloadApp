@@ -14,4 +14,14 @@ class WorkoutExercises {
   int count() {
     return _value.length;
   }
+
+  static WorkoutExercises empty() {
+    return WorkoutExercises(value: []);
+  }
+
+  WorkoutExercises add(WorkoutExercise exercise) {
+    List<WorkoutExercise> newValue = List.from(_value);
+    newValue.add(exercise);
+    return WorkoutExercises(value: newValue);
+  }
 }

@@ -43,6 +43,7 @@ class _AddGoalsPageState extends State<AddGoalsPage> {
       );
       Logger().e(workoutExercise);
     });
+    Navigator.pop(context, workoutExercise);
   }
 
   @override

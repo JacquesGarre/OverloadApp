@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/workout/workout.dart';
+import 'package:overload/domain/workout/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/pages/workout/add_workout_exercise_page.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/widgets/workout/workout_exercise_card_widget.dart';
 
 class WorkoutFormWidget extends StatefulWidget {
   final Workout? workout;
@@ -21,6 +24,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _notesController = TextEditingController();
+  WorkoutExercises workoutExercises = WorkoutExercises.empty();
 
   @override
   void initState() {
@@ -47,6 +51,20 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
       widget.onSubmit({
         'name': _nameController.text,
         'notes': _notesController.text,
+      });
+    }
+  }
+
+  void _navigateToAddExercisePage() async {
+    WorkoutExercise? newExercise = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddWorkoutExercisePage(),
+      ),
+    );
+    if (newExercise != null) {
+      setState(() {
+        workoutExercises = workoutExercises.add(newExercise);
       });
     }
   }
@@ -90,6 +108,17 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
               ),
             ),
             const SizedBox(height: 20),
+            ...workoutExercises.value().map((workoutExercise) {
+              return Column(
+                children: [
+                  WorkoutExerciseCardWidget(
+                    workoutExercise: workoutExercise,
+                    checkable: false,
+                  ),
+                  const SizedBox(height: 16), 
+                ],
+              );
+            }),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
@@ -97,26 +126,20 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     foregroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.onSecondary,
+                      AppColorScheme.onPrimary,
                     ),
                     backgroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.secondary,
+                      AppColorScheme.primary,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddWorkoutExercisePage(),
-                      ),
-                    );
-                  },
-                  child: const Text('Add exercise to your workout'),
+                  onPressed: _navigateToAddExercisePage,
+                  child: const Text('Add exercise'),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            Align(  // TODO : as a floating action button
+            Align(
+              // TODO : as a floating action button
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 style: ButtonStyle(
