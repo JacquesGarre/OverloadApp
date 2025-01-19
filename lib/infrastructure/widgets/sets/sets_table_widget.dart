@@ -27,7 +27,6 @@ class SetsTableWidget extends StatefulWidget {
   State<SetsTableWidget> createState() => _SetsTableWidgetState();
 }
 
-// TODO : State must be unique
 class _SetsTableWidgetState extends State<SetsTableWidget> {
   static double rowHeight = 35;
   Sets? sets;
@@ -128,7 +127,6 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Logger().i("BUILD WITH ${sets!.count()} SETS");
     return Container(
       padding: const EdgeInsets.all(0),
       child: Column(

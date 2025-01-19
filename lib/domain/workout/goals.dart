@@ -9,4 +9,16 @@ class Goals {
     return value.length;
   }
 
+  Goals add(Goal goal) {
+    List<Goal> newValue = value;
+    newValue.add(goal);
+    return Goals(newValue);
+  }
+
+  Goals removeAt(int index) {
+    List<Goal> newValue = value;
+    newValue.removeAt(index);
+    return Goals(newValue);
+  }
+
 }

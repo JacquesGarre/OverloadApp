@@ -9,7 +9,6 @@ import 'package:overload/infrastructure/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_dropdown_widget.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/workout/set/set.dart';
-import 'package:overload/infrastructure/widgets/sets/sets_table_widget.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
   final WorkoutExercise? workoutExercise;
@@ -64,7 +63,6 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
         newSets = newSets.add(newSet);
       }
     }
-    Logger().i(newSets);
     setState(() {
       exercise = exerciseSelected;
       numberOfSets = numberOfSetsSelected;

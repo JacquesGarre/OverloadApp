@@ -1,6 +1,4 @@
-import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/sets.dart';
-import 'package:overload/domain/workout/set/set.dart';
 
 class Goal {
   final Sets sets;
@@ -10,8 +8,9 @@ class Goal {
   });
 
   static Goal fromSets(Sets sets) {
+    Sets newSets = Sets(value: List.from(sets.value));
     return Goal(
-      sets: sets,
+      sets: newSets,
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
@@ -11,33 +12,42 @@ class GoalsTimelineWidget extends StatefulWidget {
   final Exercise exercise;
   final Sets sets;
 
-  const GoalsTimelineWidget({
+  GoalsTimelineWidget({
     super.key,
     required this.exercise,
-    required this.sets,
-  });
+    required Sets sets,
+  }) : sets = Sets(value: sets.value);
 
   @override
   State<GoalsTimelineWidget> createState() => GoalsTimelineWidgetState();
 }
 
 class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
-  Goals? goals;
+  late Goals goals;
+  late Sets sets;
 
   @override
   void initState() {
     super.initState();
-    goals = Goals([
-      Goal.fromSets(widget.sets),
-    ]);
+    setState(() {
+      sets = widget.sets;
+      goals = Goals([
+        Goal.fromSets(sets),
+      ]);
+      Logger().i("WIDGETS SETS initState : ${sets.count()}");
+    });
   }
 
   void _addGoal() {
+    Logger().i("WIDGETS SETS _addGoal: ${sets.count()}");
     setState(() {
-      goals = Goals([
-        ...goals!.value,
-        Goal.fromSets(widget.sets),
-      ]);
+      goals = goals.add(Goal.fromSets(sets));
+    });
+  }
+
+  void _removeGoal(int index) {
+    setState(() {
+      goals = goals.removeAt(index);
     });
   }
 
@@ -68,11 +78,11 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
         ),
         builder: TimelineTileBuilder.connected(
           connectionDirection: ConnectionDirection.before,
-          itemCount: goals!.count() + 1, // Add one extra for the button
+          itemCount: goals.count() + 1, // Add one extra for the button
           contentsBuilder: (_, index) {
-            if (index < goals!.count()) {
+            if (index < goals.count()) {
               // Render existing goals
-              Goal goal = goals!.value[index];
+              Goal goal = goals.value[index];
               bool goalIsAchieved = false; // TODO: Goal is achieved = false
               if (goalIsAchieved) return null;
               return Padding(
@@ -107,10 +117,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                             ),
                             IconButton(
                               onPressed: () {
-                                setState(() {
-                                  goals!.value.removeAt(index);
-                                  goals = Goals([...goals!.value]);
-                                });
+                                _removeGoal(index);
                               },
                               icon: Icon(
                                 Icons.close,
@@ -120,7 +127,6 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                           ],
                         ),
                         SetsTableWidget(
-                          key: UniqueKey(),
                           exercise: widget.exercise,
                           sets: goal.sets,
                           checkable: false,
@@ -156,7 +162,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
             }
           },
           indicatorBuilder: (_, index) {
-            if (index < goals!.count()) {
+            if (index < goals.count()) {
               bool goalIsAchieved = false;
               if (goalIsAchieved) {
                 return const DotIndicator(
