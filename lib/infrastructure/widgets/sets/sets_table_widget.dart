@@ -16,17 +16,18 @@ class SetsTableWidget extends StatefulWidget {
   final Sets sets;
   final bool checkable;
 
-  const SetsTableWidget({
+  SetsTableWidget({
     super.key,
     required this.exercise,
-    required this.sets,
+    required Sets sets,
     required this.checkable,
-  });
+  }) : sets = Sets(value: sets.value);
 
   @override
   State<SetsTableWidget> createState() => _SetsTableWidgetState();
 }
 
+// TODO : State must be unique
 class _SetsTableWidgetState extends State<SetsTableWidget> {
   static double rowHeight = 35;
   Sets? sets;
@@ -37,7 +38,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   @override
   void initState() {
     super.initState();
-    sets = widget.sets;
+    sets = Sets(value: widget.sets.value);
     generateColumns();
     generateRows();
   }
@@ -45,8 +46,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   @override
   void didUpdateWidget(covariant SetsTableWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.exercise != oldWidget.exercise ||
-        widget.sets != oldWidget.sets) {
+    if (widget.exercise != oldWidget.exercise || widget.sets != oldWidget.sets) {
       generateColumns();
       generateRows();
       setState(() {});
@@ -54,15 +54,18 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   }
 
   void updateSet(int rowIdx, int columnIdx, num value) {
-    SetIndex setIndex = SetIndex(value: rowIdx+1);
-    Unit unit = widget.exercise.units.value[columnIdx-1];
+    SetIndex setIndex = SetIndex(value: rowIdx + 1);
+    Unit unit = widget.exercise.units.value[columnIdx - 1];
     Metric metric = Metric(value: value, unit: unit);
-    setState(() {
-      sets = sets!.updateSet(setIndex, metric);
-      Logger().i(sets);
-      Logger().i(sets!.count());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        sets = sets!.updateSet(setIndex, metric);
+        Logger().i(sets);
+        Logger().i(sets!.count());
+      });
+      generateRows();
     });
-    generateRows();
   }
 
   void generateSets(int number) {
@@ -125,6 +128,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Logger().i("BUILD WITH ${sets!.count()} SETS");
     return Container(
       padding: const EdgeInsets.all(0),
       child: Column(

@@ -120,6 +120,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                           ],
                         ),
                         SetsTableWidget(
+                          key: UniqueKey(),
                           exercise: widget.exercise,
                           sets: goal.sets,
                           checkable: false,
