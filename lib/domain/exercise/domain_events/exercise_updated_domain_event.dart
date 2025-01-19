@@ -8,10 +8,10 @@ class ExerciseUpdatedDomainEvent implements DomainEventInterface {
   final UuidValue _aggregateId;
   final UuidValue _eventId;
   final DateTime _occuredAt;
-  final Exercise exercise;
+  final Exercise _exercise;
   static const String _eventName = "ExerciseUpdatedDomainEvent";
 
-  ExerciseUpdatedDomainEvent._(this._aggregateId, this._eventId, this._occuredAt, this.exercise);
+  ExerciseUpdatedDomainEvent._(this._aggregateId, this._eventId, this._occuredAt, this._exercise);
 
   @override
   UuidValue aggregateId() {
@@ -47,9 +47,9 @@ class ExerciseUpdatedDomainEvent implements DomainEventInterface {
       'eventId': _eventId.toString(),
       'occuredAt': _occuredAt.toString(),
       'exercise': {
-        'id': exercise.id.toString(),
-        'name': exercise.name().value(),
-        'units': exercise.units().toStringList()
+        'id': _exercise.id().toString(),
+        'name': _exercise.name().value(),
+        'units': _exercise.units().toStringList()
       }
     };
   }

@@ -37,7 +37,7 @@ class Units {
   }
 
   static void assertValid(List<Unit> value) {
-    final set = value.map((unit) => unit.name).toSet();
+    final set = value.map((unit) => unit.name()).toSet();
     if (set.length != value.length) {
       throw DuplicateExerciseUnitException();
     }

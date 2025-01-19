@@ -51,8 +51,8 @@ class Exercise {
 
   Exercise update(Name newName, Units newUnits) {
     Exercise exercise = Exercise(
-      domainEvents: domainEvents,
-      id: id,
+      domainEvents: domainEvents(),
+      id: id(),
       name: newName,
       units: newUnits,
     );

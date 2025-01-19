@@ -48,12 +48,12 @@ class Unit {
   }
 
   static List<Unit> all() {
-    return [
+    return List.unmodifiable([
       Unit.kgs,
       Unit.reps,
       Unit.kmh,
       Unit.kms,
-    ];
+    ]);
   }
 
   static Unit fromString(String name) {
@@ -79,7 +79,7 @@ class Unit {
   }
 
   @override
-  int get hashCode => name.hashCode;
+  int get hashCode => name().hashCode;
 
   @override
   String toString() {
