@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
 
-class FormPageWidget extends StatelessWidget {
+class PageWidget extends StatelessWidget {
   final String title;
-  final Widget form;
+  final Widget child;
+  final Widget? floatingActionButton;
 
-  const FormPageWidget({super.key, required this.title, required this.form});
+  const PageWidget(
+      {super.key,
+      required this.title,
+      required this.child,
+      this.floatingActionButton});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +19,10 @@ class FormPageWidget extends StatelessWidget {
         title: title,
       ),
       body: SingleChildScrollView(
-        child: form,
+        child: child,
       ),
       resizeToAvoidBottomInset: true,
+      floatingActionButton: floatingActionButton,
     );
   }
 }

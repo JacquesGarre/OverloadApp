@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/pages/workout/add_workout_page.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
+import 'package:overload/infrastructure/widgets/shared/list_page_widget.dart';
 import 'package:overload/infrastructure/widgets/workout/workout_card_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -25,46 +26,30 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
     });
   }
 
+  void _navigateToAddWorkoutPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddWorkoutPage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final WorkoutProvider workoutProvider =
         Provider.of<WorkoutProvider>(context);
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(
-            12.0,
-            0,
-            12.0,
-            0,
-          ),
-          child: ListView.separated(
-            itemCount: workoutProvider.workouts.length,
-            itemBuilder: (context, index) {
-              return WorkoutCardWidget(
-                workout: workoutProvider.workouts[index],
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-          ),
-        ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton(
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddWorkoutPage(),
-                ),
-              )
-            },
-            tooltip: 'Add workout',
-            child: const Icon(Icons.add),
-          ),
-        ),
-      ],
+    return ListPageWidget(
+      list: ListView.separated(
+        itemCount: workoutProvider.workouts.length,
+        itemBuilder: (context, index) {
+          return WorkoutCardWidget(
+            workout: workoutProvider.workouts[index],
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
+      ),
+      onAdd: _navigateToAddWorkoutPage,
     );
   }
 }

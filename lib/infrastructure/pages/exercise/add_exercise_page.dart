@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_form_widget.dart';
-import 'package:overload/infrastructure/widgets/shared/form_page_widget.dart';
+import 'package:overload/infrastructure/widgets/shared/page_widget.dart';
 import 'package:provider/provider.dart';
 
 class AddExercisePage extends StatelessWidget {
@@ -30,9 +30,9 @@ class AddExercisePage extends StatelessWidget {
       context,
       listen: false,
     );
-    return FormPageWidget(
+    return PageWidget(
       title: title,
-      form: ExerciseFormWidget(
+      child: ExerciseFormWidget(
         onSubmit: (formData) => _handleSubmit(
           context,
           exerciseProvider,

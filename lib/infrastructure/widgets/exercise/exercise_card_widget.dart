@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
-import 'package:overload/infrastructure/pages/exercise/update_exercise_page.dart';
+import 'package:overload/infrastructure/pages/exercise/edit_exercise_page.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/widgets/shared/card_widget.dart';
 import 'package:overload/infrastructure/widgets/shared/delete_button_widget.dart';
@@ -20,7 +20,7 @@ class ExerciseCardWidget extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => UpdateExercisePage(exercise: exercise),
+          builder: (context) => EditExercisePage(exercise: exercise),
         ),
       );
     }

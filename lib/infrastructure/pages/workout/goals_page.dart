@@ -5,11 +5,11 @@ import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
-import 'package:overload/infrastructure/widgets/layout/app_bar_widget.dart';
+import 'package:overload/infrastructure/widgets/shared/floating_centered_button_widget.dart';
+import 'package:overload/infrastructure/widgets/shared/page_widget.dart';
 import 'package:overload/infrastructure/widgets/workout/goals_timeline_widget.dart';
 
 class GoalsPage extends StatefulWidget {
-
   final WorkoutExerciseIndex index;
   final Exercise exercise;
   final Sets sets;
@@ -22,7 +22,7 @@ class GoalsPage extends StatefulWidget {
     required this.exercise,
     required this.sets,
     this.notes,
-    this.workoutExercise
+    this.workoutExercise,
   });
 
   static const String title = 'Set your goals';
@@ -35,32 +35,12 @@ class _GoalsPageState extends State<GoalsPage> {
   final GlobalKey<GoalsTimelineWidgetState> goalsTimelineWidget =
       GlobalKey<GoalsTimelineWidgetState>();
 
-  WorkoutExercise? workoutExercise;
-
-  @override
-  initState() {
-    super.initState();
-    if (widget.workoutExercise != null) {
-      workoutExercise = widget.workoutExercise;
-    }
-  }
-
-  _handleAddWorkoutExercise() {
+  _handleSubmit() {
     Goals? goals = goalsTimelineWidget.currentState?.goals;
-    workoutExercise = WorkoutExercise(
-      index: widget.index,
-      exercise: widget.exercise,
-      sets: widget.sets,
-      notes: widget.notes,
-      goals: goals,
-    );
-    Navigator.pop(context, workoutExercise);
-  }
-
-  _handleUpdateWorkoutExercise() {
-    Goals? goals = goalsTimelineWidget.currentState?.goals;
-    workoutExercise = WorkoutExercise(
-      index: workoutExercise!.index(),
+    WorkoutExercise workoutExercise = WorkoutExercise(
+      index: widget.workoutExercise != null
+          ? widget.workoutExercise!.index()
+          : widget.index,
       exercise: widget.exercise,
       sets: widget.sets,
       notes: widget.notes,
@@ -71,30 +51,17 @@ class _GoalsPageState extends State<GoalsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const AppBarWidget(
-        title: GoalsPage.title,
+    return PageWidget(
+      title: GoalsPage.title,
+      floatingActionButton: FloatingCenteredButtonWidget(
+        text: "${widget.workoutExercise != null ? "Update" : "Add"} exercise",
+        onPressed: _handleSubmit,
       ),
-      body: SingleChildScrollView(
-        child: GoalsTimelineWidget(
-          key: goalsTimelineWidget,
-          exercise: widget.exercise,
-          sets: widget.sets,
-          existingGoals: widget.workoutExercise?.goals()!,
-        ),
-      ),
-      resizeToAvoidBottomInset: true,
-      floatingActionButton: SizedBox(
-        height: 40.0,
-        child: FloatingActionButton.extended(
-          onPressed: widget.workoutExercise != null ? _handleUpdateWorkoutExercise : _handleAddWorkoutExercise,
-          label: widget.workoutExercise != null ?  const Text("Update exercise") : const Text("Add exercise"),
-          backgroundColor: Theme.of(context).primaryColor,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-        ),
+      child: GoalsTimelineWidget(
+        key: goalsTimelineWidget,
+        exercise: widget.exercise,
+        sets: widget.sets,
+        existingGoals: widget.workoutExercise?.goals()!,
       ),
     );
   }
