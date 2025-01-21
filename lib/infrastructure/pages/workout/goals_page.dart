@@ -35,27 +35,25 @@ class _GoalsPageState extends State<GoalsPage> {
   final GlobalKey<GoalsTimelineWidgetState> goalsTimelineWidget =
       GlobalKey<GoalsTimelineWidgetState>();
 
-  _handleSubmit() {
-    Goals? goals = goalsTimelineWidget.currentState?.goals;
-    WorkoutExercise workoutExercise = WorkoutExercise(
-      index: widget.workoutExercise != null
-          ? widget.workoutExercise!.index()
-          : widget.index,
-      exercise: widget.exercise,
-      sets: widget.sets,
-      notes: widget.notes,
-      goals: goals,
-    );
-    Navigator.pop(context, workoutExercise);
-  }
-
   @override
   Widget build(BuildContext context) {
     return PageWidget(
       title: GoalsPage.title,
       floatingActionButton: FloatingCenteredButtonWidget(
         text: "${widget.workoutExercise != null ? "Update" : "Add"} exercise",
-        onPressed: _handleSubmit,
+        onPressed: () {
+          Goals? goals = goalsTimelineWidget.currentState?.goals;
+          WorkoutExercise workoutExercise = WorkoutExercise(
+            index: widget.workoutExercise != null
+                ? widget.workoutExercise!.index()
+                : widget.index,
+            exercise: widget.exercise,
+            sets: widget.sets,
+            notes: widget.notes,
+            goals: goals,
+          );
+          Navigator.pop(context, workoutExercise);
+        },
       ),
       child: GoalsTimelineWidget(
         key: goalsTimelineWidget,

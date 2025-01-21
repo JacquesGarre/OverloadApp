@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/widgets/shared/card_header_widget.dart';
+import 'package:overload/infrastructure/widgets/shared/delete_button_widget.dart';
+import 'package:overload/infrastructure/widgets/shared/edit_button_widget.dart';
 
 class CardWidget extends StatelessWidget {
+  final String title;
+  final String? subtitle;
   final Widget? child;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
-  const CardWidget({super.key, this.child});
+  const CardWidget({
+    super.key,
+    required this.onEdit,
+    required this.onDelete,
+    required this.title,
+    this.subtitle,
+    this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +27,13 @@ class CardWidget extends StatelessWidget {
       color: AppColorScheme.lightBackground,
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: child,
+        child: CardHeaderWidget(
+          title: title,
+          subtitle: subtitle,
+          onEdit: onEdit,
+          onDelete: onDelete,
+          child: child,
+        ),
       ),
     );
   }

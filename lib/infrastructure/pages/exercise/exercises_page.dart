@@ -26,15 +26,6 @@ class _ExercisesPageState extends State<ExercisesPage> {
     });
   }
 
-  void _navigateToAddExercisePage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AddExercisePage(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(
@@ -50,7 +41,14 @@ class _ExercisesPageState extends State<ExercisesPage> {
         },
         separatorBuilder: (context, index) => const SizedBox(height: 8),
       ),
-      onAdd: _navigateToAddExercisePage,
+      onAdd: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddExercisePage(),
+          ),
+        );
+      },
     );
   }
 }

@@ -10,20 +10,6 @@ class AddExercisePage extends StatelessWidget {
 
   static const String title = 'New Exercise';
 
-  static Future<void> _handleSubmit(
-    BuildContext context,
-    ExerciseProvider provider,
-    Map<String, dynamic> formData,
-  ) async {
-    try {
-      await provider.addExercise(formData);
-      if (!context.mounted) return;
-      Navigator.pop(context, true);
-    } catch (e) {
-      ExceptionHandler().handleException(context, e);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final exerciseProvider = Provider.of<ExerciseProvider>(
@@ -33,11 +19,15 @@ class AddExercisePage extends StatelessWidget {
     return PageWidget(
       title: title,
       child: ExerciseFormWidget(
-        onSubmit: (formData) => _handleSubmit(
-          context,
-          exerciseProvider,
-          formData,
-        ),
+        onSubmit: (formData) async {
+          try {
+            await exerciseProvider.addExercise(formData);
+            if (!context.mounted) return;
+            Navigator.pop(context, true);
+          } catch (e) {
+            ExceptionHandler().handleException(context, e);
+          }
+        },
       ),
     );
   }

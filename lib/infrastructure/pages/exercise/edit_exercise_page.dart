@@ -13,31 +13,25 @@ class EditExercisePage extends StatelessWidget {
 
   const EditExercisePage({super.key, required this.exercise});
 
-  static Future<void> _handleSubmit(
-    BuildContext context,
-    Exercise exercise,
-    Map<String, dynamic> formData,
-  ) async {
-    try {
-      final exerciseProvider = Provider.of<ExerciseProvider>(
-        context,
-        listen: false,
-      );
-      await exerciseProvider.updateExercise(exercise, formData);
-      if (!context.mounted) return;
-      Navigator.pop(context, true);
-    } catch (e) {
-      ExceptionHandler().handleException(context, e);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return PageWidget(
       title: title,
       child: ExerciseFormWidget(
         exercise: exercise,
-        onSubmit: (formData) => _handleSubmit(context, exercise, formData),
+        onSubmit: (formData) async {
+          try {
+            final exerciseProvider = Provider.of<ExerciseProvider>(
+              context,
+              listen: false,
+            );
+            await exerciseProvider.updateExercise(exercise, formData);
+            if (!context.mounted) return;
+            Navigator.pop(context, true);
+          } catch (e) {
+            ExceptionHandler().handleException(context, e);
+          }
+        },
       ),
     );
   }
