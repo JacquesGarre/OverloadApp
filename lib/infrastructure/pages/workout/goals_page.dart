@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goals.dart';
 import 'package:overload/domain/workout/notes.dart';
@@ -33,7 +32,7 @@ class GoalsPage extends StatefulWidget {
 }
 
 class _GoalsPageState extends State<GoalsPage> {
-  final GlobalKey<GoalsTimelineWidgetState> goalsKey =
+  final GlobalKey<GoalsTimelineWidgetState> goalsTimelineWidget =
       GlobalKey<GoalsTimelineWidgetState>();
 
   WorkoutExercise? workoutExercise;
@@ -46,34 +45,27 @@ class _GoalsPageState extends State<GoalsPage> {
     }
   }
 
-  // TODO: Refacto ce widget
-
-
   _handleAddWorkoutExercise() {
-    Goals? goals = goalsKey.currentState?.goals;
-    setState(() {
-      workoutExercise = WorkoutExercise(
-        index: widget.index,
-        exercise: widget.exercise,
-        sets: widget.sets,
-        notes: widget.notes,
-        goals: goals,
-      );
-    });
+    Goals? goals = goalsTimelineWidget.currentState?.goals;
+    workoutExercise = WorkoutExercise(
+      index: widget.index,
+      exercise: widget.exercise,
+      sets: widget.sets,
+      notes: widget.notes,
+      goals: goals,
+    );
     Navigator.pop(context, workoutExercise);
   }
 
   _handleUpdateWorkoutExercise() {
-    Goals? goals = goalsKey.currentState?.goals;
-    setState(() {
-      workoutExercise = WorkoutExercise(
-        index: workoutExercise!.index(),
-        exercise: widget.exercise,
-        sets: widget.sets,
-        notes: widget.notes,
-        goals: goals,
-      );
-    });
+    Goals? goals = goalsTimelineWidget.currentState?.goals;
+    workoutExercise = WorkoutExercise(
+      index: workoutExercise!.index(),
+      exercise: widget.exercise,
+      sets: widget.sets,
+      notes: widget.notes,
+      goals: goals,
+    );
     Navigator.pop(context, workoutExercise);
   }
 
@@ -85,7 +77,7 @@ class _GoalsPageState extends State<GoalsPage> {
       ),
       body: SingleChildScrollView(
         child: GoalsTimelineWidget(
-          key: goalsKey,
+          key: goalsTimelineWidget,
           exercise: widget.exercise,
           sets: widget.sets,
           existingGoals: widget.workoutExercise?.goals()!,

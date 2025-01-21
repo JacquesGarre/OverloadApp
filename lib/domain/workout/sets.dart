@@ -85,7 +85,7 @@ class Sets {
   }
 
   @override
-  String toString() {
+  String toString() { // TODO: Remove, just for logs
     String string = "";
     for(Set set in _value) {
       string = "$string \n ${set.toString()}";

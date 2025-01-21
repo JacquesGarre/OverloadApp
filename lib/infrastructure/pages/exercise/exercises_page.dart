@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/pages/exercise/add_exercise_page.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/widgets/exercise/exercise_card_widget.dart';
+import 'package:overload/infrastructure/widgets/shared/list_page_widget.dart';
 import 'package:provider/provider.dart';
 
 class ExercisesPage extends StatefulWidget {
@@ -25,46 +26,31 @@ class _ExercisesPageState extends State<ExercisesPage> {
     });
   }
 
+  void _navigateToAddExercisePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddExercisePage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ExerciseProvider exerciseProvider =
-        Provider.of<ExerciseProvider>(context);
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(
-            12.0,
-            0,
-            12.0,
-            0,
-          ),
-          child: ListView.separated(
-            itemCount: exerciseProvider.exercises.length,
-            itemBuilder: (context, index) {
-              return ExerciseCardWidget(
-                exercise: exerciseProvider.exercises[index],
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-          ),
-        ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton(
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddExercisePage(),
-                ),
-              )
-            },
-            tooltip: 'Add Exercise',
-            child: const Icon(Icons.add),
-          ),
-        ),
-      ],
+    final ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(
+      context,
+    );
+    return ListPageWidget(
+      list: ListView.separated(
+        itemCount: exerciseProvider.exercises.length,
+        itemBuilder: (context, index) {
+          return ExerciseCardWidget(
+            exercise: exerciseProvider.exercises[index],
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
+      ),
+      onAdd: _navigateToAddExercisePage,
     );
   }
 }

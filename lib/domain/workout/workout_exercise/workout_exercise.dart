@@ -52,7 +52,7 @@ class WorkoutExercise {
   }
 
   @override  
-  String toString() {
+  String toString() { // TODO: Remove, just for logs
     return "[Workout exercice] Index: $_index \n Exercise : $_exercise \n Sets $_sets \n Notes \n $_notes Goals \n $_goals";
   }
 }

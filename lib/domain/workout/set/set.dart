@@ -31,7 +31,7 @@ class Set {
   }
 
   @override
-  String toString() {
+  String toString() { // TODO: Remove, just for logs
     String string = "Set ${_index.value()} :";
     for (Metric metric in _metrics.value()) {
       string = "$string ${metric.toString()}";

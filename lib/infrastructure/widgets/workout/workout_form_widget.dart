@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
@@ -10,12 +9,11 @@ import 'package:overload/infrastructure/widgets/workout/workout_exercise_card_wi
 
 class WorkoutFormWidget extends StatefulWidget {
   final Workout? workout;
-  final ValueChanged<Map<String, dynamic>> onSubmit;
+
 
   const WorkoutFormWidget({
     super.key,
     this.workout,
-    required this.onSubmit,
   });
 
   @override
@@ -50,10 +48,10 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     final isFormValid = _formKey.currentState!.validate();
 
     if (isFormValid) {
-      widget.onSubmit({
-        'name': _nameController.text,
-        'notes': _notesController.text,
-      });
+      // widget.onSubmit({
+      //   'name': _nameController.text,
+      //   'notes': _notesController.text,
+      // });
     }
   }
 

@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 
@@ -62,7 +61,7 @@ class WorkoutExercises {
   }
 
   @override
-  String toString() {
+  String toString() { // TODO: Remove, just for logs
     String string = "Workout exercises \n";
     for(WorkoutExercise workoutExercise in _value) {
       string = "$string $workoutExercise";

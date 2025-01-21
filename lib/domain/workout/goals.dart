@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/sets.dart';
 
@@ -40,7 +39,7 @@ class Goals {
   }
 
   @override
-  String toString() {
+  String toString() { // TODO: Remove, just for logs
     String string = "";
     for(Goal goal in _value) {
       string = "$string \n $goal";

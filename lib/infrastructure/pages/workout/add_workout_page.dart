@@ -12,30 +12,15 @@ class AddWorkoutPage extends StatefulWidget {
 }
 
 class _AddWorkoutPageState extends State<AddWorkoutPage> {
-  void _handleCreate(Map<String, dynamic> formData) async {
-    // try {
-    //   ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(
-    //     context,
-    //     listen: false,
-    //   );
-    //   await exerciseProvider.addExercise(formData);
-    //   if (!mounted) return;
-    //   Navigator.pop(context);
-    // } catch (e) {
-    //   ExceptionHandler().handleException(context, e);
-    // }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const AppBarWidget(
+    return const Scaffold(
+      appBar: AppBarWidget(
         title: AddWorkoutPage.title,
       ),
       body: SingleChildScrollView(
-        child: WorkoutFormWidget(
-          onSubmit: _handleCreate,
-        ),
+        child: WorkoutFormWidget(),
       ),
       resizeToAvoidBottomInset: true,
     );

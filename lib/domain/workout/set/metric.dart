@@ -23,7 +23,7 @@ class Metric {
   }
 
   @override
-  String toString() {
+  String toString() { // TODO: Remove, just for logs
     return "$_value ${_unit.name()}";
   }
 }

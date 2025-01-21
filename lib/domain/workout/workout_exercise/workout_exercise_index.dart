@@ -25,7 +25,7 @@ class WorkoutExerciseIndex {
   }
 
   @override  
-  String toString() {
+  String toString() { // TODO: Remove, just for logs
     return _value.toString();
   }
 }
