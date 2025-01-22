@@ -51,7 +51,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                       0.0,
                     ),
                     child: Text(
-                      "Objective ${widget.index}",
+                      "Objective ${widget.index + 1}",
                       style: TextStyle(
                         color: AppColorScheme.onLightBackground,
                         fontSize: 16.0,
