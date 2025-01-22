@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/units.dart';
-import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/badge_selector_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/form_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/text_field_widget.dart';
 
 class ExerciseFormWidget extends StatefulWidget {
   final Exercise? exercise;
@@ -39,27 +41,14 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
     super.dispose();
   }
 
-  void _toggleUnit(String unit) {
-    setState(() {
-      if (_selectedUnits.contains(unit)) {
-        _selectedUnits.remove(unit);
-      } else {
-        _selectedUnits.add(unit);
-      }
-      _unitError = null;
-    });
-  }
-
   void _submitForm() {
     final isFormValid = _formKey.currentState!.validate();
     final isUnitsValid = _selectedUnits.isNotEmpty;
-
     if (!isUnitsValid) {
       setState(() {
         _unitError = 'Please select at least one unit';
       });
     }
-
     if (isFormValid && isUnitsValid) {
       widget.onSubmit({
         'name': _nameController.text,
@@ -70,76 +59,28 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Name"),
-            const SizedBox(height: 5.0),
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColorScheme.lightBackground,
-                border: const OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a name';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            const Text('Units'),
-            const SizedBox(height: 5),
-            Wrap(
-              spacing: 8.0,
-              runSpacing: 4.0,
-              children: _availableUnits.map((unit) {
-                final isSelected = _selectedUnits.contains(unit);
-                return FilterChip(
-                  label: Text(unit),
-                  selected: isSelected,
-                  onSelected: (_) => _toggleUnit(unit),
-                  selectedColor: Theme.of(context).colorScheme.primary,
-                  checkmarkColor: Colors.white,
-                );
-              }).toList(),
-            ),
-            if (_unitError != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  _unitError!,
-                  style: TextStyle(
-                    color: AppColorScheme.error,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            const SizedBox(height: 16),
-            Align( // TODO: Floating action button
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  foregroundColor: WidgetStatePropertyAll(
-                    AppColorScheme.onPrimary,
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(
-                    AppColorScheme.primary,
-                  ),
-                ),
-                onPressed: _submitForm,
-                child: const Text('Submit'),
-              ),
-            ),
-          ],
+    return FormWidget(
+      formKey: _formKey,
+      fields: [
+        TextFieldWidget(
+          label: "Name",
+          controller: _nameController,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a name';
+            }
+            return null;
+          },
         ),
-      ),
+        BadgeSelectorWidget(
+          label: "Units",
+          items: _availableUnits,
+          selectedItems: _selectedUnits,
+          errorMessage: _unitError,
+        ),
+      ],
+      onSubmit: _submitForm,
+      submitButtonLabel: "Add exercise",
     );
   }
 }

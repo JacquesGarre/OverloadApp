@@ -14,6 +14,7 @@ class FloatingCenteredButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40.0,
+      width: double.infinity,
       child: FloatingActionButton.extended(
         onPressed: onPressed,
         label: Text(text),
