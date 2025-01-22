@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
@@ -93,7 +94,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
           exercise: exercise,
           sets: sets,
           notes: notes,
-          workoutExercise: widget.workoutExercise
+          workoutExercise: widget.workoutExercise,
         ),
       ),
     );
@@ -117,7 +118,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
               const SizedBox(height: 5.0),
               ExerciseDropdownWidget(
                 initialExercise: widget.workoutExercise?.exercise(),
-                onChange: (Exercise? exerciseSelected) {
+                onChanged: (Exercise? exerciseSelected) {
                   _onChange(exerciseSelected, numberOfSets);
                 },
               ),

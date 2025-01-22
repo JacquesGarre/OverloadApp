@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 
 class ExerciseDropdownWidget extends StatefulWidget {
-  final ValueChanged<Exercise?> onChange;
+  final ValueChanged<Exercise?> onChanged;
   final Exercise? initialExercise;
 
   const ExerciseDropdownWidget({
     super.key,
-    required this.onChange,
+    required this.onChanged,
     this.initialExercise,
   });
 
@@ -42,6 +42,7 @@ class _ExerciseDropdownWidgetState extends State<ExerciseDropdownWidget> {
           items: exercises,
           searchFunction: exerciseProvider.searchByName,
           placeholder: 'Select exercise',
+          onChanged: widget.onChanged,
         );
       },
     );
