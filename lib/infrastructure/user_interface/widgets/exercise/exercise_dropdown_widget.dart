@@ -39,6 +39,7 @@ class _ExerciseDropdownWidgetState extends State<ExerciseDropdownWidget> {
         final exercises = exerciseProvider.exercises;
         return DropdownWidget(
           readonly: widget.initialExercise == null,
+          initialItem: widget.initialExercise,
           items: exercises,
           searchFunction: exerciseProvider.searchByName,
           placeholder: 'Select exercise',
