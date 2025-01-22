@@ -5,7 +5,7 @@ import 'package:overload/domain/exercise/exception/exercise_not_found_exception.
 import 'package:overload/domain/exercise/exception/invalid_exercise_id_exception.dart';
 import 'package:overload/domain/exercise/exception/invalid_exercise_name_exception.dart';
 import 'package:overload/domain/exercise/exception/invalid_exercise_unit_exception.dart';
-import 'package:overload/infrastructure/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
 class ExceptionHandler {
   static final ExceptionHandler _instance = ExceptionHandler._internal();
