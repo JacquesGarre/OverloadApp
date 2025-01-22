@@ -31,6 +31,10 @@ class Sets {
     return Sets(value: newValue);
   }
 
+  Sets clone() {
+    return Sets(value: value());
+  }
+
   Sets removeLastSet() {
     List<Set> newValue = List.from(_value);
     if (newValue.isEmpty) {

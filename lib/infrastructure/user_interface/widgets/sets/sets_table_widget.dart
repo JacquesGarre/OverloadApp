@@ -11,7 +11,6 @@ import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_c
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:overload/domain/workout/set/set.dart';
 
-// TODO: Pouvoir passer un goal, pour l'afficher à chaque set? Is it useful
 class SetsTableWidget extends StatefulWidget {
   final Exercise exercise;
   final Sets sets;
@@ -20,120 +19,98 @@ class SetsTableWidget extends StatefulWidget {
   final bool readonly;
   final void Function(Sets updatedSets) onSetsUpdated;
 
-  SetsTableWidget({
+  const SetsTableWidget({
     super.key,
     required this.exercise,
-    required Sets sets,
+    required this.sets,
     required this.checkable,
     required this.setsNumberSelector,
     required this.onSetsUpdated,
     required this.readonly,
-  }) : sets = Sets(value: sets.value());
+  });
 
   @override
   State<SetsTableWidget> createState() => _SetsTableWidgetState();
 }
 
 class _SetsTableWidgetState extends State<SetsTableWidget> {
-  static double rowHeight = 35;
-  Sets? sets;
-  List<PlutoColumn> columns = <PlutoColumn>[];
+  static const double rowHeight = 35;
+  late Sets sets;
+  late List<PlutoColumn> columns;
   List<PlutoRow> rows = [];
   PlutoGridStateManager? stateManager;
 
   @override
   void initState() {
     super.initState();
-    sets = Sets(value: widget.sets.value());
-    generateColumns();
-    generateRows();
+    sets = widget.sets.clone();
+    _initializeColumns();
+    _initializeRows();
   }
 
   @override
-  void didUpdateWidget(covariant SetsTableWidget oldWidget) {
+  void didUpdateWidget(SetsTableWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.exercise != oldWidget.exercise ||
         widget.sets != oldWidget.sets) {
-      generateColumns();
-      generateRows();
-      setState(() {});
+      sets = widget.sets.clone();
+      _initializeColumns();
+      _initializeRows();
     }
   }
 
-  void updateSet(int rowIdx, int columnIdx, num value) {
-    SetIndex setIndex = SetIndex(value: rowIdx + 1);
-    Unit unit = widget.exercise.units().value()[columnIdx - 1];
-    Metric metric = Metric(value: value, unit: unit);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted || stateManager == null) return;
-      setState(() {
-        sets = sets!.updateSet(setIndex, metric);
-        widget.onSetsUpdated(sets!);
-      });
-      generateRows();
-    });
+  void _initializeColumns() {
+    columns = [
+      SetsTableColumns.setIndexColumn(),
+      ...widget.exercise.units().value().map(
+            (unit) => SetsTableColumns.unitColumn(unit, widget.readonly),
+          ),
+      if (widget.checkable) SetsTableColumns.checkboxColumn(),
+    ];
   }
 
-  void generateSets(int number) {
-    if (number > sets!.count()) {
-      addSet();
-    }
-    if (number < sets!.count()) {
-      removeSet();
-    }
+  void _initializeRows() {
+    rows = sets.value().map(_generateRowFromSet).toList();
   }
 
-  void addSet() {
-    setState(() {
-      sets = sets!.addSetFromExercise(widget.exercise);
-      widget.onSetsUpdated(sets!);
-    });
-    generateRows();
-  }
-
-  void removeSet() {
-    setState(() {
-      sets = sets!.removeLastSet();
-      widget.onSetsUpdated(sets!);
-    });
-    generateRows();
-  }
-
-  void generateColumns() {
-    columns.clear();
-    columns.add(SetsTableColumns.setIndexColumn());
-    for (Unit unit in widget.exercise.units().value()) {
-      columns.add(SetsTableColumns.unitColumn(unit, widget.readonly));
-    }
-    if (widget.checkable) {
-      columns.add(SetsTableColumns.checkboxColumn());
-    }
-  }
-
-  void generateRows() {
-    if (stateManager == null || !mounted) {
-      return;
-    }
-    List<PlutoRow> rowsToAdd = [];
-    for (Set set in sets!.value()) {
-      rowsToAdd.add(generateRowFromSet(set));
-    }
-    stateManager?.removeRows(stateManager!.rows);
-    stateManager?.appendRows(rowsToAdd);
-    stateManager?.notifyListeners();
-  }
-
-  PlutoRow generateRowFromSet(Set set) {
-    Map<String, PlutoCell> cells = {
+  PlutoRow _generateRowFromSet(Set set) {
+    final cells = {
       SetsTableColumns.setIndexColumnField:
           PlutoCell(value: set.index().value()),
-      SetsTableColumns.checkboxColumnField: PlutoCell(value: ''),
+      for (var unit in widget.exercise.units().value())
+        unit.name(): PlutoCell(value: set.metrics().findByUnit(unit)?.value()),
+      if (widget.checkable)
+        SetsTableColumns.checkboxColumnField: PlutoCell(value: ''),
     };
-    for (Unit unit in widget.exercise.units().value()) {
-      Metric? metric = set.metrics().findByUnit(unit);
-      cells[unit.name()] = PlutoCell(value: metric?.value());
-    }
     return PlutoRow(cells: cells);
+  }
+
+  void _updateSet(int rowIdx, int columnIdx, num value) {
+    final setIndex = SetIndex(value: rowIdx + 1);
+    final unit = widget.exercise.units().value()[columnIdx - 1];
+    final metric = Metric(value: value, unit: unit);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          sets = sets.updateSet(setIndex, metric);
+          widget.onSetsUpdated(sets);
+          _initializeRows();
+        });
+      }
+    });
+  }
+
+  void _generateSets(int number) {
+    setState(() {
+      if (number > sets.count()) {
+        sets = sets.addSetFromExercise(widget.exercise);
+      } else if (number < sets.count()) {
+        sets = sets.removeLastSet();
+      }
+      widget.onSetsUpdated(sets);
+      _initializeRows();
+    });
   }
 
   @override
@@ -143,77 +120,17 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
       child: Column(
         children: [
           SizedBox(
-            height: (sets!.count() + 1) * rowHeight,
+            height: (sets.count() + 1) * rowHeight,
             child: PlutoGrid(
-              configuration: PlutoGridConfiguration(
-                enterKeyAction: PlutoGridEnterKeyAction.toggleEditing,
-                columnSize: const PlutoGridColumnSizeConfig(
-                  resizeMode: PlutoResizeMode.none,
-                  autoSizeMode: PlutoAutoSizeMode.scale,
-                ),
-                style: PlutoGridStyleConfig(
-                  columnHeight: rowHeight,
-                  rowHeight: rowHeight - 4,
-                  checkedColor: AppColorScheme.primary,
-                  gridBackgroundColor: Colors.transparent,
-                  rowColor: AppColorScheme.lightBackground,
-                  enableColumnBorderVertical: false,
-                  enableColumnBorderHorizontal: false,
-                  enableCellBorderHorizontal: false,
-                  enableCellBorderVertical: false,
-                  gridBorderColor: Colors.transparent,
-                  activatedColor: Colors.transparent,
-                  cellColorInEditState: Colors.transparent,
-                  cellColorInReadOnlyState: Colors.transparent,
-                  inactivatedBorderColor: Colors.transparent,
-                  evenRowColor: Colors.transparent,
-                  oddRowColor: Colors.transparent,
-                  columnTextStyle: const TextStyle(
-                    color: Colors.white,
-                    decoration: TextDecoration.none,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  cellTextStyle: const TextStyle(
-                    color: Colors.white,
-                    decoration: TextDecoration.none,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  activatedBorderColor: Colors.transparent,
-                  gridBorderRadius: BorderRadius.circular(5.0),
-                  defaultColumnTitlePadding: const EdgeInsets.fromLTRB(
-                    5.0,
-                    2.0,
-                    5.0,
-                    2.0,
-                  ),
-                  defaultCellPadding: const EdgeInsets.fromLTRB(
-                    5.0,
-                    2.0,
-                    5.0,
-                    2.0,
-                  ),
-                ),
-              ),
               columns: columns,
               rows: rows,
-              mode: !widget.readonly
-                  ? PlutoGridMode.normal
-                  : PlutoGridMode.selectWithOneTap,
-              onSelected: (PlutoGridOnSelectedEvent event) {
-                Logger().i("onSelected");
-              },
-              onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                Logger().i("onRowDoubleTap");
-              },
-              onRowChecked: (PlutoGridOnRowCheckedEvent event) {
-                Logger().i("onRowChecked");
-              },
-              onChanged: (PlutoGridOnChangedEvent event) {
-                updateSet(event.rowIdx, event.columnIdx, event.value);
-              },
-              onLoaded: (PlutoGridOnLoadedEvent event) {
+              configuration: _gridConfiguration(),
+              mode: widget.readonly
+                  ? PlutoGridMode.selectWithOneTap
+                  : PlutoGridMode.normal,
+              onChanged: (event) =>
+                  _updateSet(event.rowIdx, event.columnIdx, event.value),
+              onLoaded: (event) {
                 if (!mounted) return;
                 event.stateManager.setAutoEditing(true);
                 event.stateManager.addListener(() {
@@ -226,9 +143,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                     }
                   }
                 });
-                event.stateManager.notifyListeners();
                 stateManager = event.stateManager;
-                generateRows();
+                _initializeRows();
               },
             ),
           ),
@@ -254,12 +170,63 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                         : widget.sets.count(),
                     min: 1,
                     max: 30,
-                    onUpdate: generateSets,
+                    onUpdate: _generateSets,
                   ),
                 ],
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  PlutoGridConfiguration _gridConfiguration() {
+    return PlutoGridConfiguration(
+      columnSize: const PlutoGridColumnSizeConfig(
+        resizeMode: PlutoResizeMode.none,
+        autoSizeMode: PlutoAutoSizeMode.scale,
+      ),
+      style: PlutoGridStyleConfig(
+        columnHeight: rowHeight,
+        rowHeight: rowHeight - 4,
+        checkedColor: AppColorScheme.primary,
+        gridBackgroundColor: Colors.transparent,
+        rowColor: AppColorScheme.lightBackground,
+        enableColumnBorderVertical: false,
+        enableColumnBorderHorizontal: false,
+        enableCellBorderHorizontal: false,
+        enableCellBorderVertical: false,
+        gridBorderColor: Colors.transparent,
+        activatedColor: Colors.transparent,
+        cellColorInEditState: Colors.transparent,
+        cellColorInReadOnlyState: Colors.transparent,
+        inactivatedBorderColor: Colors.transparent,
+        evenRowColor: Colors.transparent,
+        oddRowColor: Colors.transparent,
+        columnTextStyle: const TextStyle(
+          color: Colors.white,
+          decoration: TextDecoration.none,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+        cellTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+        activatedBorderColor: Colors.transparent,
+        gridBorderRadius: BorderRadius.circular(5.0),
+        defaultColumnTitlePadding: const EdgeInsets.fromLTRB(
+          5.0,
+          2.0,
+          5.0,
+          2.0,
+        ),
+        defaultCellPadding: const EdgeInsets.fromLTRB(
+          5.0,
+          2.0,
+          5.0,
+          2.0,
+        ),
       ),
     );
   }

@@ -12,19 +12,18 @@ class GoalsTimelineWidget extends StatefulWidget {
   final Sets sets;
   final Goals? existingGoals;
 
-  GoalsTimelineWidget({
-    super.key,
-    required this.exercise,
-    required Sets sets,
-    this.existingGoals
-  }) : sets = Sets(value: sets.value());
+  GoalsTimelineWidget(
+      {super.key,
+      required this.exercise,
+      required Sets sets,
+      this.existingGoals})
+      : sets = Sets(value: sets.value());
 
   @override
   State<GoalsTimelineWidget> createState() => GoalsTimelineWidgetState();
 }
 
 class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
-
   Goals goals = Goals.empty();
   late Sets sets;
 
@@ -54,8 +53,12 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
   }
 
   void _updateGoal(int index, Sets updatedSets) {
-    setState(() {
-      goals = goals.updatedAt(index, updatedSets);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          goals = goals.updatedAt(index, updatedSets);
+        });
+      }
     });
   }
 
@@ -136,15 +139,14 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                           ],
                         ),
                         SetsTableWidget(
-                          exercise: widget.exercise,
-                          sets: goal.sets(),
-                          checkable: false,
-                          setsNumberSelector: true,
-                          readonly: false,
-                          onSetsUpdated: (updatedSets) {
-                            _updateGoal(index, updatedSets);
-                          }
-                        ),
+                            exercise: widget.exercise,
+                            sets: goal.sets(),
+                            checkable: false,
+                            setsNumberSelector: true,
+                            readonly: false,
+                            onSetsUpdated: (updatedSets) {
+                              _updateGoal(index, updatedSets);
+                            }),
                       ],
                     ),
                   ),
