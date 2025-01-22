@@ -33,6 +33,7 @@ class SetsTableWidget extends StatefulWidget {
   State<SetsTableWidget> createState() => _SetsTableWidgetState();
 }
 
+// TODO: Change this widget for something better (maybe custom?)
 class _SetsTableWidgetState extends State<SetsTableWidget> {
   static const double rowHeight = 35;
   late Sets sets;
@@ -75,9 +76,10 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
 
   PlutoRow _generateRowFromSet(Set set) {
     final cells = {
-      SetsTableColumns.setIndexColumnField:
-          PlutoCell(value: set.index().value()),
-      for (var unit in widget.exercise.units().value())
+      SetsTableColumns.setIndexColumnField: PlutoCell(
+        value: set.index().value(),
+      ),
+      for (var unit in widget.exercise.units().value()) 
         unit.name(): PlutoCell(value: set.metrics().findByUnit(unit)?.value()),
       if (widget.checkable)
         SetsTableColumns.checkboxColumnField: PlutoCell(value: ''),
@@ -94,7 +96,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
       if (mounted) {
         setState(() {
           sets = sets.updateSet(setIndex, metric);
-          widget.onSetsUpdated(sets);
+          widget.onSetsUpdated(sets); // TODO: Fix this, this is closing the keyboard...
           _initializeRows();
         });
       }
@@ -132,7 +134,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                 event.rowIdx,
                 event.columnIdx,
                 event.value,
-              ), 
+              ),
               onLoaded: (event) {
                 if (!mounted) return;
                 event.stateManager.setAutoEditing(true);
