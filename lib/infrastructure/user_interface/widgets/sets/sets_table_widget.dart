@@ -108,7 +108,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
       } else if (number < sets.count()) {
         sets = sets.removeLastSet();
       }
-      widget.onSetsUpdated(sets);
+      widget.onSetsUpdated(sets); // TODO: Fix this, this is closing the keyboard...
       _initializeRows();
     });
   }
@@ -128,8 +128,11 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
               mode: widget.readonly
                   ? PlutoGridMode.selectWithOneTap
                   : PlutoGridMode.normal,
-              onChanged: (event) =>
-                  _updateSet(event.rowIdx, event.columnIdx, event.value),
+              onChanged: (event) => _updateSet(
+                event.rowIdx,
+                event.columnIdx,
+                event.value,
+              ), 
               onLoaded: (event) {
                 if (!mounted) return;
                 event.stateManager.setAutoEditing(true);

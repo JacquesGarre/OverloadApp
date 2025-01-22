@@ -12,12 +12,12 @@ class GoalsTimelineWidget extends StatefulWidget {
   final Sets sets;
   final Goals? existingGoals;
 
-  GoalsTimelineWidget(
-      {super.key,
-      required this.exercise,
-      required Sets sets,
-      this.existingGoals})
-      : sets = Sets(value: sets.value());
+  GoalsTimelineWidget({
+    super.key,
+    required this.exercise,
+    required Sets sets,
+    this.existingGoals,
+  }) : sets = Sets(value: sets.value());
 
   @override
   State<GoalsTimelineWidget> createState() => GoalsTimelineWidgetState();
@@ -56,7 +56,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
-          goals = goals.updatedAt(index, updatedSets);
+          goals = goals.updateAt(index, updatedSets); // TODO: This is closing the keyboard, because the widget rebuilds....
         });
       }
     });
@@ -145,7 +145,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                             setsNumberSelector: true,
                             readonly: false,
                             onSetsUpdated: (updatedSets) {
-                              _updateGoal(index, updatedSets);
+                              _updateGoal(index, updatedSets); // TODO: This is closing the keyboard
                             }),
                       ],
                     ),

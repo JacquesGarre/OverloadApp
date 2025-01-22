@@ -32,7 +32,7 @@ class Goals {
     return Goals(value: newValue);
   }
 
-  Goals updatedAt(int index, Sets newSets) {
+  Goals updateAt(int index, Sets newSets) {
     List<Goal> newValue = List.from(_value);
     newValue[index] = Goal(sets: newSets);
     return Goals(value: newValue);
