@@ -1,10 +1,8 @@
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
-import 'package:overload/infrastructure/user_interface/theme/app_theme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/dropdown_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
 class ExerciseDropdownWidget extends StatefulWidget {
   final ValueChanged<Exercise?> onChange;
@@ -39,59 +37,11 @@ class _ExerciseDropdownWidgetState extends State<ExerciseDropdownWidget> {
     return Consumer<ExerciseProvider>(
       builder: (context, exerciseProvider, child) {
         final exercises = exerciseProvider.exercises;
-        return Container(
-          decoration: BoxDecoration(
-            color: AppColorScheme.lightBackground,
-            borderRadius: BorderRadius.circular(5.0),
-            border: Border.all(
-              color: AppTheme
-                      .theme.inputDecorationTheme.border?.borderSide.color ??
-                  Colors.white,
-              width: 1,
-            ),
-          ),
-          child: CustomDropdown<Exercise>.searchRequest(
-            disabledDecoration: CustomDropdownDisabledDecoration(
-              suffixIcon: null,
-              fillColor: AppColorScheme.lightBackground,
-              headerStyle: TextStyle(
-                fontSize: 16.0,
-                color: AppColorScheme.onLightBackground,
-              ),
-              hintStyle: TextStyle(
-                color: AppColorScheme.onLightBackground,
-              ),
-            ),
-            enabled: widget.initialExercise == null,
-            initialItem: widget.initialExercise,
-            decoration: CustomDropdownDecoration(
-              closedFillColor: AppColorScheme.lightBackground,
-              expandedFillColor: AppColorScheme.lightBackground,
-              hintStyle: TextStyle(
-                color: AppTheme.theme.inputDecorationTheme.hintStyle?.color,
-              ),
-              listItemDecoration: ListItemDecoration(
-                selectedColor: AppColorScheme.lightBackground,
-                splashColor: AppColorScheme.lightBackground,
-                highlightColor: AppColorScheme.lightBackground,
-              ),
-              searchFieldDecoration: SearchFieldDecoration(
-                fillColor: AppColorScheme.lightBackground,
-                textStyle: TextStyle(
-                  color: AppColorScheme.onLightBackground,
-                  fontSize: 14.0,
-                ),
-                hintStyle: AppTheme.theme.inputDecorationTheme.hintStyle,
-              ),
-              listItemStyle: const TextStyle(
-                fontSize: 14.0,
-              ),
-            ),
-            futureRequest: (String query) => exerciseProvider.searchByName(query),
-            hintText: 'Select exercise',
-            items: exercises,
-            onChanged: widget.onChange,
-          ),
+        return DropdownWidget(
+          readonly: widget.initialExercise == null,
+          items: exercises,
+          searchFunction: exerciseProvider.searchByName,
+          placeholder: 'Select exercise',
         );
       },
     );
