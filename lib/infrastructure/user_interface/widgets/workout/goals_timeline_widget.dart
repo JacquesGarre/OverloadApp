@@ -5,6 +5,8 @@ import 'package:overload/domain/workout/goals.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/secondary_button_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/workout/goal_widget.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class GoalsTimelineWidget extends StatefulWidget {
@@ -56,7 +58,10 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
-          goals = goals.updateAt(index, updatedSets); // TODO: This is closing the keyboard, because the widget rebuilds....
+          goals = goals.updateAt(
+            index,
+            updatedSets,
+          ); // TODO: This is closing the keyboard, because the widget rebuilds....
         });
       }
     });
@@ -92,87 +97,20 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
           itemCount: goals.count() + 1,
           contentsBuilder: (_, index) {
             if (index < goals.count()) {
-              // Render existing goals
               Goal goal = goals.value()[index];
-              bool goalIsAchieved = false; // TODO: Goal is achieved = false
-              if (goalIsAchieved) return null;
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 15.0),
-                child: Card(
-                  key: ValueKey("goal_${goal.hashCode}"),
-                  shadowColor: Colors.transparent,
-                  color: AppColorScheme.lightBackground,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15.0, 5.0, 5.0, 0.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                6.0,
-                                0.0,
-                                0.0,
-                                0.0,
-                              ),
-                              child: Text(
-                                "Objective ${index + 1}",
-                                style: TextStyle(
-                                  color: AppColorScheme.onLightBackground,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _removeGoal(index);
-                              },
-                              icon: Icon(
-                                Icons.close,
-                                color: AppColorScheme.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SetsTableWidget(
-                            exercise: widget.exercise,
-                            sets: goal.sets(),
-                            checkable: false,
-                            setsNumberSelector: true,
-                            readonly: false,
-                            onSetsUpdated: (updatedSets) {
-                              _updateGoal(index, updatedSets); // TODO: This is closing the keyboard
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
+              return GoalWidget(
+                index: index,
+                goal: goal,
+                exercise: widget.exercise,
+                onUpdate: _updateGoal,
+                onRemove: _removeGoal,
               );
             } else {
-              // Render "Add an Objective" button
               return Padding(
                 padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 15.0),
-                child: ElevatedButton(
+                child: SecondaryButtonWidget(
+                  text: "Add new goal",
                   onPressed: _addGoal,
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.lightBackground,
-                    ),
-                    foregroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.primary,
-                    ),
-                  ),
-                  child: const Text(
-                    "Add new goal",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                 ),
               );
             }

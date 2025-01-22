@@ -5,11 +5,12 @@ import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.
 import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/add_workout_exercise_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/secondary_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/workout/workout_exercise_card_widget.dart';
 
 class WorkoutFormWidget extends StatefulWidget {
   final Workout? workout;
-
 
   const WorkoutFormWidget({
     super.key,
@@ -86,7 +87,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return Form( // TODO: Use form widget
       key: _formKey,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -143,36 +144,16 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
               alignment: Alignment.center,
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    foregroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.primary,
-                    ),
-                    backgroundColor: WidgetStatePropertyAll(
-                      AppColorScheme.lightBackground,
-                    ),
-                  ),
+                child: SecondaryButtonWidget(
+                  text: 'Add exercise',
                   onPressed: _navigateToAddExercisePage,
-                  child: const Text('Add exercise'),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            Align(
-              // TODO : as a floating action button
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  foregroundColor: WidgetStatePropertyAll(
-                    AppColorScheme.onPrimary,
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(
-                    AppColorScheme.primary,
-                  ),
-                ),
-                onPressed: _submitForm,
-                child: const Text('Submit'),
-              ),
+            FloatingCenteredButtonWidget(
+              onPressed: _submitForm,
+              text: 'Submit',
             ),
           ],
         ),
