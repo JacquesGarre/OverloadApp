@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';

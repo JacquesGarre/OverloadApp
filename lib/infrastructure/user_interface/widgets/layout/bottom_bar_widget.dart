@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:overload/infrastructure/user_interface/layout/app_page.dart';
+import 'package:overload/infrastructure/user_interface/config/app_page_config.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
 class BottomBarWidget extends StatelessWidget {
-  final List<AppPage> pages;
+  final List<AppPageConfig> pages;
   final int currentPageIndex;
   final ValueChanged<int> onPageChanged;
 

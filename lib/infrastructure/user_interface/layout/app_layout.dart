@@ -5,7 +5,7 @@ import 'package:overload/infrastructure/user_interface/pages/exercise/exercises_
 import 'package:overload/infrastructure/user_interface/pages/home_page.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/workouts_page.dart';
 import 'package:overload/infrastructure/user_interface/widgets/layout/app_bar_widget.dart';
-import 'package:overload/infrastructure/user_interface/layout/app_page.dart';
+import 'package:overload/infrastructure/user_interface/config/app_page_config.dart';
 import 'package:overload/infrastructure/user_interface/widgets/layout/bottom_bar_widget.dart';
 
 class AppLayout extends StatefulWidget {
@@ -16,23 +16,23 @@ class AppLayout extends StatefulWidget {
 }
 
 class _AppLayoutState extends State<AppLayout> {
-  late AppPage _currentPage;
-  int _currentPageIndex = 2;
+  late AppPageConfig _currentPage;
+  int _currentPageIndex = 0;
 
-  final List<AppPage> _pages = [
-    AppPage(
+  final List<AppPageConfig> _pages = [
+    AppPageConfig(
       index: 0,
       title: HomePage.title,
       page: const HomePage(),
       icon: Ri.home_2_line,
     ),
-    AppPage(
+    AppPageConfig(
       index: 1,
       title: ExercisesPage.title,
       page: const ExercisesPage(),
       icon: Healthicons.exercise,
     ),
-    AppPage(
+    AppPageConfig(
       index: 2,
       title: WorkoutsPage.title,
       page: const WorkoutsPage(),

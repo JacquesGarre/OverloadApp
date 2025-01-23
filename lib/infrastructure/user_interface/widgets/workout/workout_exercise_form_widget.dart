@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
