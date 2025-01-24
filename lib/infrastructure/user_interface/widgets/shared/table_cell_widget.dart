@@ -11,6 +11,7 @@ class TableCellWidget extends StatelessWidget {
   final String? value;
   final TableColumnFormat format;
   final String? placeholder;
+  final TextStyle? style;
 
   const TableCellWidget({
     super.key,
@@ -19,7 +20,8 @@ class TableCellWidget extends StatelessWidget {
     required this.format,
     required this.canBeNegative,
     this.value,
-    this.placeholder
+    this.placeholder,
+    this.style
   });
 
   @override
@@ -48,13 +50,13 @@ class TableCellWidget extends StatelessWidget {
               hintText: placeholder, 
               hintStyle: TextStyle(
                 color: AppColorScheme.onPrimary.withOpacity(0.5),
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
               ),
             ),
             controller: controller,
-            style: TextStyle(
+            style: style ?? TextStyle(
               color: AppColorScheme.onPrimary,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w400,
             ),
             inputFormatters: [
               FilteringTextInputFormatter.allow(

@@ -31,7 +31,6 @@ class TableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Table(
-      border: TableBorder.all(), // TODO: toremove
       columnWidths: _columnsWidths(),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: <TableRow>[
