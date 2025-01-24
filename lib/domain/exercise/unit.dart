@@ -85,4 +85,15 @@ class Unit {
   String toString() {  // TODO: Remove, just for logs
     return name();
   }
+
+  num defaultValue() {
+    switch(type()) {
+      case UnitType.double:
+        return 0.00;
+      case UnitType.integer:
+        return 0;
+      default:
+        throw InvalidExerciseUnitException();
+    }
+  }
 }

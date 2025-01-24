@@ -8,8 +8,8 @@ class TableCellValue {
 
   static TableCellValue fromMetric(Metric metric) {
     return TableCellValue(
-      value: metric.value().toString(),
-      placeholder: metric.value().toString()
+      value: metric.value()?.toString(),
+      placeholder: metric.value() != null ? metric.value().toString() : metric.defaultValue().toString()
     );
   }
 }

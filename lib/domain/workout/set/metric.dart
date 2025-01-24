@@ -1,16 +1,16 @@
 import 'package:overload/domain/exercise/unit.dart';
 
 class Metric {
-  final num _value;
+  final num? _value;
   final Unit _unit;
 
   Metric({
-    required num value,
     required Unit unit,
+    num? value,
   })  : _value = value,
         _unit = unit;
 
-  num value() {
+  num? value() {
     return _value;
   }
 
@@ -19,11 +19,16 @@ class Metric {
   }
 
   static Metric fromUnit(Unit unit) {
-    return Metric(value: 0, unit: unit);
+    return Metric(unit: unit);
   }
 
   @override
   String toString() { // TODO: Remove, just for logs
     return "$_value ${_unit.name()}";
   }
+
+  num defaultValue() {
+    return _unit.defaultValue();
+  }
+
 }
