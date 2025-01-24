@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
+import 'package:overload/domain/workout/set/set.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_config.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_widget.dart';
-import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
+import 'package:overload/infrastructure/user_interface/config/table_row.dart'
+    as config;
 
 class SetsTableWidget extends StatefulWidget {
   final Exercise exercise;
@@ -30,12 +33,33 @@ class SetsTableWidget extends StatefulWidget {
 }
 
 class _SetsTableWidgetState extends State<SetsTableWidget> {
-  
+
   static const double rowHeight = 35;
+  late Sets sets;
+  List<config.TableRow> rows = [];
 
   @override
   void initState() {
     super.initState();
+    sets = widget.sets;
+    rows = config.TableRow.fromSets(sets);
+  }
+
+  _updateRows(int value) {
+    if (value > rows.length) {
+      SetIndex lastIndex = SetIndex.nextFromSetIndex(sets.lastSet()?.index());
+      Set newSet = Set.fromSetIndexAndExercise(lastIndex, widget.exercise);
+      setState(() {
+        sets = sets.add(newSet);
+        rows.add(config.TableRow.fromSet(newSet));
+      });
+    }
+    if (value < rows.length) {
+      setState(() {
+        sets = sets.removeLastSet();
+        rows.removeLast();
+      });
+    }
   }
 
   @override
@@ -47,7 +71,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
           TableWidget(
             rowHeight: rowHeight,
             columns: TableColumnConfig.fromExercise(widget.exercise),
-            rows: config.TableRow.fromSets(widget.sets),
+            rows: rows,
           ),
           if (widget.setsNumberSelector)
             Padding(
@@ -69,9 +93,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                     current: widget.sets.count(),
                     min: 1,
                     max: 30,
-                    onUpdate: (int value) {
-
-                    },
+                    onUpdate: _updateRows,
                   ),
                 ],
               ),
