@@ -4,14 +4,13 @@ import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_format.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
-
-
 class TableCellWidget extends StatelessWidget {
   final double height;
   final bool readOnly;
   final bool canBeNegative;
   final String? value;
   final TableColumnFormat format;
+  final String? placeholder;
 
   const TableCellWidget({
     super.key,
@@ -20,6 +19,7 @@ class TableCellWidget extends StatelessWidget {
     required this.format,
     required this.canBeNegative,
     this.value,
+    this.placeholder
   });
 
   @override
@@ -32,13 +32,12 @@ class TableCellWidget extends StatelessWidget {
         child: Center(
           child: TextFormField(
             keyboardType: TextInputType.number,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
             textAlign: TextAlign.center,
             textAlignVertical: TextAlignVertical.center,
             readOnly: readOnly,
             enabled: !readOnly,
             enableSuggestions: false,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
               contentPadding: EdgeInsets.zero,
@@ -46,6 +45,11 @@ class TableCellWidget extends StatelessWidget {
               enabledBorder: InputBorder.none,
               errorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
+              hintText: placeholder, 
+              hintStyle: TextStyle(
+                color: AppColorScheme.onPrimary.withOpacity(0.5),
+                fontWeight: FontWeight.w500,
+              ),
             ),
             controller: controller,
             style: TextStyle(

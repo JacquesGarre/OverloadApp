@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_config.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_cell_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_column_widget.dart';
+import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
 
 class TableWidget extends StatelessWidget {
   final double rowHeight;
   final List<TableColumnConfig> columns;
-  final List<List<dynamic>> rows;
+  final List<config.TableRow> rows;
 
   const TableWidget({
     super.key,
@@ -46,13 +47,15 @@ class TableWidget extends StatelessWidget {
         ),
         ...rows.map((row) {
           return TableRow(children: <Widget>[
-            ...row.asMap().entries.map((entry) {
+            ...row.cells.asMap().entries.map((entry) {
               int index = entry.key;
-              String value = entry.value;
+              String? value = entry.value.value;
+              String? placeholder = entry.value.placeholder;
               return TableCellWidget(
                 height: rowHeight,
                 readOnly: columns[index].readOnly,
                 value: value,
+                placeholder: placeholder,
                 format: columns[index].format,
                 canBeNegative: columns[index].canBeNegative,
               );
