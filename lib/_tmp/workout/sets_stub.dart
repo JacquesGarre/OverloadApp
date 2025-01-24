@@ -20,7 +20,7 @@ class SetsStub {
   static Sets fromExercise(Exercise exercise) {
     List<Set> value = [];
     Metrics metrics = Metrics.fromExercise(exercise);
-    for (var i = 1; i <= 3; i++) {
+    for (var i = 1; i <= 1; i++) {
       value.add(Set(index: SetIndex(value: i), metrics: metrics));
     }
     return Sets(value: value);

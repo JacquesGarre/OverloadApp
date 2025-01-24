@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_format.dart';
+import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
 class TableCellWidget extends StatelessWidget {
@@ -12,6 +12,8 @@ class TableCellWidget extends StatelessWidget {
   final TableColumnFormat format;
   final String? placeholder;
   final TextStyle? style;
+  final config.TableRow row; 
+  final int cellIndex;   
 
   const TableCellWidget({
     super.key,
@@ -19,6 +21,8 @@ class TableCellWidget extends StatelessWidget {
     required this.readOnly,
     required this.format,
     required this.canBeNegative,
+    required this.row,
+    required this.cellIndex,
     this.value,
     this.placeholder,
     this.style
@@ -26,8 +30,7 @@ class TableCellWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController(text: value);
-
+    final TextEditingController controller = TextEditingController(text: row.cells[cellIndex].value);
     return TableCell(
       child: SizedBox(
         height: height,
@@ -66,14 +69,13 @@ class TableCellWidget extends StatelessWidget {
             ],
             onChanged: (value) {
               final formattedValue = _formatInput(value, format, canBeNegative);
-              if (formattedValue != value) {
-                controller.value = TextEditingValue(
-                  text: formattedValue,
-                  selection: TextSelection.collapsed(
-                    offset: formattedValue.length,
-                  ),
-                );
-              }
+              controller.value = TextEditingValue(
+                text: formattedValue,
+                selection: TextSelection.collapsed(
+                  offset: formattedValue.length,
+                ),
+              );
+              row.cells[cellIndex].value = formattedValue;              
             },
           ),
         ),

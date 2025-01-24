@@ -1,8 +1,9 @@
 import 'package:overload/domain/workout/set/metric.dart';
 
 class TableCellValue {
-  final String? value;
-  final String? placeholder;
+  
+  String? value;
+  String? placeholder;
 
   TableCellValue({this.value, this.placeholder});
 

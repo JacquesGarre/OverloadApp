@@ -47,16 +47,18 @@ class TableWidget extends StatelessWidget {
         ...rows.map((row) {
           return TableRow(children: <Widget>[
             ...row.cells.asMap().entries.map((entry) {
-              int index = entry.key;
+              int cellIndex = entry.key;
               String? value = entry.value.value;
               String? placeholder = entry.value.placeholder;
               return TableCellWidget(
                 height: rowHeight,
-                readOnly: columns[index].readOnly,
+                readOnly: columns[cellIndex].readOnly,
                 value: value,
                 placeholder: placeholder,
-                format: columns[index].format,
-                canBeNegative: columns[index].canBeNegative,
+                format: columns[cellIndex].format,
+                canBeNegative: columns[cellIndex].canBeNegative,
+                row: row,
+                cellIndex: cellIndex,
               );
             }),
           ]);
