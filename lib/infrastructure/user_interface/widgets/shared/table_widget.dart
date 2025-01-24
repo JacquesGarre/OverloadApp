@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_config.dart';
-import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/table_cell_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_column_widget.dart';
 
 class TableWidget extends StatelessWidget {
   final double rowHeight;
   final List<TableColumnConfig> columns;
+  final List<List<dynamic>> rows;
 
-  const TableWidget(
-      {super.key, required this.rowHeight, required this.columns});
+  const TableWidget({
+    super.key,
+    required this.rowHeight,
+    required this.columns,
+    required this.rows,
+  });
 
   Map<int, TableColumnWidth> _columnsWidths() {
     Map<int, TableColumnWidth> columnsWidth = {};
@@ -39,65 +44,21 @@ class TableWidget extends StatelessWidget {
             })
           ],
         ),
-        TableRow(
-          children: <Widget>[
-            TableCell(
-              child: SizedBox(
+        ...rows.map((row) {
+          return TableRow(children: <Widget>[
+            ...row.asMap().entries.map((entry) {
+              int index = entry.key;
+              String value = entry.value;
+              return TableCellWidget(
                 height: rowHeight,
-                child: Center(
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    textAlign: TextAlign.center,
-                    textAlignVertical: TextAlignVertical.center,
-                    readOnly: false,
-                    enabled: true,
-                    enableSuggestions: false,
-                    decoration: null,
-                    controller: TextEditingController(),
-                    validator: (value) {
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-            ),
-            TableCell(
-              child: SizedBox(
-                height: rowHeight,
-                child: Center(
-                  child: TextFormField(
-                    textAlign: TextAlign.center,
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-            ),
-            TableCell(
-              child: SizedBox(
-                height: rowHeight,
-                child: Center(
-                  child: TextFormField(
-                    textAlign: TextAlign.center,
-                    controller: TextEditingController(),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+                readOnly: columns[index].readOnly,
+                value: value,
+                format: columns[index].format,
+                canBeNegative: columns[index].canBeNegative,
+              );
+            }),
+          ]);
+        }),
       ],
     );
   }
