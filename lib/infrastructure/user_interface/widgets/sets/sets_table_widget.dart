@@ -5,6 +5,7 @@ import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_config.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_widget.dart';
+import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
 
 class SetsTableWidget extends StatefulWidget {
   final Exercise exercise;
@@ -46,7 +47,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
           TableWidget(
             rowHeight: rowHeight,
             columns: TableColumnConfig.fromExercise(widget.exercise),
-            rows: [],
+            rows: config.TableRow.fromSets(widget.sets),
           ),
           if (widget.setsNumberSelector)
             Padding(
