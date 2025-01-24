@@ -66,7 +66,6 @@ class TableCellWidget extends StatelessWidget {
             ],
             onChanged: (value) {
               final formattedValue = _formatInput(value, format, canBeNegative);
-              Logger().e(formattedValue);
               if (formattedValue != value) {
                 controller.value = TextEditingValue(
                   text: formattedValue,
