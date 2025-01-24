@@ -10,6 +10,7 @@ import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.da
 import 'package:overload/infrastructure/user_interface/widgets/exercise/exercise_dropdown_widget.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/workout/set/set.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
   final WorkoutExerciseIndex index;
@@ -159,23 +160,12 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                   }),
               const SizedBox(height: 30.0),
               if (sets.count() > 0 && exercise != null)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      foregroundColor: WidgetStatePropertyAll(
-                        AppColorScheme.onPrimary,
-                      ),
-                      backgroundColor: WidgetStatePropertyAll(
-                        AppColorScheme.primary,
-                      ),
-                    ),
-                    onPressed: () {
-                      _navigateToAddGoalsPage(exercise!, sets, notes);
-                    },
-                    child: const Text('Next'),
-                  ),
-                ),
+                FloatingCenteredButtonWidget(
+                  onPressed: () {
+                    _navigateToAddGoalsPage(exercise!, sets, notes);
+                  },
+                  text: 'Next',
+                )
             ],
           ),
         ),

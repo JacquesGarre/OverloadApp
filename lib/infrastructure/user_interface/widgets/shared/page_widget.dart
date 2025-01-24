@@ -6,11 +6,12 @@ class PageWidget extends StatelessWidget {
   final Widget child;
   final Widget? floatingActionButton;
 
-  const PageWidget(
-      {super.key,
-      required this.title,
-      required this.child,
-      this.floatingActionButton});
+  const PageWidget({
+    super.key,
+    required this.title,
+    required this.child,
+    this.floatingActionButton,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,12 @@ class PageWidget extends StatelessWidget {
         child: child,
       ),
       resizeToAvoidBottomInset: true,
-      floatingActionButton: floatingActionButton,
+      floatingActionButton: floatingActionButton != null
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 16.0, right: 16.0),
+              child: floatingActionButton,
+            )
+          : null,
     );
   }
 }

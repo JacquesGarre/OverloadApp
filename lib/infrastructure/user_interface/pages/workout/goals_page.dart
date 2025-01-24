@@ -39,27 +39,38 @@ class _GoalsPageState extends State<GoalsPage> {
   Widget build(BuildContext context) {
     return PageWidget(
       title: GoalsPage.title,
-      floatingActionButton: FloatingCenteredButtonWidget(
-        text: "${widget.workoutExercise != null ? "Update" : "Add"} exercise",
-        onPressed: () {
-          Goals? goals = goalsTimelineWidget.currentState?.goals;
-          WorkoutExercise workoutExercise = WorkoutExercise(
-            index: widget.workoutExercise != null
-                ? widget.workoutExercise!.index()
-                : widget.index,
-            exercise: widget.exercise,
-            sets: widget.sets,
-            notes: widget.notes,
-            goals: goals,
-          );
-          Navigator.pop(context, workoutExercise);
-        },
-      ),
-      child: GoalsTimelineWidget(
-        key: goalsTimelineWidget,
-        exercise: widget.exercise,
-        sets: widget.sets,
-        existingGoals: widget.workoutExercise?.goals()!,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GoalsTimelineWidget(
+                key: goalsTimelineWidget,
+                exercise: widget.exercise,
+                sets: widget.sets,
+                existingGoals: widget.workoutExercise?.goals()!,
+              ),
+              FloatingCenteredButtonWidget(
+                text:
+                    "${widget.workoutExercise != null ? "Update" : "Add"} exercise",
+                onPressed: () {
+                  Goals? goals = goalsTimelineWidget.currentState?.goals;
+                  WorkoutExercise workoutExercise = WorkoutExercise(
+                    index: widget.workoutExercise != null
+                        ? widget.workoutExercise!.index()
+                        : widget.index,
+                    exercise: widget.exercise,
+                    sets: widget.sets,
+                    notes: widget.notes,
+                    goals: goals,
+                  );
+                  Navigator.pop(context, workoutExercise);
+                },
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
