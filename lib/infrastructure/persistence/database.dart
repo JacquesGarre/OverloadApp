@@ -30,6 +30,7 @@ class Database {
     await db.execute('''
       CREATE TABLE ${WorkoutRepository.table} (
         id TEXT PRIMARY KEY,
+        workout_exercises TEXT NULL,
         name TEXT NULL,
         notes TEXT NULL
       )

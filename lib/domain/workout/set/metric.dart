@@ -36,7 +36,7 @@ class Metric {
   static Metric fromJson(Map<String, dynamic> json) {
     return Metric(
       unit: Unit.fromString(json["unit"]),
-      value: num.tryParse(json["value"]),
+      value: json["value"],
     );
   }
 }

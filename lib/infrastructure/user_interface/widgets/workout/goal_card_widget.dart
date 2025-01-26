@@ -78,9 +78,6 @@ class _GoalCardWidgetState extends State<GoalCardWidget> {
                 setsNumberSelector: true,
                 readonly: false,
                 onSetsUpdated: (updatedSets) {
-
-                  Logger().i("[GoalCardWidget:onSetsUpdated] $updatedSets");
-
                   widget.onUpdate(
                     widget.index,
                     updatedSets,

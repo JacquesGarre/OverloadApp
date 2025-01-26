@@ -72,8 +72,8 @@ class Workout {
     return {
       "id": _id.toString(),
       "name": _name.value().toString(),
-      "workout_exercises": _exercises.toJson(),
-      "notes": _notes.toString()
+      "workout_exercises": jsonEncode(_exercises.toJson()),
+      "notes": _notes?.value().toString()
     };
   }
 
@@ -81,7 +81,9 @@ class Workout {
     Id id = Id.fromString(json["id"]);
     Name name = Name.fromString(json["name"]);
     WorkoutExercises workoutExercises = WorkoutExercises.fromJson(
-      json["workout_exercises"],
+      (jsonDecode(json["workout_exercises"]) as List)
+          .map((item) => item as Map<String, dynamic>)
+          .toList(),
     );
     Notes? notes;
     if (json["notes"] != null) {

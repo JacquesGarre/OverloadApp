@@ -38,7 +38,11 @@ class Goal {
 
   static Goal fromJson(Map<String, dynamic> json) {
     return Goal(
-      sets: Sets.fromJson(json["sets"]),
+      sets: Sets.fromJson(
+        (json["sets"] as List)
+            .map((item) => item as Map<String, dynamic>)
+            .toList(),
+      ),
       id: Id.fromString(json["id"]),
     );
   }

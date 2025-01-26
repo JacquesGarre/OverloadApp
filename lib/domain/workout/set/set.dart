@@ -40,8 +40,12 @@ class Set {
 
   static Set fromJson(Map<String, dynamic> json) {
     return Set(
-      index: SetIndex(value: int.parse(json["set_index"])),
-      metrics: Metrics.fromJson(json["metrics"]),
+      index: SetIndex(value: json["set_index"] ),
+      metrics: Metrics.fromJson(
+        (json["metrics"] as List)
+            .map((item) => item as Map<String, dynamic>)
+            .toList(),
+        ),
     );
   }
 }

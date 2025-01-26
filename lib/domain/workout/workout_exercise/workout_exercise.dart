@@ -74,7 +74,8 @@ class WorkoutExercise {
   static WorkoutExercise fromJson(Map<String, dynamic> json) {
     workout.Id workoutId = workout.Id.fromString(json["workout_id"]);
     Id id = Id.fromString(json["id"] as String);
-    WorkoutExerciseIndex index = WorkoutExerciseIndex(value: json["index"]);
+    WorkoutExerciseIndex index =
+        WorkoutExerciseIndex(value: int.parse(json["index"]));
     Exercise exercise = Exercise.fromJson(json["exercise"]);
     SetsCount setsCount = SetsCount(value: json["sets_count"]);
     Notes? notes;
@@ -83,7 +84,9 @@ class WorkoutExercise {
     }
     Goals? goals;
     if (json["goals"] != null) {
-      goals = Goals.fromJson(json["goals"]);
+      goals = Goals.fromJson(
+        (json["goals"] as List).map((item) => item as Map<String, dynamic>).toList(),
+      );
     }
     return WorkoutExercise(
       workoutId: workoutId,
