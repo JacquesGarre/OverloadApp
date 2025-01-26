@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
@@ -11,9 +12,11 @@ import 'package:overload/infrastructure/user_interface/widgets/workout/workout_e
 
 class WorkoutFormWidget extends StatefulWidget {
   final Workout? workout;
+  final Function(Id? id, String name, String? notes, WorkoutExercises workoutExercises) onSubmit;
 
   const WorkoutFormWidget({
     super.key,
+    required this.onSubmit,
     this.workout,
   });
 
@@ -26,6 +29,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   final _nameController = TextEditingController();
   final _notesController = TextEditingController();
   WorkoutExercises workoutExercises = WorkoutExercises.empty();
+  String? _workoutExercisesError;
 
   @override
   void initState() {
@@ -48,11 +52,20 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   void _submitForm() {
     final isFormValid = _formKey.currentState!.validate();
 
-    if (isFormValid) {
-      // widget.onSubmit({
-      //   'name': _nameController.text,
-      //   'notes': _notesController.text,
-      // });
+    final isWorkoutExercisesValid = workoutExercises.value().isNotEmpty;
+    if (!isWorkoutExercisesValid) {
+      setState(() {
+        _workoutExercisesError =
+            'Please add at least one exercise to your workout';
+      });
+    }
+    if (isFormValid && isWorkoutExercisesValid) {
+      widget.onSubmit(
+        widget.workout?.id(),
+        _nameController.text,
+        _notesController.text,
+        workoutExercises,
+      );
     }
   }
 
@@ -69,6 +82,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     if (newExercise != null) {
       setState(() {
         workoutExercises = workoutExercises.add(newExercise);
+        _workoutExercisesError = null;
       });
     }
   }
@@ -76,18 +90,21 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   void _removeWorkoutExercise(WorkoutExercise workoutExercise) {
     setState(() {
       workoutExercises = workoutExercises.remove(workoutExercise);
+      _workoutExercisesError = null;
     });
   }
 
   void _updateWorkoutExercise(WorkoutExercise workoutExercise) {
     setState(() {
       workoutExercises = workoutExercises.update(workoutExercise);
+      _workoutExercisesError = null;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form( // TODO: Use form widget
+    return Form(
+      // TODO: Use form widget
       key: _formKey,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -151,6 +168,17 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                 ),
               ),
             ),
+            if (_workoutExercisesError != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  _workoutExercisesError!,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
             const SizedBox(height: 16),
             FloatingCenteredButtonWidget(
               onPressed: _submitForm,

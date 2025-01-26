@@ -5,6 +5,8 @@ import 'package:overload/domain/exercise/exception/exercise_not_found_exception.
 import 'package:overload/domain/exercise/exception/invalid_exercise_id_exception.dart';
 import 'package:overload/domain/exercise/exception/invalid_exercise_name_exception.dart';
 import 'package:overload/domain/exercise/exception/invalid_exercise_unit_exception.dart';
+import 'package:overload/domain/workout/exception/workout_already_exists_exception.dart';
+import 'package:overload/domain/workout/exception/workout_exercise_required_exception.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
 class ExceptionHandler {
@@ -48,6 +50,12 @@ class ExceptionHandler {
     }
     if (exception is InvalidExerciseUnitException) {
       return 'Exercise unit is not valid';
+    }
+    if (exception is WorkoutExerciseRequiredException) {
+      return 'At least one exercise is required';
+    }
+    if (exception is WorkoutAlreadyExistsException) {
+      return 'This workout already exists';
     }
     return 'An unexpected error occurred. Please try again';
   }

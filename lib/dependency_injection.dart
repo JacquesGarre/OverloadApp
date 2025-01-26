@@ -4,11 +4,14 @@ import 'package:overload/application/exercise/add_exercise_command/add_exercise_
 import 'package:overload/application/exercise/delete_exercise_command/delete_exercise_command_handler.dart';
 import 'package:overload/application/exercise/get_exercises_query/get_exercises_query_handler.dart';
 import 'package:overload/application/exercise/update_exercise_command/update_exercise_command_handler.dart';
+import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
 import 'package:overload/domain/exercise/interface/exercise_repository_interface.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
+import 'package:overload/domain/workout/interface/workout_repository_interface.dart';
 import 'package:overload/infrastructure/bus/domain_event_bus.dart';
 import 'package:overload/infrastructure/persistence/database.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';
+import 'package:overload/infrastructure/persistence/repositories/workout_repository.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
@@ -31,6 +34,11 @@ Future<void> registerDatabases() async {
 Future<void> registerRepositories() async {
   container.registerFactory<ExerciseRepositoryInterface>(
     () => ExerciseRepository(
+      db: container<sqflite.Database>(),
+    ),
+  );
+  container.registerFactory<WorkoutRepositoryInterface>(
+    () => WorkoutRepository(
       db: container<sqflite.Database>(),
     ),
   );
@@ -69,6 +77,12 @@ Future<void> registerHandlers() async {
       domainEventBus: container<DomainEventBusInterface>(),
     ),
   );
+  container.registerFactory<AddWorkoutCommandHandler>(
+    () => AddWorkoutCommandHandler(
+      repository: container<WorkoutRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
 }
 
 Future<void> registerProviders() async {
@@ -81,6 +95,8 @@ Future<void> registerProviders() async {
     ),
   );
   container.registerSingleton<WorkoutProvider>(
-    WorkoutProvider(),
+    WorkoutProvider(
+      addWorkoutCommandHandler: container<AddWorkoutCommandHandler>(),
+    ),
   );
 }
