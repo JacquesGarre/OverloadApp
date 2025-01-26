@@ -7,12 +7,16 @@ import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/add_workout_exercise_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/secondary_button_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/text_field_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/workout/workout_exercise_card_widget.dart';
 
 class WorkoutFormWidget extends StatefulWidget {
   final Workout? workout;
-  final Function(Id? id, String name, String? notes, WorkoutExercises workoutExercises) onSubmit;
+  final Function(
+          Id? id, String name, String? notes, WorkoutExercises workoutExercises)
+      onSubmit;
 
   const WorkoutFormWidget({
     super.key,
@@ -103,90 +107,65 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      // TODO: Use form widget
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Name"),
-            const SizedBox(height: 5.0),
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColorScheme.lightBackground,
-                border: const OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a name';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
-            const Text("Notes"),
-            const SizedBox(height: 5.0),
-            TextFormField(
-              controller: _notesController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColorScheme.lightBackground,
-                border: const OutlineInputBorder(),
-                alignLabelWithHint: true,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ...workoutExercises.value().map((workoutExercise) {
-              return Column(
-                children: [
-                  WorkoutExerciseCardWidget(
-                    key: ValueKey(workoutExercise.id().value()),
-                    workoutExercise: workoutExercise,
-                    checkable: false,
-                    setsNumberSelector: false,
-                    readonly: true,
-                    onWorkoutExerciseRemoved: _removeWorkoutExercise,
-                    onWorkoutExerciseUpdated: _updateWorkoutExercise,
-                  ),
-                  const SizedBox(height: 8),
-                ],
-              );
-            }),
-            const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: double.infinity,
-                child: SecondaryButtonWidget(
-                  text: 'Add exercise',
-                  onPressed: _navigateToAddExercisePage,
-                ),
-              ),
-            ),
-            if (_workoutExercisesError != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  _workoutExercisesError!,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            const SizedBox(height: 16),
-            FloatingCenteredButtonWidget(
-              onPressed: _submitForm,
-              text: 'Submit',
-            ),
-          ],
+    return FormWidget(
+      formKey: _formKey,
+      submitButtonLabel: 'Submit',
+      onSubmit: _submitForm,
+      fields: [
+        TextFieldWidget(
+          label: "Name",
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a name';
+            }
+            return null;
+          },
+          controller: _nameController,
         ),
-      ),
+        TextFieldWidget(
+          label: "Notes",
+          controller: _notesController,
+          maxLines: 3,
+        ),
+        ...workoutExercises.value().map((workoutExercise) {
+          return Column(
+            children: [
+              WorkoutExerciseCardWidget(
+                key: ValueKey(workoutExercise.id().value()),
+                workoutExercise: workoutExercise,
+                checkable: false,
+                setsNumberSelector: false,
+                readonly: true,
+                onWorkoutExerciseRemoved: _removeWorkoutExercise,
+                onWorkoutExerciseUpdated: _updateWorkoutExercise,
+              ),
+              const SizedBox(height: 8),
+            ],
+          );
+        }),
+        const SizedBox(height: 8),
+        Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: double.infinity,
+            child: SecondaryButtonWidget(
+              text: 'Add exercise',
+              onPressed: _navigateToAddExercisePage,
+            ),
+          ),
+        ),
+        if (_workoutExercisesError != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              _workoutExercisesError!,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.error,
+                fontSize: 12,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

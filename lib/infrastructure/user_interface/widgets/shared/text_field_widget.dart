@@ -3,14 +3,16 @@ import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.da
 
 class TextFieldWidget extends StatelessWidget {
   final String label;
-  final String? Function(String?) validator;
+  final String? Function(String?)? validator;
   final TextEditingController controller;
+  final int? maxLines;
 
   const TextFieldWidget({
     super.key,
     required this.label,
-    required this.validator,
     required this.controller,
+    this.validator,
+    this.maxLines
   });
 
   @override
@@ -28,6 +30,7 @@ class TextFieldWidget extends StatelessWidget {
             border: const OutlineInputBorder(),
           ),
           validator: validator,
+          maxLines: maxLines
         ),
       ],
     );
