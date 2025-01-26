@@ -37,13 +37,4 @@ class Goals {
     newValue[index] = Goal(sets: newSets);
     return Goals(value: newValue);
   }
-
-  @override
-  String toString() { // TODO: Remove, just for logs
-    String string = "";
-    for(Goal goal in _value) {
-      string = "$string \n $goal";
-    }
-    return string;
-  }
 }

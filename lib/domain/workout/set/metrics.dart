@@ -41,13 +41,4 @@ class Metrics {
     return Metrics(value: newValue);
   }
 
-  @override 
-  String toString() { // TODO: Remove, just for logs
-    String string = "";
-    for(Metric metric in _value) {
-      string = "${metric.toString()} | ";
-    }
-    return string;
-  }
-
 }

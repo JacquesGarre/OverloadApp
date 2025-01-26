@@ -1,13 +1,13 @@
 class UnitType {
-  final String _format;// TODO: Unit test
+  final String _value;
 
-  static const UnitType integer = UnitType._(format: '#');
-  static const UnitType double = UnitType._(format: '#.#');
+  static const UnitType integer = UnitType._(value: 'integer');
+  static const UnitType double = UnitType._(value: 'double');
 
-  const UnitType._({required String format}) : _format = format;
+  const UnitType._({required String value}) : _value = value;
 
-  String format() {
-    return _format;
+  String value() {
+    return _value;
   }
 }
 

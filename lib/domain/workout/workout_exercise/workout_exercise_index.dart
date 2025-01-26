@@ -24,8 +24,4 @@ class WorkoutExerciseIndex {
     return WorkoutExerciseIndex(value: index.value() + 1);
   }
 
-  @override  
-  String toString() { // TODO: Remove, just for logs
-    return _value.toString();
-  }
 }

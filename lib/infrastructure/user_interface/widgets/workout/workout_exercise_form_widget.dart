@@ -3,6 +3,7 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
+import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/goals_page.dart';
@@ -34,16 +35,16 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
 
   Exercise? exercise;
   Notes? notes;
-  Sets sets = Sets.empty();
+  SetsCount setsCount = SetsCount(value: 0);
   int numberOfSets = 1;
 
   @override
   void initState() {
     super.initState();
-    sets = widget.workoutExercise != null
-        ? widget.workoutExercise!.sets()
-        : Sets.empty();
-    numberOfSets = widget.workoutExercise != null ? sets.count() : 1;
+    setsCount = widget.workoutExercise != null
+        ? widget.workoutExercise!.setsCount()
+        : SetsCount(value: 0);
+    numberOfSets = setsCount.value();
     _notesController.text = widget.workoutExercise != null &&
             widget.workoutExercise!.notes() != null
         ? widget.workoutExercise!.notes()!.value()
@@ -62,19 +63,10 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
   }
 
   void _onChange(Exercise? exerciseSelected, int numberOfSetsSelected) {
-    Sets newSets = Sets.empty();
-    if (exerciseSelected != null) {
-      for (int i = 1; i <= numberOfSetsSelected; i++) {
-        SetIndex setIndex = SetIndex(value: i);
-        Set newSet = sets.findByIndex(setIndex) ??
-            Set.fromSetIndexAndExercise(setIndex, exerciseSelected);
-        newSets = newSets.add(newSet);
-      }
-    }
     setState(() {
       exercise = exerciseSelected;
       numberOfSets = numberOfSetsSelected;
-      sets = newSets;
+      setsCount = SetsCount(value: numberOfSets);
     });
   }
 
@@ -85,14 +77,14 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
   }
 
   void _navigateToAddGoalsPage(
-      Exercise exercise, Sets sets, Notes? notes) async {
+      Exercise exercise, SetsCount setsCount, Notes? notes) async {
     WorkoutExercise? workoutExercise = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => GoalsPage(
           index: widget.index,
           exercise: exercise,
-          sets: sets,
+          setsCount: setsCount,
           notes: notes,
           workoutExercise: widget.workoutExercise,
         ),
@@ -159,10 +151,10 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                     _updateNotes(value);
                   }),
               const SizedBox(height: 30.0),
-              if (sets.count() > 0 && exercise != null)
+              if (setsCount.value() > 0 && exercise != null)
                 FloatingCenteredButtonWidget(
                   onPressed: () {
-                    _navigateToAddGoalsPage(exercise!, sets, notes);
+                    _navigateToAddGoalsPage(exercise!, setsCount, notes);
                   },
                   text: 'Next',
                 )

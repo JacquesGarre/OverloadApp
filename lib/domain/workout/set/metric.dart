@@ -22,11 +22,6 @@ class Metric {
     return Metric(unit: unit);
   }
 
-  @override
-  String toString() { // TODO: Remove, just for logs
-    return "$_value ${_unit.name()}";
-  }
-
   num defaultValue() {
     return _unit.defaultValue();
   }

@@ -4,6 +4,7 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goals.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/sets.dart';
+import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
@@ -13,7 +14,7 @@ import 'package:overload/infrastructure/user_interface/widgets/workout/goals_tim
 class GoalsPage extends StatefulWidget {
   final WorkoutExerciseIndex index;
   final Exercise exercise;
-  final Sets sets;
+  final SetsCount setsCount;
   final Notes? notes;
   final WorkoutExercise? workoutExercise;
 
@@ -21,7 +22,7 @@ class GoalsPage extends StatefulWidget {
     super.key,
     required this.index,
     required this.exercise,
-    required this.sets,
+    required this.setsCount,
     this.notes,
     this.workoutExercise,
   });
@@ -49,7 +50,7 @@ class _GoalsPageState extends State<GoalsPage> {
               GoalsTimelineWidget(
                 key: goalsTimelineWidget,
                 exercise: widget.exercise,
-                sets: widget.sets,
+                setsCount: widget.setsCount,
                 existingGoals: widget.workoutExercise?.goals()!,
               ),
               FloatingCenteredButtonWidget(
@@ -62,7 +63,7 @@ class _GoalsPageState extends State<GoalsPage> {
                         ? widget.workoutExercise!.index()
                         : widget.index,
                     exercise: widget.exercise,
-                    sets: widget.sets,
+                    setsCount: widget.setsCount,
                     notes: widget.notes,
                     goals: goals,
                   );

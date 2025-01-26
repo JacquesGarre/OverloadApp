@@ -82,7 +82,7 @@ class Unit {
   int get hashCode => name().hashCode;
 
   @override
-  String toString() {  // TODO: Remove, just for logs
+  String toString() { 
     return name();
   }
 

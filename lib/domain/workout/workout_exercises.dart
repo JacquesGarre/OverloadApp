@@ -36,7 +36,7 @@ class WorkoutExercises {
       newValue.add(WorkoutExercise(
         index: WorkoutExerciseIndex(value: i + 1),
         exercise: workoutExercise.exercise(),
-        sets: workoutExercise.sets(),
+        setsCount: workoutExercise.setsCount(),
       ));
     }
     return WorkoutExercises(value: newValue);
@@ -58,14 +58,5 @@ class WorkoutExercises {
       return null;
     }
     return _value.last;
-  }
-
-  @override
-  String toString() { // TODO: Remove, just for logs
-    String string = "Workout exercises \n";
-    for(WorkoutExercise workoutExercise in _value) {
-      string = "$string $workoutExercise";
-    }
-    return string;
   }
 }

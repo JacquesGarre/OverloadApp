@@ -3,6 +3,7 @@ import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/metrics.dart';
 import 'package:overload/domain/workout/set/set.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
+import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
 
 class Sets {
   final List<Set> _value;
@@ -19,6 +20,16 @@ class Sets {
     List<Set> newValue = List.from(_value);
     newValue.add(set);
     return Sets(value: newValue);
+  }
+
+  static Sets fromSetsCountAndExercise(SetsCount setsCount, Exercise exercise) {
+    List<Set> value = [];
+    for(int i = 1; i <= setsCount.value(); i++) {
+      SetIndex setIndex = SetIndex(value: i);
+      Set set = Set.fromSetIndexAndExercise(setIndex, exercise);
+      value.add(set);
+    }
+    return Sets(value: value);
   }
 
   Sets addSetFromExercise(Exercise exercise) {
@@ -88,12 +99,4 @@ class Sets {
     return Sets(value: []);
   }
 
-  @override
-  String toString() { // TODO: Remove, just for logs
-    String string = "";
-    for(Set set in _value) {
-      string = "$string \n ${set.toString()}";
-    }
-    return string;
-  }
 }

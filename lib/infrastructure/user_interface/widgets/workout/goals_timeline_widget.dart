@@ -3,6 +3,7 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
 import 'package:overload/domain/workout/sets.dart';
+import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/secondary_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/workout/goal_card_widget.dart';
@@ -10,15 +11,15 @@ import 'package:timelines_plus/timelines_plus.dart';
 
 class GoalsTimelineWidget extends StatefulWidget {
   final Exercise exercise;
-  final Sets sets;
+  final SetsCount setsCount;
   final Goals? existingGoals;
 
-  GoalsTimelineWidget({
+  const GoalsTimelineWidget({
     super.key,
     required this.exercise,
-    required Sets sets,
+    required this.setsCount,
     this.existingGoals,
-  }) : sets = Sets(value: sets.value());
+  });
 
   @override
   State<GoalsTimelineWidget> createState() => GoalsTimelineWidgetState();
@@ -32,7 +33,10 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
   void initState() {
     super.initState();
     setState(() {
-      sets = widget.sets;
+      sets = Sets.fromSetsCountAndExercise(
+        widget.setsCount,
+        widget.exercise,
+      );
       if (widget.existingGoals != null) {
         goals = widget.existingGoals!;
       } else {
@@ -57,7 +61,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     goals = goals.updateAt(
       index,
       updatedSets,
-    ); 
+    );
   }
 
   @override

@@ -63,9 +63,4 @@ class Exercise {
   delete() {
     domainEvents().publish(ExerciseDeletedDomainEvent.fromExercise(this));
   }
-
-  @override
-  String toString() { // TODO: Remove, just for logs
-    return name().value();
-  }
 }

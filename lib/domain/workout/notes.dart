@@ -8,8 +8,4 @@ class Notes {
     return _value;
   }
 
-  @override 
-  String toString() { // TODO: Remove, just for logs
-    return _value;
-  }
 }

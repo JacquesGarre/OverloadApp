@@ -18,8 +18,4 @@ class Goal {
     );
   }
 
-  @override
-  String toString() { // TODO: Remove, just for logs
-    return _sets.toString();
-  }
 }

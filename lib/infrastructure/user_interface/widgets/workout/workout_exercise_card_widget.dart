@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/edit_workout_exercise_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
-import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_widget.dart';
 
 class WorkoutExerciseCardWidget extends StatefulWidget {
   final WorkoutExercise workoutExercise;
@@ -94,7 +91,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                             padding:
                                 const EdgeInsets.fromLTRB(0.0, 0.0, 6.0, 5.0),
                             child: Text(
-                              "(${workoutExercise.sets().count()} set${workoutExercise.sets().count() > 1 ? 's' : ''})",
+                              "(${workoutExercise.setsCount().value()} set${workoutExercise.setsCount().value() > 1 ? 's' : ''})",
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,

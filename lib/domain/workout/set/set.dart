@@ -30,12 +30,4 @@ class Set {
     return Set(index: _index, metrics: newMetrics);
   }
 
-  @override
-  String toString() { // TODO: Remove, just for logs
-    String string = "Set ${_index.value()} :";
-    for (Metric metric in _metrics.value()) {
-      string = "$string ${metric.toString()}";
-    }
-    return string;
-  }
 }
