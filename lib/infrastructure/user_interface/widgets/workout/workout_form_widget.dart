@@ -136,10 +136,11 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                     onWorkoutExerciseRemoved: _removeWorkoutExercise,
                     onWorkoutExerciseUpdated: _updateWorkoutExercise,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                 ],
               );
             }),
+            const SizedBox(height: 8),
             Align(
               alignment: Alignment.center,
               child: SizedBox(

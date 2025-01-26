@@ -67,7 +67,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
       shadowColor: Colors.transparent,
       color: AppColorScheme.lightBackground,
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
             Row(
@@ -85,20 +85,19 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                             child: Text(
                               workoutExercise.exercise().name().value(),
                               style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 5.0),
+                                const EdgeInsets.fromLTRB(0.0, 0.0, 6.0, 5.0),
                             child: Text(
-                              "(X ${workoutExercise.sets().count()} set${workoutExercise.sets().count() > 1 ? 's' : ''})",
-                              style: TextStyle(
-                                fontSize: 13,
+                              "(${workoutExercise.sets().count()} set${workoutExercise.sets().count() > 1 ? 's' : ''})",
+                              style: const TextStyle(
+                                fontSize: 16,
                                 fontWeight: FontWeight.w400,
-                                color: AppColorScheme.primary,
                               ),
                             ),
                           ),
@@ -118,24 +117,6 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               color: AppColorScheme.onLightBackground,
-                            ),
-                          ),
-                        ),
-                      const SizedBox(height: 5.0),
-                      if (workoutExercise.goals() != null)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            6.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                          ),
-                          child: Text(
-                            'Next goal:',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                              color: AppColorScheme.primary,
                             ),
                           ),
                         ),
@@ -159,20 +140,6 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                 ),
               ],
             ),
-            SetsTableWidget(
-              key: ValueKey(widget.workoutExercise.id().value()),
-              exercise: widget.workoutExercise.exercise(),
-              sets: widget.workoutExercise.goals() != null &&
-                      widget.workoutExercise.goals()!.count() > 0
-                  ? widget.workoutExercise.goals()!.value().first.sets()
-                  : widget.workoutExercise.sets(),
-              checkable: widget.checkable,
-              setsNumberSelector: widget.setsNumberSelector,
-              readonly: widget.readonly,
-              onSetsUpdated: (Sets sets) {
-                Logger().i('Sets updated: $sets');
-              },
-            )
           ],
         ),
       ),
