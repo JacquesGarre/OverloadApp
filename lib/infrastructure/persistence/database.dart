@@ -34,12 +34,5 @@ class Database {
         notes TEXT NULL
       )
     ''');
-    await db.execute('''
-      CREATE TABLE ${WorkoutRepository.table} (
-        id TEXT PRIMARY KEY,
-        name TEXT NULL,
-        notes TEXT NULL
-      )
-    ''');
   }
 }

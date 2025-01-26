@@ -41,4 +41,19 @@ class Metrics {
     return Metrics(value: newValue);
   }
 
+  List<Map<String, dynamic>> toJson() {
+    List<Map<String, dynamic>> json = [];
+    for (Metric metric in _value) {
+      json.add(metric.toJson());
+    }
+    return json;
+  }
+
+  static Metrics fromJson(List<Map<String, dynamic>> jsons) {
+    List<Metric> value = [];
+    for (Map<String, dynamic> json in jsons) {
+      value.add(Metric.fromJson(json));
+    }
+    return Metrics(value: value);
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/notes.dart';
+import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
@@ -11,11 +12,13 @@ import 'package:number_selector/number_selector.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
+  final Workout workout;
   final WorkoutExerciseIndex index;
   final WorkoutExercise? workoutExercise;
 
   const WorkoutExerciseFormWidget({
     super.key,
+    required this.workout,
     required this.index,
     this.workoutExercise,
   });
@@ -79,6 +82,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
       context,
       MaterialPageRoute(
         builder: (context) => GoalsPage(
+          workout: widget.workout,
           index: widget.index,
           exercise: exercise,
           setsCount: setsCount,

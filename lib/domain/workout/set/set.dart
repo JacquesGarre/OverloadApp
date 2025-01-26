@@ -10,7 +10,8 @@ class Set {
   Set({
     required SetIndex index,
     required Metrics metrics,
-  }) : _index = index, _metrics = metrics;
+  })  : _index = index,
+        _metrics = metrics;
 
   SetIndex index() {
     return _index;
@@ -30,4 +31,17 @@ class Set {
     return Set(index: _index, metrics: newMetrics);
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "set_index": _index,
+      "metrics": _metrics.toJson(),
+    };
+  }
+
+  static Set fromJson(Map<String, dynamic> json) {
+    return Set(
+      index: SetIndex(value: int.parse(json["set_index"])),
+      metrics: Metrics.fromJson(json["metrics"]),
+    );
+  }
 }

@@ -65,4 +65,45 @@ class Workout {
         .publish(WorkoutCreatedDomainEvent.fromWorkout(workout));
     return workout;
   }
+
+  static Workout empty() {
+    Workout workout = Workout(
+      domainEvents: DomainEventsCollection(),
+      id: Id.create(),
+      name: Name.fromString(""),
+      exercises: WorkoutExercises.empty(),
+    );
+    workout
+        .domainEvents()
+        .publish(WorkoutCreatedDomainEvent.fromWorkout(workout));
+    return workout;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": _id.toString(),
+      "name": _name.toString(),
+      "workout_exercises": _exercises.toJson(),
+      "notes": _notes.toString()
+    };
+  }
+
+  static Workout fromJson(Map<String, dynamic> json) {
+    Id id = Id.fromString(json["id"]);
+    Name name = Name.fromString(json["name"]);
+    WorkoutExercises workoutExercises = WorkoutExercises.fromJson(
+      json["workout_exercises"],
+    );
+    Notes? notes;
+    if (json["notes"] != null) {
+      notes = Notes(value: json["notes"]);
+    }
+    return Workout(
+      domainEvents: DomainEventsCollection(),
+      id: id,
+      name: name,
+      exercises: workoutExercises,
+      notes: notes,
+    );
+  }
 }

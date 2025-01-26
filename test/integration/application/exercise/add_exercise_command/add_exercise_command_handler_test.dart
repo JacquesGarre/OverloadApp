@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:overload/application/exercise/add_exercise_command/add_exercise_command.dart';
 import 'package:overload/application/exercise/add_exercise_command/add_exercise_command_handler.dart';
 import 'package:overload/domain/exercise/exception/exercise_already_exists_exception.dart';
-import 'package:overload/domain/exercise/interface/exercise_repository_interface.dart';
+import 'package:overload/domain/exercise/exercise_repository_interface.dart';
 import 'package:overload/infrastructure/bus/domain_event_bus.dart';
 import 'package:overload/infrastructure/persistence/database.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';

@@ -2,7 +2,7 @@ import 'package:overload/application/exercise/update_exercise_command/update_exe
 import 'package:overload/domain/exercise/exception/exercise_already_exists_exception.dart';
 import 'package:overload/domain/exercise/exception/exercise_not_found_exception.dart';
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/exercise/interface/exercise_repository_interface.dart';
+import 'package:overload/domain/exercise/exercise_repository_interface.dart';
 import 'package:overload/domain/exercise/id.dart';
 import 'package:overload/domain/exercise/name.dart';
 import 'package:overload/domain/exercise/units.dart';

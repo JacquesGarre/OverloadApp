@@ -5,8 +5,6 @@ import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/add_workout_exercise_page.dart';
-import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
-import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/secondary_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/text_field_widget.dart';
@@ -15,8 +13,11 @@ import 'package:overload/infrastructure/user_interface/widgets/workout/workout_e
 class WorkoutFormWidget extends StatefulWidget {
   final Workout? workout;
   final Function(
-          Id? id, String name, String? notes, WorkoutExercises workoutExercises)
-      onSubmit;
+    Id? id,
+    String name,
+    String? notes,
+    WorkoutExercises workoutExercises,
+  ) onSubmit;
 
   const WorkoutFormWidget({
     super.key,
@@ -131,6 +132,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
           return Column(
             children: [
               WorkoutExerciseCardWidget(
+                workout: widget.workout ?? Workout.empty(),
                 key: ValueKey(workoutExercise.id().value()),
                 workoutExercise: workoutExercise,
                 checkable: false,

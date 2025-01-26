@@ -24,7 +24,7 @@ class Sets {
 
   static Sets fromSetsCountAndExercise(SetsCount setsCount, Exercise exercise) {
     List<Set> value = [];
-    for(int i = 1; i <= setsCount.value(); i++) {
+    for (int i = 1; i <= setsCount.value(); i++) {
       SetIndex setIndex = SetIndex(value: i);
       Set set = Set.fromSetIndexAndExercise(setIndex, exercise);
       value.add(set);
@@ -67,7 +67,7 @@ class Sets {
   }
 
   bool has(SetIndex index) {
-    for(Set set in _value) {
+    for (Set set in _value) {
       if (set.index().equals(index)) {
         return true;
       }
@@ -76,7 +76,7 @@ class Sets {
   }
 
   Set? findByIndex(SetIndex index) {
-    for(Set set in _value) {
+    for (Set set in _value) {
       if (set.index().equals(index)) {
         return set;
       }
@@ -99,4 +99,19 @@ class Sets {
     return Sets(value: []);
   }
 
+  List<Map<String, dynamic>> toJson() {
+    List<Map<String, dynamic>> json = [];
+    for (Set set in _value) {
+      json.add(set.toJson());
+    }
+    return json;
+  }
+
+  static Sets fromJson(List<Map<String, dynamic>> jsons) {
+    List<Set> value = [];
+    for (Map<String, dynamic> json in jsons) {
+      value.add(Set.fromJson(json));
+    }
+    return Sets(value: value);
+  }
 }

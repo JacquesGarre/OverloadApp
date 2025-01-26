@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:overload/domain/exercise/domain_events/exercise_created_domain_event.dart';
 import 'package:overload/domain/exercise/domain_events/exercise_deleted_domain_event.dart';
 import 'package:overload/domain/exercise/domain_events/exercise_updated_domain_event.dart';
@@ -45,7 +47,9 @@ class Exercise {
       name: name,
       units: units,
     );
-    exercise.domainEvents().publish(ExerciseCreatedDomainEvent.fromExercise(exercise));
+    exercise
+        .domainEvents()
+        .publish(ExerciseCreatedDomainEvent.fromExercise(exercise));
     return exercise;
   }
 
@@ -56,7 +60,9 @@ class Exercise {
       name: newName,
       units: newUnits,
     );
-    exercise.domainEvents().publish(ExerciseUpdatedDomainEvent.fromExercise(exercise));
+    exercise
+        .domainEvents()
+        .publish(ExerciseUpdatedDomainEvent.fromExercise(exercise));
     return exercise;
   }
 
@@ -64,8 +70,30 @@ class Exercise {
     domainEvents().publish(ExerciseDeletedDomainEvent.fromExercise(this));
   }
 
-  @override  
+  @override
   String toString() {
     return name().value();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'units': jsonEncode(units),
+    };
+  }
+
+  static Exercise fromJson(Map<String, dynamic> json) {
+    Id id = Id.fromString(json['id'] as String);
+    Name name = Name.fromString(json['name'] as String);
+    Units units = Units.fromStringList(
+      List<String>.from(jsonDecode(json['units'] as String)),
+    );
+    return Exercise(
+      domainEvents: DomainEventsCollection(),
+      id: id,
+      name: name,
+      units: units,
+    );
   }
 }

@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/workout/goal.dart';
+import 'package:overload/domain/workout/goal/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/secondary_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/workout/goal_card_widget.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class GoalsTimelineWidget extends StatefulWidget {
-  final Exercise exercise;
+  final WorkoutExercise workoutExercise;
   final SetsCount setsCount;
-  final Goals? existingGoals;
+  final Goals goals;
 
   const GoalsTimelineWidget({
     super.key,
-    required this.exercise,
+    required this.workoutExercise,
     required this.setsCount,
-    this.existingGoals,
+    required this.goals,
   });
 
   @override
@@ -26,7 +26,7 @@ class GoalsTimelineWidget extends StatefulWidget {
 }
 
 class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
-  Goals goals = Goals.empty();
+  late Goals goals;
   late Sets sets;
 
   @override
@@ -35,19 +35,26 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
     setState(() {
       sets = Sets.fromSetsCountAndExercise(
         widget.setsCount,
-        widget.exercise,
+        widget.workoutExercise.exercise(),
       );
-      if (widget.existingGoals != null) {
-        goals = widget.existingGoals!;
-      } else {
-        goals = goals.add(Goal.fromSets(sets));
+      goals = widget.goals;
+      if (goals.count() == 0) {
+        goals = goals.add(
+          Goal.fromSets(
+            sets,
+          ),
+        );
       }
     });
   }
 
   void _addGoal() {
     setState(() {
-      goals = goals.add(Goal.fromSets(sets));
+      goals = goals.add(
+        Goal.fromSets(
+          sets,
+        ),
+      );
     });
   }
 
@@ -100,7 +107,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
                   return GoalCardWidget(
                     index: index,
                     goal: goal,
-                    exercise: widget.exercise,
+                    exercise: widget.workoutExercise.exercise(),
                     onUpdate: _updateGoal,
                     onRemove: _removeGoal,
                   );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/workout/goal.dart';
+import 'package:overload/domain/workout/goal/goal.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_widget.dart';

@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/workout/workout_exercise_form_widget.dart';
 
 class EditWorkoutExercisePage extends StatelessWidget {
+  final Workout workout;
   final WorkoutExercise workoutExercise;
 
   static const String title = 'Edit workout exercise';
 
-  const EditWorkoutExercisePage({super.key, required this.workoutExercise});
+  const EditWorkoutExercisePage({
+    super.key,
+    required this.workout,
+    required this.workoutExercise,
+  });
 
   @override
   Widget build(BuildContext context) {
     return PageWidget(
       title: title,
       child: WorkoutExerciseFormWidget(
+        workout: workout,
         index: workoutExercise.index(),
         workoutExercise: workoutExercise,
       ),
