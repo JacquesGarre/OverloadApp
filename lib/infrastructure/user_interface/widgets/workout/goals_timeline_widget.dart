@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
@@ -54,16 +55,10 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
   }
 
   void _updateGoal(int index, Sets updatedSets) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() {
-          goals = goals.updateAt(
-            index,
-            updatedSets,
-          ); // TODO: This is closing the keyboard, because the widget rebuilds....
-        });
-      }
-    });
+    goals = goals.updateAt(
+      index,
+      updatedSets,
+    ); 
   }
 
   @override

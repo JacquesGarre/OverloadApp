@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_format.dart';
 import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
 class TableCellWidget extends StatelessWidget {
+
   final double height;
   final bool readOnly;
   final bool canBeNegative;
@@ -14,6 +16,7 @@ class TableCellWidget extends StatelessWidget {
   final TextStyle? style;
   final config.TableRow row; 
   final int cellIndex;   
+  final Function(String value) onChanged;
 
   const TableCellWidget({
     super.key,
@@ -23,6 +26,7 @@ class TableCellWidget extends StatelessWidget {
     required this.canBeNegative,
     required this.row,
     required this.cellIndex,
+    required this.onChanged,
     this.value,
     this.placeholder,
     this.style
@@ -75,7 +79,8 @@ class TableCellWidget extends StatelessWidget {
                   offset: formattedValue.length,
                 ),
               );
-              row.cells[cellIndex].value = formattedValue;              
+              row.cells[cellIndex].value = formattedValue;     
+              onChanged(formattedValue);         
             },
           ),
         ),

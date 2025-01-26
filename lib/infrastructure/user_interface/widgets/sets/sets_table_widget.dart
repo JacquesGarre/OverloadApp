@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/domain/exercise/unit.dart';
+import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/set/set.dart';
@@ -46,26 +48,38 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     rows = config.TableRow.fromSets(sets);
   }
 
-  _updateRows(int value) {
+  _updateRowsCount(int value) {
     if (value > rows.length) {
       SetIndex lastIndex = SetIndex.nextFromSetIndex(sets.lastSet()?.index());
       Set newSet = Set.fromSetIndexAndExercise(lastIndex, widget.exercise);
       setState(() {
         sets = sets.add(newSet);
         rows.add(config.TableRow.fromSet(newSet));
+        widget.onSetsUpdated(sets);
       });
     }
     if (value < rows.length) {
       setState(() {
         sets = sets.removeLastSet();
         rows.removeLast();
+        widget.onSetsUpdated(sets);
       });
     }
   }
 
+  _onChange(int rowIndex, int cellIndex, String value) {
+    config.TableRow row = rows[rowIndex];
+    int setIndexValue = int.tryParse(row.cells[0].value ?? '') ?? 0;
+    SetIndex setIndex = SetIndex(value: setIndexValue);
+    Unit updatedUnit = widget.exercise.units().value()[cellIndex-1];
+    num? updatedValue = value != "" ? num.tryParse(value) : null;
+    Metric updatedMetric = Metric(unit: updatedUnit, value: updatedValue);
+    sets = sets.updateSet(setIndex, updatedMetric);
+    widget.onSetsUpdated(sets);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Logger().i("[SETS TABLE WIDGET REBUILT]");
     return Container(
       padding: const EdgeInsets.all(0),
       child: Column(
@@ -74,6 +88,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
             rowHeight: rowHeight,
             columns: TableColumnConfig.fromExercise(widget.exercise),
             rows: rows,
+            onChanged: _onChange,
           ),
           if (widget.setsNumberSelector)
             Padding(
@@ -95,7 +110,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
                     current: widget.sets.count(),
                     min: 1,
                     max: 30,
-                    onUpdate: _updateRows,
+                    onUpdate: _updateRowsCount,
                   ),
                 ],
               ),

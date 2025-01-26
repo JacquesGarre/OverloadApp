@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_config.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_cell_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_column_widget.dart';
 import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
 
 class TableWidget extends StatelessWidget {
+
   final double rowHeight;
   final List<TableColumnConfig> columns;
   final List<config.TableRow> rows;
+  final Function(int rowIndex, int cellIndex, String value) onChanged;
 
   const TableWidget({
     super.key,
     required this.rowHeight,
     required this.columns,
     required this.rows,
+    required this.onChanged
   });
 
   Map<int, TableColumnWidth> _columnsWidths() {
@@ -44,7 +48,9 @@ class TableWidget extends StatelessWidget {
             })
           ],
         ),
-        ...rows.map((row) {
+        ...rows.asMap().entries.map((entry) {
+          int rowIndex = entry.key;
+          config.TableRow row = entry.value;
           return TableRow(children: <Widget>[
             ...row.cells.asMap().entries.map((entry) {
               int cellIndex = entry.key;
@@ -58,6 +64,9 @@ class TableWidget extends StatelessWidget {
                 format: columns[cellIndex].format,
                 canBeNegative: columns[cellIndex].canBeNegative,
                 row: row,
+                onChanged: (String value) {
+                  onChanged(rowIndex, cellIndex, value);
+                },
                 cellIndex: cellIndex,
               );
             }),

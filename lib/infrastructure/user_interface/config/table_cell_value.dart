@@ -13,4 +13,9 @@ class TableCellValue {
       placeholder: metric.value() != null ? metric.value().toString() : metric.defaultValue().toString()
     );
   }
+
+  @override 
+  String toString() {
+    return "value: $value, placeholder: $placeholder";
+  }
 }

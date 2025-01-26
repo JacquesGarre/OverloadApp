@@ -28,7 +28,8 @@ class TableRow {
     return TableRow(cells: cells);
   }
 
-  static TableRow fromSetIndexAndExercise(SetIndex lastIndex, Exercise exercise) {
+  static TableRow fromSetIndexAndExercise(
+      SetIndex lastIndex, Exercise exercise) {
     List<TableCellValue> cells = [];
     cells.add(TableCellValue(value: lastIndex.value().toString()));
     Metrics metrics = Metrics.fromExercise(exercise);
@@ -36,5 +37,14 @@ class TableRow {
       cells.add(TableCellValue.fromMetric(metric));
     }
     return TableRow(cells: cells);
+  }
+
+  @override
+  String toString() {
+    String string = "";
+    for (TableCellValue cell in cells) {
+      string = "$string $cell";
+    }
+    return string;
   }
 }
