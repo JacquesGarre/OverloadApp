@@ -34,7 +34,5 @@ void main() {
       expect(units.contains(Unit.kgs), isTrue);
       expect(units.contains(Unit.reps), isTrue);
     });
-
-    // TODO: Test format, negative
   });
 }

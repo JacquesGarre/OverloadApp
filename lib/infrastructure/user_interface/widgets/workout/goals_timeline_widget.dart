@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goal.dart';
 import 'package:overload/domain/workout/goals.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/secondary_button_widget.dart';
-import 'package:overload/infrastructure/user_interface/widgets/workout/goal_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/workout/goal_card_widget.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class GoalsTimelineWidget extends StatefulWidget {
@@ -94,7 +93,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
               contentsBuilder: (_, index) {
                 if (index < goals.count()) {
                   Goal goal = goals.value()[index];
-                  return GoalWidget(
+                  return GoalCardWidget(
                     index: index,
                     goal: goal,
                     exercise: widget.exercise,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_format.dart';
 import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';

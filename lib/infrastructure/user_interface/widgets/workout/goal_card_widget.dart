@@ -6,14 +6,14 @@ import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_widget.dart';
 
-class GoalWidget extends StatefulWidget {
+class GoalCardWidget extends StatefulWidget {
   final int index;
   final Goal goal;
   final Exercise exercise;
   final Function(int index) onRemove;
   final Function(int index, Sets sets) onUpdate;
 
-  const GoalWidget({
+  const GoalCardWidget({
     super.key,
     required this.index,
     required this.goal,
@@ -23,10 +23,10 @@ class GoalWidget extends StatefulWidget {
   });
 
   @override
-  State<GoalWidget> createState() => _GoalWidgetState();
+  State<GoalCardWidget> createState() => _GoalCardWidgetState();
 }
 
-class _GoalWidgetState extends State<GoalWidget> {
+class _GoalCardWidgetState extends State<GoalCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -79,7 +79,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                 readonly: false,
                 onSetsUpdated: (updatedSets) {
 
-                  Logger().i("[GoalWidget:onSetsUpdated] $updatedSets");
+                  Logger().i("[GoalCardWidget:onSetsUpdated] $updatedSets");
 
                   widget.onUpdate(
                     widget.index,
