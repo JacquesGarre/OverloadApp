@@ -35,10 +35,12 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   final _notesController = TextEditingController();
   WorkoutExercises workoutExercises = WorkoutExercises.empty();
   String? _workoutExercisesError;
+  late Id workoutId;
 
   @override
   void initState() {
     super.initState();
+    workoutId = widget.workout != null ? widget.workout!.id() : Id.create();
     _nameController.text =
         widget.workout != null ? widget.workout!.name().value() : '';
     _notesController.text =
@@ -66,7 +68,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     }
     if (isFormValid && isWorkoutExercisesValid) {
       widget.onSubmit(
-        widget.workout?.id(),
+        workoutId,
         _nameController.text,
         _notesController.text,
         workoutExercises,
@@ -81,7 +83,10 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     WorkoutExercise? newExercise = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddWorkoutExercisePage(index: index),
+        builder: (context) => AddWorkoutExercisePage(
+          workoutId: workoutId,
+          index: index,
+        ),
       ),
     );
     if (newExercise != null) {
@@ -132,7 +137,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
           return Column(
             children: [
               WorkoutExerciseCardWidget(
-                workout: widget.workout ?? Workout.empty(),
+                workoutId: widget.workout != null ? widget.workout!.id() : workoutId,
                 key: ValueKey(workoutExercise.id().value()),
                 workoutExercise: workoutExercise,
                 checkable: false,

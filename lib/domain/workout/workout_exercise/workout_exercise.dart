@@ -62,8 +62,8 @@ class WorkoutExercise {
   Map<String, dynamic> toJson() {
     return {
       "id": _id.toString(),
-      "workout_id": _workoutId.toString(),
-      "index": _index.toString(),
+      "workout_id": _workoutId.value().toString(),
+      "index": _index.value().toString(),
       "exercise": _exercise.toJson(),
       "sets_count": _setsCount.value(),
       "notes": _notes?.value(),

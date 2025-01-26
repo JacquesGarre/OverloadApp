@@ -80,7 +80,7 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
         ),
       ],
       onSubmit: _submitForm,
-      submitButtonLabel: "Add exercise",
+      submitButtonLabel: widget.exercise != null ? "Update exercise" : "Add exercise",
     );
   }
 }

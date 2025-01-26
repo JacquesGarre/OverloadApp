@@ -33,7 +33,7 @@ class Set {
 
   Map<String, dynamic> toJson() {
     return {
-      "set_index": _index,
+      "set_index": _index.value(),
       "metrics": _metrics.toJson(),
     };
   }

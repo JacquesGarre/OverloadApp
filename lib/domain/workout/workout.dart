@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/workout/domain_events/workout_created_domain_event.dart';
 import 'package:overload/domain/workout/id.dart';
@@ -66,23 +68,10 @@ class Workout {
     return workout;
   }
 
-  static Workout empty() {
-    Workout workout = Workout(
-      domainEvents: DomainEventsCollection(),
-      id: Id.create(),
-      name: Name.fromString(""),
-      exercises: WorkoutExercises.empty(),
-    );
-    workout
-        .domainEvents()
-        .publish(WorkoutCreatedDomainEvent.fromWorkout(workout));
-    return workout;
-  }
-
   Map<String, dynamic> toJson() {
     return {
       "id": _id.toString(),
-      "name": _name.toString(),
+      "name": _name.value().toString(),
       "workout_exercises": _exercises.toJson(),
       "notes": _notes.toString()
     };

@@ -77,9 +77,9 @@ class Exercise {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
-      'units': jsonEncode(units),
+      'id': _id.toString(),
+      'name': _name.value(),
+      'units': jsonEncode(_units.toStringList()),
     };
   }
 

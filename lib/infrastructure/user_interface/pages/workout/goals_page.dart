@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goals.dart';
 import 'package:overload/domain/workout/notes.dart';
-import 'package:overload/domain/workout/workout.dart';
+import 'package:overload/domain/workout/id.dart' as workout;
 import 'package:overload/domain/workout/workout_exercise/id.dart';
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
@@ -12,7 +12,7 @@ import 'package:overload/infrastructure/user_interface/widgets/shared/page_widge
 import 'package:overload/infrastructure/user_interface/widgets/workout/goals_timeline_widget.dart';
 
 class GoalsPage extends StatefulWidget {
-  final Workout workout;
+  final workout.Id workoutId;
   final WorkoutExerciseIndex index;
   final Exercise exercise;
   final SetsCount setsCount;
@@ -21,7 +21,7 @@ class GoalsPage extends StatefulWidget {
 
   const GoalsPage({
     super.key,
-    required this.workout,
+    required this.workoutId,
     required this.index,
     required this.exercise,
     required this.setsCount,
@@ -45,7 +45,7 @@ class _GoalsPageState extends State<GoalsPage> {
     super.initState();
     workoutExercise = widget.workoutExercise ??
         WorkoutExercise(
-          workoutId: widget.workout.id(),
+          workoutId: widget.workoutId,
           id: widget.workoutExercise != null
               ? widget.workoutExercise!.id()
               : Id.create(),
@@ -83,7 +83,7 @@ class _GoalsPageState extends State<GoalsPage> {
                 onPressed: () {
                   Goals? goals = goalsTimelineWidget.currentState?.goals;
                   WorkoutExercise workoutExercise = WorkoutExercise(
-                    workoutId: widget.workout.id(),
+                    workoutId: widget.workoutId,
                     id: widget.workoutExercise != null
                         ? widget.workoutExercise!.id()
                         : Id.create(),

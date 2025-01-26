@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:overload/domain/workout/workout.dart';
+import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/edit_workout_exercise_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
 class WorkoutExerciseCardWidget extends StatefulWidget {
-  final Workout workout;
+  final Id workoutId;
   final WorkoutExercise workoutExercise;
   final bool checkable;
   final bool setsNumberSelector;
@@ -15,7 +15,7 @@ class WorkoutExerciseCardWidget extends StatefulWidget {
 
   const WorkoutExerciseCardWidget({
     super.key,
-    required this.workout,
+    required this.workoutId,
     required this.workoutExercise,
     required this.checkable,
     required this.setsNumberSelector,
@@ -49,7 +49,7 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
       context,
       MaterialPageRoute(
         builder: (context) => EditWorkoutExercisePage(
-          workout: widget.workout,
+          workoutId: widget.workoutId,
           workoutExercise: widget.workoutExercise,
         ),
       ),
