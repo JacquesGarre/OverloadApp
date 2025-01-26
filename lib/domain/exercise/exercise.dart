@@ -63,4 +63,9 @@ class Exercise {
   delete() {
     domainEvents().publish(ExerciseDeletedDomainEvent.fromExercise(this));
   }
+
+  @override  
+  String toString() {
+    return name().value();
+  }
 }

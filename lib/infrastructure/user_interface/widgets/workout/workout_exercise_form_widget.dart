@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/notes.dart';
-import 'package:overload/domain/workout/set/set_index.dart';
-import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
@@ -10,7 +8,6 @@ import 'package:overload/infrastructure/user_interface/pages/workout/goals_page.
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/exercise/exercise_dropdown_widget.dart';
 import 'package:number_selector/number_selector.dart';
-import 'package:overload/domain/workout/set/set.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
@@ -35,7 +32,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
 
   Exercise? exercise;
   Notes? notes;
-  SetsCount setsCount = SetsCount(value: 0);
+  SetsCount setsCount = SetsCount(value: 1);
   int numberOfSets = 1;
 
   @override
@@ -43,7 +40,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
     super.initState();
     setsCount = widget.workoutExercise != null
         ? widget.workoutExercise!.setsCount()
-        : SetsCount(value: 0);
+        : SetsCount(value: 1);
     numberOfSets = setsCount.value();
     _notesController.text = widget.workoutExercise != null &&
             widget.workoutExercise!.notes() != null
