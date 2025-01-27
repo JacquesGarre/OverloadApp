@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/workout/domain_events/workout_created_domain_event.dart';
 import 'package:overload/domain/workout/domain_events/workout_deleted_domain_event.dart';
+import 'package:overload/domain/workout/domain_events/workout_updated_domain_event.dart';
 import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/workout/name.dart';
 import 'package:overload/domain/workout/notes.dart';
@@ -101,5 +102,17 @@ class Workout {
 
   void delete() {
     domainEvents().publish(WorkoutDeletedDomainEvent.fromWorkout(this));
+  }
+
+  Workout update(Name name, WorkoutExercises workoutExercises, Notes? notes) {
+    Workout workout = Workout(
+      domainEvents: DomainEventsCollection(),
+      id: id(),
+      name: name,
+      exercises: workoutExercises,
+      notes: notes,
+    );
+    workout.domainEvents().publish(WorkoutUpdatedDomainEvent.fromWorkout(workout));
+    return workout;
   }
 }

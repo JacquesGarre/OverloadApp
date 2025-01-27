@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:overload/domain/workout/id.dart';
+import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
@@ -7,10 +7,13 @@ import 'package:overload/infrastructure/user_interface/widgets/shared/page_widge
 import 'package:overload/infrastructure/user_interface/widgets/workout/workout_form_widget.dart';
 import 'package:provider/provider.dart';
 
-class AddWorkoutPage extends StatelessWidget {
-  const AddWorkoutPage({super.key});
+class EditWorkoutPage extends StatelessWidget {
 
-  static const String title = 'New workout';
+  final Workout workout;
+
+  const EditWorkoutPage({super.key, required this.workout});
+
+  static const String title = 'Edit workout';
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +24,15 @@ class AddWorkoutPage extends StatelessWidget {
     return PageWidget(
       title: title,
       child: WorkoutFormWidget(
+        workout: workout,
         onSubmit: (
           String name,
           String? notes,
           WorkoutExercises workoutExercises,
         ) async {
           try {
-            await workoutProvider.addWorkout(
+            await workoutProvider.updateWorkout(
+              workout.id(),
               name,
               notes,
               workoutExercises,

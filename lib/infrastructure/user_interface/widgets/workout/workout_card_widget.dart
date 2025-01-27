@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
+import 'package:overload/infrastructure/user_interface/pages/workout/edit_workout_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
 import 'package:provider/provider.dart';
@@ -13,12 +14,17 @@ class WorkoutCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void editWorkout() {}
-
     return CardWidget(
       title: workout.name().value(),
       subtitle: workout.notes()?.value(),
-      onEdit: editWorkout,
+      onEdit: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditWorkoutPage(workout: workout),
+          ),
+        );
+      },
       onDelete: () async {
         try {
           WorkoutProvider workoutProvider = Provider.of<WorkoutProvider>(

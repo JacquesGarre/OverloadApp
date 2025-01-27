@@ -13,7 +13,6 @@ import 'package:overload/infrastructure/user_interface/widgets/workout/workout_e
 class WorkoutFormWidget extends StatefulWidget {
   final Workout? workout;
   final Function(
-    Id? id,
     String name,
     String? notes,
     WorkoutExercises workoutExercises,
@@ -41,6 +40,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   void initState() {
     super.initState();
     workoutId = widget.workout != null ? widget.workout!.id() : Id.create();
+    workoutExercises = widget.workout != null ? widget.workout!.exercises() : WorkoutExercises.empty();
     _nameController.text =
         widget.workout != null ? widget.workout!.name().value() : '';
     _notesController.text =
@@ -68,7 +68,6 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     }
     if (isFormValid && isWorkoutExercisesValid) {
       widget.onSubmit(
-        workoutId,
         _nameController.text,
         _notesController.text,
         workoutExercises,

@@ -7,6 +7,7 @@ import 'package:overload/application/exercise/update_exercise_command/update_exe
 import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
 import 'package:overload/application/workout/delete_workout_command/delete_workout_command_handler.dart';
 import 'package:overload/application/workout/get_workouts_query/get_workouts_query_handler.dart';
+import 'package:overload/application/workout/update_workout_command/update_workout_command_handler.dart';
 import 'package:overload/domain/exercise/exercise_repository_interface.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
 import 'package:overload/domain/workout/workout_repository_interface.dart';
@@ -97,6 +98,12 @@ Future<void> registerHandlers() async {
       domainEventBus: container<DomainEventBusInterface>(),
     ),
   );
+  container.registerFactory<UpdateWorkoutCommandHandler>(
+    () => UpdateWorkoutCommandHandler(
+      repository: container<WorkoutRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
 }
 
 Future<void> registerProviders() async {
@@ -113,6 +120,7 @@ Future<void> registerProviders() async {
       addWorkoutCommandHandler: container<AddWorkoutCommandHandler>(),
       getWorkoutsQueryHandler: container<GetWorkoutsQueryHandler>(),
       deleteWorkoutCommandHandler: container<DeleteWorkoutCommandHandler>(),
+      updateWorkoutCommandHandler: container<UpdateWorkoutCommandHandler>(),
     ),
   );
 }

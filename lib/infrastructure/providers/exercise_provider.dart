@@ -33,7 +33,11 @@ class ExerciseProvider with ChangeNotifier {
 
   Future<List<Exercise>> searchByName(String query) async {
     return exercises.where((Exercise exercise) {
-      return exercise.name().value().toLowerCase().contains(query.toLowerCase());
+      return exercise
+          .name()
+          .value()
+          .toLowerCase()
+          .contains(query.toLowerCase());
     }).toList();
   }
 
@@ -51,11 +55,15 @@ class ExerciseProvider with ChangeNotifier {
   }
 
   Future<void> deleteExercice(Exercise exercise) async {
-    DeleteExerciseCommand command = DeleteExerciseCommand(
-      id: exercise.id().toString(),
-    );
-    await deleteExerciseCommandHandler.invoke(command);
-    await loadExercises();
+    try {
+      DeleteExerciseCommand command = DeleteExerciseCommand(
+        id: exercise.id().toString(),
+      );
+      await deleteExerciseCommandHandler.invoke(command);
+      await loadExercises();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> updateExercise(
