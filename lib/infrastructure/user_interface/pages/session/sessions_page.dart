@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
-import 'package:overload/infrastructure/user_interface/pages/exercise/add_exercise_page.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/add_session_page.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/list_page_widget.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +31,7 @@ class _SessionsPageState extends State<SessionsPage> {
       context,
     );
     return ListPageWidget(
+      fabIcon: Icons.play_arrow,
       list: ListView.separated(
         itemCount: exerciseProvider.sessions.length,
         itemBuilder: (context, index) {
