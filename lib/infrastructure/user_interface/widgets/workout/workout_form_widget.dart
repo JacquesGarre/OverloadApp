@@ -145,7 +145,6 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
                 onWorkoutExerciseRemoved: _removeWorkoutExercise,
                 onWorkoutExerciseUpdated: _updateWorkoutExercise,
               ),
-              const SizedBox(height: 8),
             ],
           );
         }),
