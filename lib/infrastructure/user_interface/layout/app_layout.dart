@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/icons/healthicons.dart';
-import 'package:iconify_flutter/icons/ri.dart';
+import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:overload/infrastructure/user_interface/pages/exercise/exercises_page.dart';
-import 'package:overload/infrastructure/user_interface/pages/home_page.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/sessions_page.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/workouts_page.dart';
 import 'package:overload/infrastructure/user_interface/widgets/layout/app_bar_widget.dart';
 import 'package:overload/infrastructure/user_interface/config/app_page_config.dart';
@@ -22,9 +22,9 @@ class _AppLayoutState extends State<AppLayout> {
   final List<AppPageConfig> _pages = [
     AppPageConfig(
       index: 0,
-      title: HomePage.title,
-      page: const HomePage(),
-      icon: Ri.home_2_line,
+      title: SessionsPage.title,
+      page: const SessionsPage(),
+      icon: Mdi.calendar_check_outline,
     ),
     AppPageConfig(
       index: 1,

@@ -16,6 +16,7 @@ import 'package:overload/infrastructure/persistence/database.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';
 import 'package:overload/infrastructure/persistence/repositories/workout_repository.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
+import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
@@ -122,5 +123,8 @@ Future<void> registerProviders() async {
       deleteWorkoutCommandHandler: container<DeleteWorkoutCommandHandler>(),
       updateWorkoutCommandHandler: container<UpdateWorkoutCommandHandler>(),
     ),
+  );
+  container.registerSingleton<SessionProvider>(
+    SessionProvider(),
   );
 }

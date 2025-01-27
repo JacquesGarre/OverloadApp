@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overload/app.dart';
 import 'package:overload/dependency_injection.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
+import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => container<ExerciseProvider>()),
         ChangeNotifierProvider(create: (_) => container<WorkoutProvider>()),
+        ChangeNotifierProvider(create: (_) => container<SessionProvider>()),
       ],
       child: const App(),
     ),
