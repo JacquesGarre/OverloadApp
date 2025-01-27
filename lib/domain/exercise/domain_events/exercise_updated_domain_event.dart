@@ -46,11 +46,7 @@ class ExerciseUpdatedDomainEvent implements DomainEventInterface {
       'aggregateId': _aggregateId.toString(),
       'eventId': _eventId.toString(),
       'occuredAt': _occuredAt.toString(),
-      'exercise': {
-        'id': _exercise.id().toString(),
-        'name': _exercise.name().value(),
-        'units': _exercise.units().toStringList()
-      }
+      'exercise': _exercise.toJson()
     };
   }
 

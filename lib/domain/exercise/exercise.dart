@@ -66,7 +66,7 @@ class Exercise {
     return exercise;
   }
 
-  delete() {
+  void delete() {
     domainEvents().publish(ExerciseDeletedDomainEvent.fromExercise(this));
   }
 

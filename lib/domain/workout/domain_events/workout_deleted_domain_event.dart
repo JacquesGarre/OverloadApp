@@ -1,17 +1,21 @@
 import 'dart:convert';
-import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/shared/domain_event_interface.dart';
+import 'package:overload/domain/workout/workout.dart';
 import 'package:uuid/uuid.dart';
 
-class ExerciseDeletedDomainEvent implements DomainEventInterface {
-
+class WorkoutDeletedDomainEvent implements DomainEventInterface {
   final UuidValue _aggregateId;
   final UuidValue _eventId;
   final DateTime _occuredAt;
-  final Exercise _exercise;
-  static const String _eventName = "ExerciseDeletedDomainEvent";
+  final Workout _workout;
+  static const String _eventName = "WorkoutDeletedDomainEvent";
 
-  ExerciseDeletedDomainEvent._(this._aggregateId, this._eventId, this._occuredAt, this._exercise);
+  WorkoutDeletedDomainEvent._(
+    this._aggregateId,
+    this._eventId,
+    this._occuredAt,
+    this._workout,
+  );
 
   @override
   UuidValue aggregateId() {
@@ -33,11 +37,16 @@ class ExerciseDeletedDomainEvent implements DomainEventInterface {
     return _occuredAt;
   }
 
-  static ExerciseDeletedDomainEvent fromExercise(Exercise exercise) {
+  static WorkoutDeletedDomainEvent fromWorkout(Workout workout) {
     String uuid = const Uuid().v4();
     UuidValue eventId = UuidValue.fromString(uuid);
     DateTime occuredAt = DateTime.now();
-    return ExerciseDeletedDomainEvent._(exercise.id().value(), eventId, occuredAt, exercise);
+    return WorkoutDeletedDomainEvent._(
+      workout.id().value(),
+      eventId,
+      occuredAt,
+      workout,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -46,7 +55,7 @@ class ExerciseDeletedDomainEvent implements DomainEventInterface {
       'aggregateId': _aggregateId.toString(),
       'eventId': _eventId.toString(),
       'occuredAt': _occuredAt.toString(),
-      'exercise': _exercise.toJson()
+      'workout': _workout.toJson()
     };
   }
 
@@ -55,7 +64,7 @@ class ExerciseDeletedDomainEvent implements DomainEventInterface {
     return jsonEncode(this);
   }
 
-  Exercise exercise() {
-    return _exercise;
+  Workout workout() {
+    return _workout;
   }
 }

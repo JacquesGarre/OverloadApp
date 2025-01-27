@@ -5,6 +5,7 @@ import 'package:overload/application/exercise/delete_exercise_command/delete_exe
 import 'package:overload/application/exercise/get_exercises_query/get_exercises_query_handler.dart';
 import 'package:overload/application/exercise/update_exercise_command/update_exercise_command_handler.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
+import 'package:overload/application/workout/delete_workout_command/delete_workout_command_handler.dart';
 import 'package:overload/application/workout/get_workouts_query/get_workouts_query_handler.dart';
 import 'package:overload/domain/exercise/exercise_repository_interface.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
@@ -90,6 +91,12 @@ Future<void> registerHandlers() async {
       domainEventBus: container<DomainEventBusInterface>(),
     ),
   );
+  container.registerFactory<DeleteWorkoutCommandHandler>(
+    () => DeleteWorkoutCommandHandler(
+      repository: container<WorkoutRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
 }
 
 Future<void> registerProviders() async {
@@ -104,7 +111,8 @@ Future<void> registerProviders() async {
   container.registerSingleton<WorkoutProvider>(
     WorkoutProvider(
       addWorkoutCommandHandler: container<AddWorkoutCommandHandler>(),
-      getWorkoutsQueryHandler: container<GetWorkoutsQueryHandler>()
+      getWorkoutsQueryHandler: container<GetWorkoutsQueryHandler>(),
+      deleteWorkoutCommandHandler: container<DeleteWorkoutCommandHandler>(),
     ),
   );
 }

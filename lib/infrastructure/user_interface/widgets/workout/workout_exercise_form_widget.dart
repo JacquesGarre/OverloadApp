@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/workout/notes.dart';
-import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';

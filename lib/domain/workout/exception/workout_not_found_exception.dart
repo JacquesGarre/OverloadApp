@@ -1,0 +1,1 @@
+class WorkoutNotFoundException implements Exception {}

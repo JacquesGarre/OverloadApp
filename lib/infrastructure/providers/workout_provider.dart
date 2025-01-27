@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
+import 'package:overload/application/workout/delete_workout_command/delete_workout_command.dart';
+import 'package:overload/application/workout/delete_workout_command/delete_workout_command_handler.dart';
 import 'package:overload/application/workout/get_workouts_query/get_workouts_query.dart';
 import 'package:overload/application/workout/get_workouts_query/get_workouts_query_handler.dart';
 import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercises.dart';
 
 class WorkoutProvider with ChangeNotifier {
+
   final AddWorkoutCommandHandler addWorkoutCommandHandler;
   final GetWorkoutsQueryHandler getWorkoutsQueryHandler;
+  final DeleteWorkoutCommandHandler deleteWorkoutCommandHandler;
 
   WorkoutProvider({
     required this.addWorkoutCommandHandler,
     required this.getWorkoutsQueryHandler,
+    required this.deleteWorkoutCommandHandler,
   });
 
   List<Workout> _workouts = [];
@@ -40,5 +45,13 @@ class WorkoutProvider with ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> deleteWorkout(Workout workout) async {
+    DeleteWorkoutCommand command = DeleteWorkoutCommand(
+      id: workout.id().toString(),
+    );
+    await deleteWorkoutCommandHandler.invoke(command);
+    await loadWorkouts();
   }
 }

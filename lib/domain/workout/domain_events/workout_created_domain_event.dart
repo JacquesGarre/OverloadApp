@@ -55,12 +55,7 @@ class WorkoutCreatedDomainEvent implements DomainEventInterface {
       'aggregateId': _aggregateId.toString(),
       'eventId': _eventId.toString(),
       'occuredAt': _occuredAt.toString(),
-      'workout': {
-        'id': _workout.id().toString(),
-        'name': _workout.name().value(),
-        'notes': _workout.notes()?.value(),
-        'workout_exercises': _workout.exercises().toString()
-      }
+      'workout': _workout.toJson()
     };
   }
 

@@ -115,7 +115,7 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   Widget build(BuildContext context) {
     return FormWidget(
       formKey: _formKey,
-      submitButtonLabel: 'Submit',
+      submitButtonLabel: 'Save workout',
       onSubmit: _submitForm,
       fields: [
         TextFieldWidget(
