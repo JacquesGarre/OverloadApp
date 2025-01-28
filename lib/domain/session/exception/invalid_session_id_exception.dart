@@ -1,0 +1,1 @@
+class InvalidSessionIdException implements Exception {}

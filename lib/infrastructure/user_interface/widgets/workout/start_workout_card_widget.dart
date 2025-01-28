@@ -13,7 +13,9 @@ class StartWorkoutCardWidget extends StatelessWidget {
     return CardWidget(
       title: workout.name().value(),
       subtitle: workout.notes()?.value(),
-      onStart: () {},
+      onStart: () {
+        
+      },
       child: Text(
         '${workout.exercisesCount()} exercise${workout.exercisesCount() > 1 ? 's' : ''}',
         style: TextStyle(
