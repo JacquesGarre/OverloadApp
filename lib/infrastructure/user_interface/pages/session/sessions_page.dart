@@ -21,19 +21,19 @@ class _SessionsPageState extends State<SessionsPage> {
       Provider.of<SessionProvider>(
         context,
         listen: false,
-      ).loadExercises();
+      ).loadSessions();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final SessionProvider exerciseProvider = Provider.of<SessionProvider>(
+    final SessionProvider sessionProvider = Provider.of<SessionProvider>(
       context,
     );
     return ListPageWidget(
       floatingActionButtonIcon: Icons.play_arrow,
       list: ListView.separated(
-        itemCount: exerciseProvider.sessions.length,
+        itemCount: sessionProvider.sessions.length,
         itemBuilder: (context, index) {
           return const Text("Session card");
         },

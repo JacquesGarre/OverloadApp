@@ -28,7 +28,9 @@ void main() {
     db = await sqflite_ffi.openDatabase(
       sqflite_ffi.inMemoryDatabasePath,
       version: 1,
-      onCreate: Database.createDatabase,
+      onCreate: (db, version) async {
+        await Database.createDatabase(db);
+      },
     );
     repository = ExerciseRepository(db: db);
     final eventBus = DomainEventBus(eventBus: EventBus());
@@ -74,7 +76,6 @@ void main() {
 
   test('throws ExerciseAlreadyExistsException for duplicate exercise name',
       () async {
-
     // Add two exercises to the database
     final exercise = ExerciseStub.random();
     await repository.add(exercise);
@@ -96,7 +97,11 @@ void main() {
     // Verify no changes occurred
     final exercises = await repository.findAll();
     expect(exercises.length, 2);
-    expect(exercises.any((e) => e.name().value() == exercise.name().value()), isTrue);
-    expect(exercises.any((e) => e.name().value() == exerciseToUpdate.name().value()), isTrue);
+    expect(exercises.any((e) => e.name().value() == exercise.name().value()),
+        isTrue);
+    expect(
+        exercises
+            .any((e) => e.name().value() == exerciseToUpdate.name().value()),
+        isTrue);
   });
 }

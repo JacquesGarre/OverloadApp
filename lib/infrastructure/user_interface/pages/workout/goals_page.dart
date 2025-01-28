@@ -75,7 +75,7 @@ class _GoalsPageState extends State<GoalsPage> {
                 key: goalsTimelineWidget,
                 workoutExercise: workoutExercise,
                 setsCount: widget.setsCount,
-                goals: workoutExercise.goals()!,
+                goals: workoutExercise.goals(),
               ),
               FloatingCenteredButtonWidget(
                 text:

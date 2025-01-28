@@ -21,7 +21,9 @@ void main() {
     db = await sqflite_ffi.openDatabase(
       sqflite_ffi.inMemoryDatabasePath,
       version: 1,
-      onCreate: Database.createDatabase,
+      onCreate: (db, version) async {
+        await Database.createDatabase(db);
+      },
     );
     repository = ExerciseRepository(db: db);
     final eventBus = DomainEventBus(eventBus: EventBus());

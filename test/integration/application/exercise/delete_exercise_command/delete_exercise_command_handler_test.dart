@@ -27,7 +27,9 @@ void main() {
     db = await sqflite_ffi.openDatabase(
       sqflite_ffi.inMemoryDatabasePath,
       version: 1,
-      onCreate: Database.createDatabase,
+      onCreate: (db, version) async {
+        await Database.createDatabase(db);
+      },
     );
     repository = ExerciseRepository(db: db);
     final eventBus = DomainEventBus(eventBus: EventBus());
@@ -56,7 +58,8 @@ void main() {
   });
 
   test('throws ExerciseNotFoundException for non-existent exercise', () async {
-    final command = DeleteExerciseCommand(id: '123e4567-e89b-12d3-a456-426614174000');
+    final command =
+        DeleteExerciseCommand(id: '123e4567-e89b-12d3-a456-426614174000');
 
     expect(
       () async => await handler.invoke(command),

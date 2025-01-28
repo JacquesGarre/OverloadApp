@@ -61,4 +61,19 @@ class SessionExercise {
       notes: notes,
     );
   }
+
+  static SessionExercise fromWorkoutExercise(WorkoutExercise workoutExercise) {
+    SessionExerciseIndex index = SessionExerciseIndex.fromWorkoutExerciseIndex(
+      workoutExercise.index(),
+    );
+    Sets sets = Sets.fromSetsCountAndExercise(
+      workoutExercise.setsCount(),
+      workoutExercise.exercise(),
+    );
+    return SessionExercise(
+      index: index,
+      workoutExercise: workoutExercise,
+      sets: sets,
+    );
+  }
 }

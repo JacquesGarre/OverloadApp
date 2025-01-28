@@ -1,5 +1,7 @@
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise_index.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
+import 'package:overload/domain/workout/workout_exercises.dart';
 
 class SessionExercises {
   final List<SessionExercise> _value;
@@ -75,6 +77,14 @@ class SessionExercises {
     List<SessionExercise> value = [];
     for (Map<String, dynamic> json in jsons) {
       value.add(SessionExercise.fromJson(json));
+    }
+    return SessionExercises(value: value);
+  }
+
+  static SessionExercises fromWorkoutExercises(WorkoutExercises workoutExercises) {
+    List<SessionExercise> value = [];
+    for(WorkoutExercise workoutExercise in workoutExercises.value()) {
+      value.add(SessionExercise.fromWorkoutExercise(workoutExercise));
     }
     return SessionExercises(value: value);
   }

@@ -12,7 +12,7 @@ import 'package:timelines_plus/timelines_plus.dart';
 class GoalsTimelineWidget extends StatefulWidget {
   final WorkoutExercise workoutExercise;
   final SetsCount setsCount;
-  final Goals goals;
+  final Goals? goals;
 
   const GoalsTimelineWidget({
     super.key,
@@ -37,7 +37,7 @@ class GoalsTimelineWidgetState extends State<GoalsTimelineWidget> {
         widget.setsCount,
         widget.workoutExercise.exercise(),
       );
-      goals = widget.goals;
+      goals = widget.goals ?? Goals.empty();
       if (goals.count() == 0) {
         goals = goals.add(
           Goal.fromSets(

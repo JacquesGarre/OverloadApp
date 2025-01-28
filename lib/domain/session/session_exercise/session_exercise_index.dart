@@ -1,3 +1,5 @@
+import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
+
 class SessionExerciseIndex {
   final int _value;
 
@@ -22,6 +24,10 @@ class SessionExerciseIndex {
       return SessionExerciseIndex(value: 1);
     }
     return SessionExerciseIndex(value: index.value() + 1);
+  }
+
+  static SessionExerciseIndex fromWorkoutExerciseIndex(WorkoutExerciseIndex index) {
+    return SessionExerciseIndex(value: index.value());
   }
 
 }
