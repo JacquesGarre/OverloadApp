@@ -3,7 +3,6 @@ import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/list_page_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/workout/start_workout_card_widget.dart';
-import 'package:overload/infrastructure/user_interface/widgets/workout/workout_card_widget.dart';
 import 'package:provider/provider.dart';
 
 class NewSessionPage extends StatefulWidget {
@@ -21,8 +20,8 @@ class _NewSessionPageState extends State<NewSessionPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<WorkoutProvider>(
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<WorkoutProvider>(
         context,
         listen: false,
       ).loadWorkouts();
@@ -30,16 +29,10 @@ class _NewSessionPageState extends State<NewSessionPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    workoutProvider = Provider.of<WorkoutProvider>(
-      context,
-      listen: false,
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final WorkoutProvider workoutProvider = Provider.of<WorkoutProvider>(
+      context,
+    );
     return PageWidget(
       title: NewSessionPage.title,
       child: ListPageWidget(
