@@ -55,20 +55,22 @@ class Session {
   Map<String, dynamic> toJson() {
     return {
       "id": _id.toString(),
-      "workout": _workout.toJson(),
+      "workout": jsonEncode(_workout.toJson()),
       "start_date": _startDate.toString(),
-      "end_date": _endDate.toString(),
+      "end_date": _endDate?.toString(),
       "exercises": jsonEncode(_exercises.toJson())
     };
   }
 
   static Session fromJson(Map<String, dynamic> json) {
     Id id = Id.fromString(json["id"]);
-    Workout workout = Workout.fromJson(json["workout"]);
+    Workout workout = Workout.fromJson(
+      jsonDecode(json["workout"]),
+    );
     DateTime startDate = DateTime.parse(json["start_date"]);
     DateTime? endDate;
     if (json["end_date"] != null) {
-      endDate = DateTime.parse(json["end_date"]);
+      endDate = DateTime.parse(json["end_date"]); // TODO: Invalid date format
     }
     SessionExercises exercises = SessionExercises.fromJson(
       (jsonDecode(json["exercises"]) as List)

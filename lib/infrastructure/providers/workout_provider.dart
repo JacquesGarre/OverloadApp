@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
 import 'package:overload/application/workout/delete_workout_command/delete_workout_command.dart';

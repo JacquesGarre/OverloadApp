@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';

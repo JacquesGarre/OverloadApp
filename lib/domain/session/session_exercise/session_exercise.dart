@@ -49,7 +49,7 @@ class SessionExercise {
     WorkoutExercise workoutExercise = WorkoutExercise.fromJson(
       json["workout_exercise"],
     );
-    Sets sets = Sets.fromJson(json["sets"]);
+    Sets sets = Sets.fromJson(json["sets"]); // TODO: List<dynamic> is not a subtype of List<Map<String, dynamic>>
     Notes? notes;
     if (json["notes"] != null) {
       notes = Notes(value: json["notes"]);

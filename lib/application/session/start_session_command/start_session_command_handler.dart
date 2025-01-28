@@ -1,10 +1,4 @@
-import 'package:overload/application/exercise/add_exercise_command/add_exercise_command.dart';
 import 'package:overload/application/session/start_session_command/start_session_command.dart';
-import 'package:overload/domain/exercise/exception/exercise_already_exists_exception.dart';
-import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/exercise/exercise_repository_interface.dart';
-import 'package:overload/domain/exercise/name.dart';
-import 'package:overload/domain/exercise/units.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_repository_interface.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
