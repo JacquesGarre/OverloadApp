@@ -41,7 +41,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
         },
         separatorBuilder: (context, index) => const SizedBox(height: 8),
       ),
-      onAdd: () {
+      onFloatingActionButtonPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(

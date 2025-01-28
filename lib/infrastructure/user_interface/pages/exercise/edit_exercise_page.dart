@@ -17,21 +17,23 @@ class EditExercisePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageWidget(
       title: title,
-      child: ExerciseFormWidget(
-        exercise: exercise,
-        onSubmit: (formData) async {
-          try {
-            final exerciseProvider = Provider.of<ExerciseProvider>(
-              context,
-              listen: false,
-            );
-            await exerciseProvider.updateExercise(exercise, formData);
-            if (!context.mounted) return;
-            Navigator.pop(context, true);
-          } catch (e) {
-            ExceptionHandler().handleException(context, e);
-          }
-        },
+      child: SingleChildScrollView(
+        child: ExerciseFormWidget(
+          exercise: exercise,
+          onSubmit: (formData) async {
+            try {
+              final exerciseProvider = Provider.of<ExerciseProvider>(
+                context,
+                listen: false,
+              );
+              await exerciseProvider.updateExercise(exercise, formData);
+              if (!context.mounted) return;
+              Navigator.pop(context, true);
+            } catch (e) {
+              ExceptionHandler().handleException(context, e);
+            }
+          },
+        ),
       ),
     );
   }

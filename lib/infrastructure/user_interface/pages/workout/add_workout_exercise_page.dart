@@ -17,9 +17,11 @@ class AddWorkoutExercisePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageWidget(
       title: title,
-      child: WorkoutExerciseFormWidget(
-        workoutId: workoutId,
-        index: index,
+      child: SingleChildScrollView(
+        child: WorkoutExerciseFormWidget(
+          workoutId: workoutId,
+          index: index,
+        ),
       ),
     );
   }

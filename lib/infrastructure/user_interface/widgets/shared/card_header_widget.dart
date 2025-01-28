@@ -3,19 +3,22 @@ import 'package:overload/infrastructure/user_interface/widgets/shared/card_subti
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_title_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/delete_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/edit_button_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/start_button_widget.dart';
 
 class CardHeaderWidget extends StatelessWidget {
   final String title;
   final String? subtitle;
   final Widget? child;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+  final VoidCallback? onStart;
 
   const CardHeaderWidget({
     super.key,
-    required this.onEdit,
-    required this.onDelete,
     required this.title,
+    this.onEdit,
+    this.onDelete,
+    this.onStart,
     this.subtitle,
     this.child,
   });
@@ -40,8 +43,9 @@ class CardHeaderWidget extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            EditButtonWidget(onPressed: onEdit),
-            DeleteButtonWidget(onPressed: onDelete),
+            if (onEdit != null) EditButtonWidget(onPressed: onEdit!),
+            if (onDelete != null) DeleteButtonWidget(onPressed: onDelete!),
+            if (onStart != null) StartButtonWidget(onPressed: onStart!),
           ],
         ),
       ],

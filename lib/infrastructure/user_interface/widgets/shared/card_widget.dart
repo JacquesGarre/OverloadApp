@@ -6,14 +6,16 @@ class CardWidget extends StatelessWidget {
   final String title;
   final String? subtitle;
   final Widget? child;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+  final VoidCallback? onStart;
 
   const CardWidget({
     super.key,
-    required this.onEdit,
-    required this.onDelete,
     required this.title,
+    this.onEdit,
+    this.onDelete,
+    this.onStart,
     this.subtitle,
     this.child,
   });
@@ -30,6 +32,7 @@ class CardWidget extends StatelessWidget {
           subtitle: subtitle,
           onEdit: onEdit,
           onDelete: onDelete,
+          onStart: onStart,
           child: child,
         ),
       ),

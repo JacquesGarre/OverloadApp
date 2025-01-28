@@ -18,16 +18,18 @@ class AddExercisePage extends StatelessWidget {
     );
     return PageWidget(
       title: title,
-      child: ExerciseFormWidget(
-        onSubmit: (formData) async {
-          try {
-            await exerciseProvider.addExercise(formData);
-            if (!context.mounted) return;
-            Navigator.pop(context, true);
-          } catch (e) {
-            ExceptionHandler().handleException(context, e);
-          }
-        },
+      child: SingleChildScrollView(
+        child: ExerciseFormWidget(
+          onSubmit: (formData) async {
+            try {
+              await exerciseProvider.addExercise(formData);
+              if (!context.mounted) return;
+              Navigator.pop(context, true);
+            } catch (e) {
+              ExceptionHandler().handleException(context, e);
+            }
+          },
+        ),
       ),
     );
   }

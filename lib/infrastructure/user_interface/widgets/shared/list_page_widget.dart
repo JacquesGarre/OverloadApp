@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class ListPageWidget extends StatelessWidget {
   final Widget list;
-  final VoidCallback? onAdd;
-  final IconData? fabIcon;
+  final VoidCallback? onFloatingActionButtonPressed;
+  final IconData? floatingActionButtonIcon;
 
-  const ListPageWidget({super.key, required this.list, this.onAdd, this.fabIcon});
+  const ListPageWidget({super.key, required this.list, this.onFloatingActionButtonPressed, this.floatingActionButtonIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,13 @@ class ListPageWidget extends StatelessWidget {
           ),
           child: list,
         ),
-        if (onAdd != null)
+        if (onFloatingActionButtonPressed != null)
           Positioned(
             bottom: 16,
             right: 16,
             child: FloatingActionButton(
-              onPressed: onAdd,
-              child: Icon(fabIcon ?? Icons.add),
+              onPressed: onFloatingActionButtonPressed,
+              child: Icon(floatingActionButtonIcon ?? Icons.add),
             ),
           ),
       ],

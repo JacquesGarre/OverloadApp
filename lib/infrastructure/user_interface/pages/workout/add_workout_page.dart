@@ -20,24 +20,26 @@ class AddWorkoutPage extends StatelessWidget {
     );
     return PageWidget(
       title: title,
-      child: WorkoutFormWidget(
-        onSubmit: (
-          String name,
-          String? notes,
-          WorkoutExercises workoutExercises,
-        ) async {
-          try {
-            await workoutProvider.addWorkout(
-              name,
-              notes,
-              workoutExercises,
-            );
-            if (!context.mounted) return;
-            Navigator.pop(context, true);
-          } catch (e) {
-            ExceptionHandler().handleException(context, e);
-          }
-        },
+      child: SingleChildScrollView(
+        child: WorkoutFormWidget(
+          onSubmit: (
+            String name,
+            String? notes,
+            WorkoutExercises workoutExercises,
+          ) async {
+            try {
+              await workoutProvider.addWorkout(
+                name,
+                notes,
+                workoutExercises,
+              );
+              if (!context.mounted) return;
+              Navigator.pop(context, true);
+            } catch (e) {
+              ExceptionHandler().handleException(context, e);
+            }
+          },
+        ),
       ),
     );
   }

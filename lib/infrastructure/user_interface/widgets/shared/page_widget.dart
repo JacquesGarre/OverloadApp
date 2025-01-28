@@ -19,9 +19,7 @@ class PageWidget extends StatelessWidget {
       appBar: AppBarWidget(
         title: title,
       ),
-      body: SingleChildScrollView(
-        child: child,
-      ),
+      body: child,
       resizeToAvoidBottomInset: true,
       floatingActionButton: floatingActionButton != null
           ? Padding(

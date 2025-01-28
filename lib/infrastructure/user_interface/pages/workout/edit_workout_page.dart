@@ -8,7 +8,6 @@ import 'package:overload/infrastructure/user_interface/widgets/workout/workout_f
 import 'package:provider/provider.dart';
 
 class EditWorkoutPage extends StatelessWidget {
-
   final Workout workout;
 
   const EditWorkoutPage({super.key, required this.workout});
@@ -23,26 +22,28 @@ class EditWorkoutPage extends StatelessWidget {
     );
     return PageWidget(
       title: title,
-      child: WorkoutFormWidget(
-        workout: workout,
-        onSubmit: (
-          String name,
-          String? notes,
-          WorkoutExercises workoutExercises,
-        ) async {
-          try {
-            await workoutProvider.updateWorkout(
-              workout.id(),
-              name,
-              notes,
-              workoutExercises,
-            );
-            if (!context.mounted) return;
-            Navigator.pop(context, true);
-          } catch (e) {
-            ExceptionHandler().handleException(context, e);
-          }
-        },
+      child: SingleChildScrollView(
+        child: WorkoutFormWidget(
+          workout: workout,
+          onSubmit: (
+            String name,
+            String? notes,
+            WorkoutExercises workoutExercises,
+          ) async {
+            try {
+              await workoutProvider.updateWorkout(
+                workout.id(),
+                name,
+                notes,
+                workoutExercises,
+              );
+              if (!context.mounted) return;
+              Navigator.pop(context, true);
+            } catch (e) {
+              ExceptionHandler().handleException(context, e);
+            }
+          },
+        ),
       ),
     );
   }

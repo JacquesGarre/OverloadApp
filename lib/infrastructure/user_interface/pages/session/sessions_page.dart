@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
-import 'package:overload/infrastructure/user_interface/pages/session/add_session_page.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/new_session_page.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/list_page_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -31,22 +31,19 @@ class _SessionsPageState extends State<SessionsPage> {
       context,
     );
     return ListPageWidget(
-      fabIcon: Icons.play_arrow,
+      floatingActionButtonIcon: Icons.play_arrow,
       list: ListView.separated(
         itemCount: exerciseProvider.sessions.length,
         itemBuilder: (context, index) {
           return const Text("Session card");
-          // ExerciseCardWidget(
-          //   exercise: exerciseProvider.exercises[index],
-          // );
         },
         separatorBuilder: (context, index) => const SizedBox(height: 8),
       ),
-      onAdd: () {
+      onFloatingActionButtonPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const AddSessionPage(),
+            builder: (context) => const NewSessionPage(),
           ),
         );
       },

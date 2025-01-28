@@ -20,10 +20,12 @@ class EditWorkoutExercisePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageWidget(
       title: title,
-      child: WorkoutExerciseFormWidget(
-        workoutId: workoutId,
-        index: workoutExercise.index(),
-        workoutExercise: workoutExercise,
+      child: SingleChildScrollView(
+        child: WorkoutExerciseFormWidget(
+          workoutId: workoutId,
+          index: workoutExercise.index(),
+          workoutExercise: workoutExercise,
+        ),
       ),
     );
   }
