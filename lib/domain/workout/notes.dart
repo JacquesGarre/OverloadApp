@@ -12,7 +12,7 @@ class Notes {
     if (value == null || value.trim() == "") {
       return null;
     }
-    return Notes._(value: value);
+    return Notes._(value: value); // TODO: Add a max length here
   }
 
 }

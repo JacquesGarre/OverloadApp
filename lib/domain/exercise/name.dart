@@ -6,7 +6,7 @@ class Name {
   Name._({required String value}) : _value = value;
 
   static Name fromString(String value) {
-    String trimmedValue = value.trim();
+    String trimmedValue = value.trim(); // TODO: Add a max length here
     assertValid(trimmedValue);
     return Name._(value: trimmedValue);
   }
