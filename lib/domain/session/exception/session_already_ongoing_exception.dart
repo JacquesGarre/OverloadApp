@@ -1,0 +1,1 @@
+class SessionAlreadyOngoingException implements Exception {}
