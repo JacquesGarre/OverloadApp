@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:overload/domain/session/domain_events/session_deleted_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_started_domain_event.dart';
 import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session_exercises.dart';
@@ -70,7 +71,7 @@ class Session {
     DateTime startDate = DateTime.parse(json["start_date"]);
     DateTime? endDate;
     if (json["end_date"] != null) {
-      endDate = DateTime.parse(json["end_date"]); // TODO: Invalid date format
+      endDate = DateTime.parse(json["end_date"]);
     }
     SessionExercises exercises = SessionExercises.fromJson(
       (jsonDecode(json["exercises"]) as List)
@@ -99,5 +100,13 @@ class Session {
         .domainEvents()
         .publish(SessionStartedDomainEvent.fromSession(session));
     return session;
+  }
+
+  bool inProgress() {
+    return _endDate == null;
+  }
+
+  void delete() {
+    domainEvents().publish(SessionDeletedDomainEvent.fromSession(this));
   }
 }

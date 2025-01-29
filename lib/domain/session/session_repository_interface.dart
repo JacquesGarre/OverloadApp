@@ -7,4 +7,5 @@ abstract class SessionRepositoryInterface {
   Future<void> delete(Session session);
   Future<Session?> ofId(Id id);
   Future<List<Session>> findAll();
+  Future<Session?> findCurrentSession();
 }

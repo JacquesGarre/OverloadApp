@@ -4,6 +4,8 @@ import 'package:overload/application/exercise/add_exercise_command/add_exercise_
 import 'package:overload/application/exercise/delete_exercise_command/delete_exercise_command_handler.dart';
 import 'package:overload/application/exercise/get_exercises_query/get_exercises_query_handler.dart';
 import 'package:overload/application/exercise/update_exercise_command/update_exercise_command_handler.dart';
+import 'package:overload/application/session/delete_session_command/delete_session_command_handler.dart';
+import 'package:overload/application/session/get_current_session_query/get_current_session_query_handler.dart';
 import 'package:overload/application/session/get_sessions_query/get_sessions_query_handler.dart';
 import 'package:overload/application/session/start_session_command/start_session_command_handler.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
@@ -121,8 +123,19 @@ Future<void> registerHandlers() async {
       domainEventBus: container<DomainEventBusInterface>(),
     ),
   );
+  container.registerFactory<DeleteSessionCommandHandler>(
+    () => DeleteSessionCommandHandler(
+      sessionRepository: container<SessionRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
   container.registerFactory<GetSessionsQueryHandler>(
     () => GetSessionsQueryHandler(
+      repository: container<SessionRepositoryInterface>(),
+    ),
+  );
+  container.registerFactory<GetCurrentSessionQueryHandler>(
+    () => GetCurrentSessionQueryHandler(
       repository: container<SessionRepositoryInterface>(),
     ),
   );
@@ -149,6 +162,8 @@ Future<void> registerProviders() async {
     SessionProvider(
       startSessionCommandHandler: container<StartSessionCommandHandler>(),
       getSessionsQueryHandler: container<GetSessionsQueryHandler>(),
+      getCurrentSessionQueryHandler: container<GetCurrentSessionQueryHandler>(),
+      deleteSessionCommandHandler: container<DeleteSessionCommandHandler>(),
     ),
   );
 }

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:overload/application/session/delete_session_command/delete_session_command.dart';
+import 'package:overload/application/session/delete_session_command/delete_session_command_handler.dart';
+import 'package:overload/application/session/get_current_session_query/get_current_session_query.dart';
+import 'package:overload/application/session/get_current_session_query/get_current_session_query_handler.dart';
 import 'package:overload/application/session/get_sessions_query/get_sessions_query.dart';
 import 'package:overload/application/session/get_sessions_query/get_sessions_query_handler.dart';
 import 'package:overload/application/session/start_session_command/start_session_command.dart';
@@ -9,14 +13,27 @@ import 'package:overload/domain/workout/id.dart';
 class SessionProvider with ChangeNotifier {
   final StartSessionCommandHandler startSessionCommandHandler;
   final GetSessionsQueryHandler getSessionsQueryHandler;
+  final GetCurrentSessionQueryHandler getCurrentSessionQueryHandler;
+  final DeleteSessionCommandHandler deleteSessionCommandHandler;
 
   SessionProvider({
     required this.startSessionCommandHandler,
     required this.getSessionsQueryHandler,
+    required this.getCurrentSessionQueryHandler,
+    required this.deleteSessionCommandHandler,
   });
+
+  Session? _currentSession;
+  Session? get currentSession => _currentSession;
 
   List _sessions = [];
   List get sessions => _sessions;
+
+  Future<void> loadCurrentSession() async {
+    GetCurrentSessionQuery query = GetCurrentSessionQuery();
+    _currentSession = await getCurrentSessionQueryHandler.invoke(query);
+    notifyListeners();
+  }
 
   Future<void> loadSessions() async {
     GetSessionsQuery query = GetSessionsQuery();
@@ -32,6 +49,19 @@ class SessionProvider with ChangeNotifier {
       Session session = await startSessionCommandHandler.invoke(command);
       await loadSessions();
       return session;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteCurrentSession() async {
+    try {
+      DeleteSessionCommand command = DeleteSessionCommand(
+        id: _currentSession?.id().toString(),
+      );
+      await deleteSessionCommandHandler.invoke(command);
+      await loadCurrentSession();
+      await loadSessions();
     } catch (e) {
       rethrow;
     }

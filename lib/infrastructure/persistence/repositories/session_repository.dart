@@ -65,4 +65,21 @@ class SessionRepository implements SessionRepositoryInterface {
     }
     return sessions.first;
   }
+
+  @override
+  Future<Session?> findCurrentSession() async {
+    List<Map<String, Object?>> sessionsJsons = await db.query(
+      table,
+      where: 'end_date IS NULL',
+      //whereArgs: [null],
+    );    
+    if(sessionsJsons.isEmpty){
+      return null;
+    }
+    List<Session> sessions = [];
+    for(Map<String, Object?> sessionJson in sessionsJsons) {
+      sessions.add(Session.fromJson(sessionJson));
+    }
+    return sessions.first;
+  }
 }

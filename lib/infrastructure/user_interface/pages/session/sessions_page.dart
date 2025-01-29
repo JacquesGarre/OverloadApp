@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
+import 'package:overload/infrastructure/user_interface/config/modal_action_button_config.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/new_session_page.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/current_session_modal_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/list_page_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/modal_widget.dart';
 import 'package:provider/provider.dart';
 
 class SessionsPage extends StatefulWidget {
@@ -39,7 +43,16 @@ class _SessionsPageState extends State<SessionsPage> {
         },
         separatorBuilder: (context, index) => const SizedBox(height: 8),
       ),
-      onFloatingActionButtonPressed: () {
+      onFloatingActionButtonPressed: () async {
+        await sessionProvider.loadCurrentSession();
+        if (!context.mounted) return;
+        if (sessionProvider.currentSession != null) {
+          showCurrentSessionModal(
+            context: context,
+            sessionProvider: sessionProvider,
+          );
+          return;
+        }
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -1,0 +1,1 @@
+class SessionNotFoundException implements Exception {}
