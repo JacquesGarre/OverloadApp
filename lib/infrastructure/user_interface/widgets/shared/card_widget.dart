@@ -5,10 +5,11 @@ import 'package:overload/infrastructure/user_interface/widgets/shared/card_heade
 class CardWidget extends StatelessWidget {
   final String title;
   final String? subtitle;
-  final Widget? child;
+  final Widget? headerChild;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
   final VoidCallback? onStart;
+  final List<Widget>? children;
 
   const CardWidget({
     super.key,
@@ -17,7 +18,8 @@ class CardWidget extends StatelessWidget {
     this.onDelete,
     this.onStart,
     this.subtitle,
-    this.child,
+    this.headerChild,
+    this.children,
   });
 
   @override
@@ -27,13 +29,32 @@ class CardWidget extends StatelessWidget {
       color: AppColorScheme.lightBackground,
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: CardHeaderWidget(
-          title: title,
-          subtitle: subtitle,
-          onEdit: onEdit,
-          onDelete: onDelete,
-          onStart: onStart,
-          child: child,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CardHeaderWidget(
+              title: title,
+              subtitle: subtitle,
+              onEdit: onEdit,
+              onDelete: onDelete,
+              onStart: onStart,
+              child: headerChild,
+            ),
+            if (children != null)
+              Divider(
+                color: AppColorScheme.primary,
+              ),
+            if (children != null)
+              const SizedBox(
+                height: 4.0,
+              ),
+            if (children != null)
+              ...children!.map(
+                (widget) {
+                  return widget;
+                },
+              ),
+          ],
         ),
       ),
     );

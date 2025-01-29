@@ -4,6 +4,7 @@ import 'package:overload/infrastructure/user_interface/config/modal_action_butto
 import 'package:overload/infrastructure/user_interface/pages/session/new_session_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/current_session_modal_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/session_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/list_page_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/modal_widget.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,7 @@ class _SessionsPageState extends State<SessionsPage> {
       list: ListView.separated(
         itemCount: sessionProvider.sessions.length,
         itemBuilder: (context, index) {
-          return const Text("Session card");
+          return SessionCardWidget(session: sessionProvider.sessions[index]);
         },
         separatorBuilder: (context, index) => const SizedBox(height: 8),
       ),

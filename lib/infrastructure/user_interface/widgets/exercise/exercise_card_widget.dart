@@ -36,7 +36,7 @@ class ExerciseCardWidget extends StatelessWidget {
           ExceptionHandler().handleException(context, e);
         }
       },
-      child: UnitsBadgesWidget(units: exercise.units()),
+      headerChild: UnitsBadgesWidget(units: exercise.units()),
     );
   }
 }

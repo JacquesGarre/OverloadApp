@@ -30,10 +30,7 @@ class UpdateWorkoutCommandHandler {
     if (workoutExercises.count() < 1) {
       throw WorkoutExerciseRequiredException();
     }
-    Notes? notes;
-    if (command.notes != null) {
-      notes = Notes(value: command.notes!);
-    }
+    Notes? notes = Notes.fromString(command.notes!);
     Workout updatedWorkout = workout.update(name, workoutExercises, notes);
     if (!name.equals(workout.name())) {
       Workout? existingWorkout = await repository.ofName(updatedWorkout.name());

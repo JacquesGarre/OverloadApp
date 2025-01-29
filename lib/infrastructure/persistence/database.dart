@@ -3,6 +3,7 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/id.dart';
 import 'package:overload/domain/workout/id.dart' as workout_id;
 import 'package:overload/domain/workout/name.dart' as workout_name;
+import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/workout_exercise/id.dart'
     as workout_exercise_id;
 import 'package:overload/domain/exercise/name.dart';
@@ -123,6 +124,7 @@ class Database {
       domainEvents: DomainEventsCollection(),
       id: workoutId,
       name: workout_name.Name.fromString("Full body"),
+      notes: Notes.fromString("Focus on a lot of reps"),
       exercises: WorkoutExercises(
         value: [
           WorkoutExercise(
@@ -131,6 +133,7 @@ class Database {
             index: WorkoutExerciseIndex(value: 1),
             exercise: exercises[0],
             setsCount: SetsCount(value: 3),
+            notes: Notes.fromString("Focus on a lot of reps"),
           ),
           WorkoutExercise(
             id: workout_exercise_id.Id.create(),
@@ -138,6 +141,7 @@ class Database {
             index: WorkoutExerciseIndex(value: 2),
             exercise: exercises[1],
             setsCount: SetsCount(value: 3),
+            notes: Notes.fromString("Focus on a lot of reps"),
           ),
           WorkoutExercise(
             id: workout_exercise_id.Id.create(),
@@ -145,6 +149,7 @@ class Database {
             index: WorkoutExerciseIndex(value: 3),
             exercise: exercises[2],
             setsCount: SetsCount(value: 3),
+            notes: Notes.fromString("Focus on a lot of reps"),
           ),
           WorkoutExercise(
             id: workout_exercise_id.Id.create(),
@@ -152,6 +157,7 @@ class Database {
             index: WorkoutExerciseIndex(value: 4),
             exercise: exercises[3],
             setsCount: SetsCount(value: 3),
+            notes: Notes.fromString("Focus on a lot of reps"),
           ),
           WorkoutExercise(
             id: workout_exercise_id.Id.create(),
@@ -159,6 +165,7 @@ class Database {
             index: WorkoutExerciseIndex(value: 5),
             exercise: exercises[4],
             setsCount: SetsCount(value: 3),
+            notes: Notes.fromString("Focus on a lot of reps"),
           ),
           WorkoutExercise(
             id: workout_exercise_id.Id.create(),
@@ -166,6 +173,7 @@ class Database {
             index: WorkoutExerciseIndex(value: 6),
             exercise: exercises[5],
             setsCount: SetsCount(value: 3),
+            notes: Notes.fromString("Focus on a lot of reps"),
           ),
         ],
       ),

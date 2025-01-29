@@ -52,10 +52,7 @@ class SessionExercise {
     Sets sets = Sets.fromJson((json["sets"] as List)
         .map((item) => item as Map<String, dynamic>)
         .toList());
-    Notes? notes;
-    if (json["notes"] != null) {
-      notes = Notes(value: json["notes"]);
-    }
+    Notes? notes = Notes.fromString(json["notes"]);
     return SessionExercise(
       index: index,
       workoutExercise: workoutExercise,

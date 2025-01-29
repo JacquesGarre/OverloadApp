@@ -72,7 +72,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
 
   void _updateNotes(String value) {
     setState(() {
-      notes = Notes(value: value);
+      notes = Notes.fromString(value);
     });
   }
 

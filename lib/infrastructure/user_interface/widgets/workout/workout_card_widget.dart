@@ -37,7 +37,7 @@ class WorkoutCardWidget extends StatelessWidget {
           ExceptionHandler().handleException(context, e);
         }
       },
-      child: Text(
+      headerChild: Text(
         '${workout.exercisesCount()} exercise${workout.exercisesCount() > 1 ? 's' : ''}',
         style: TextStyle(
           fontSize: 14,

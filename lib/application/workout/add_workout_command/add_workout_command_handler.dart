@@ -23,10 +23,7 @@ class AddWorkoutCommandHandler {
     if (workoutExercises.count() < 1) {
       throw WorkoutExerciseRequiredException();
     }
-    Notes? notes;
-    if (command.notes != null) {
-      notes = Notes(value: command.notes!);
-    }
+    Notes? notes = Notes.fromString(command.notes!);
     Workout workout = Workout.create(name, workoutExercises, notes);
     Workout? existingWorkout = await repository.ofId(workout.id());
     if (existingWorkout != null) {

@@ -10,7 +10,7 @@ class CardTitleWidget extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: FontWeight.w500,
       ),
     );

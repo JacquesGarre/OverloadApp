@@ -78,10 +78,7 @@ class WorkoutExercise {
         WorkoutExerciseIndex(value: int.parse(json["index"]));
     Exercise exercise = Exercise.fromJson(json["exercise"]);
     SetsCount setsCount = SetsCount(value: json["sets_count"]);
-    Notes? notes;
-    if (json["notes"] != null) {
-      notes = Notes(value: json["notes"]);
-    }
+    Notes? notes = Notes.fromString(json["notes"]);
     Goals? goals;
     if (json["goals"] != null) {
       goals = Goals.fromJson(
