@@ -9,7 +9,13 @@ import 'package:overload/infrastructure/user_interface/config/app_page_config.da
 import 'package:overload/infrastructure/user_interface/widgets/layout/bottom_bar_widget.dart';
 
 class AppLayout extends StatefulWidget {
-  const AppLayout({super.key});
+  static int sessionsPageIndex = 0;
+  static int workoutsPageIndex = 1;
+  static int exercisesPageIndex = 2;
+
+  final int? currentPageIndex;
+
+  const AppLayout({super.key, this.currentPageIndex});
 
   @override
   State<AppLayout> createState() => _AppLayoutState();
@@ -21,28 +27,31 @@ class _AppLayoutState extends State<AppLayout> {
 
   final List<AppPageConfig> _pages = [
     AppPageConfig(
-      index: 0,
+      index: AppLayout.sessionsPageIndex,
       title: SessionsPage.title,
       page: const SessionsPage(),
       icon: Mdi.calendar_check_outline,
     ),
     AppPageConfig(
-      index: 1,
-      title: ExercisesPage.title,
-      page: const ExercisesPage(),
-      icon: Healthicons.exercise,
-    ),
-    AppPageConfig(
-      index: 2,
+      index: AppLayout.workoutsPageIndex,
       title: WorkoutsPage.title,
       page: const WorkoutsPage(),
       icon: Healthicons.exercise_weights,
+    ),
+    AppPageConfig(
+      index: AppLayout.exercisesPageIndex,
+      title: ExercisesPage.title,
+      page: const ExercisesPage(),
+      icon: Healthicons.exercise,
     ),
   ];
 
   @override
   void initState() {
     super.initState();
+    _currentPageIndex = widget.currentPageIndex != null
+        ? widget.currentPageIndex!
+        : _currentPageIndex;
     _currentPage = _pages[_currentPageIndex];
   }
 

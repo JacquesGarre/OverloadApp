@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
+import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 
 class SessionPage extends StatelessWidget {
@@ -11,10 +12,25 @@ class SessionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageWidget(
-      title: title,
-      child: SingleChildScrollView(
-        child: Text("Session running..."),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AppLayout(
+              currentPageIndex: AppLayout.sessionsPageIndex,
+            ),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      },
+      child: const PageWidget(
+        title: title,
+        child: SingleChildScrollView(
+          child: Text("Session running..."),
+        ),
       ),
     );
   }

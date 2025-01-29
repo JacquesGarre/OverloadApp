@@ -16,7 +16,7 @@ void showCurrentSessionModal({
     content: "You have an active session on going.",
     actionButtons: [
       ModalActionButtonConfig(
-        text: "Continue current session",
+        text: "Continue the session",
         backgroundColor: AppColorScheme.lightBackground,
         textColor: AppColorScheme.primary,
         onPressed: () async {
@@ -32,7 +32,7 @@ void showCurrentSessionModal({
         },
       ),
       ModalActionButtonConfig(
-        text: "Delete and start new session",
+        text: "Delete it and start a new session",
         backgroundColor: AppColorScheme.lightBackground,
         textColor: AppColorScheme.error,
         onPressed: () async {

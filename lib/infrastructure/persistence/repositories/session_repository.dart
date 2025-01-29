@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:logger/logger.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_repository_interface.dart';
 import 'package:overload/domain/session/id.dart';
@@ -16,7 +13,6 @@ class SessionRepository implements SessionRepositoryInterface {
 
   @override
   Future<void> add(Session session) async {
-    Logger().i(jsonEncode(session.toJson()));
     await db.insert(table, session.toJson());
   }
 
@@ -71,7 +67,6 @@ class SessionRepository implements SessionRepositoryInterface {
     List<Map<String, Object?>> sessionsJsons = await db.query(
       table,
       where: 'end_date IS NULL',
-      //whereArgs: [null],
     );    
     if(sessionsJsons.isEmpty){
       return null;
