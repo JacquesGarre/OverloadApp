@@ -35,7 +35,6 @@ class SetsTableWidget extends StatefulWidget {
 }
 
 class _SetsTableWidgetState extends State<SetsTableWidget> {
-
   static const double rowHeight = 35;
   late Sets sets;
   List<config.TableRow> rows = [];
@@ -70,7 +69,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     config.TableRow row = rows[rowIndex];
     int setIndexValue = int.tryParse(row.cells[0].value ?? '') ?? 0;
     SetIndex setIndex = SetIndex(value: setIndexValue);
-    Unit updatedUnit = widget.exercise.units().value()[cellIndex-1];
+    Unit updatedUnit = widget.exercise.units().value()[cellIndex - 1];
     num? updatedValue = value != "" ? num.tryParse(value) : null;
     Metric updatedMetric = Metric(unit: updatedUnit, value: updatedValue);
     sets = sets.updateSet(setIndex, updatedMetric);
@@ -90,8 +89,16 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
             onChanged: _onChange,
           ),
           if (widget.setsNumberSelector)
+            const SizedBox(
+              height: 6.0,
+            ),
+          if (widget.setsNumberSelector)
+            Divider(
+              color: AppColorScheme.onLightBackground,
+            ),
+          if (widget.setsNumberSelector)
             Padding(
-              padding: const EdgeInsets.fromLTRB(6.0, 10.0, 5.0, 15.0),
+              padding: const EdgeInsets.fromLTRB(6.0, 0.0, 5.0, 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

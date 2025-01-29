@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 
-class SessionPage extends StatelessWidget {
+class SessionPage extends StatefulWidget {
   final Session session;
 
   static const String title = 'Current session';
 
   const SessionPage({super.key, required this.session});
+
+  @override
+  SessionPageState createState() => SessionPageState();
+}
+
+class SessionPageState extends State<SessionPage> {
+  late Session session;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      session = widget.session;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +42,18 @@ class SessionPage extends StatelessWidget {
           (Route<dynamic> route) => false,
         );
       },
-      child: const PageWidget(
-        title: title,
+      child: PageWidget(
+        title: SessionPage.title,
         child: SingleChildScrollView(
-          child: Text("Session running..."),
+          child: Column(
+            children: [
+              ...session.sessionExercises().value().map((sessionExercise) {
+                return SessionExerciseCardWidget(
+                  sessionExercise: sessionExercise,
+                );
+              },)
+            ],
+          ),
         ),
       ),
     );

@@ -47,7 +47,7 @@ class _GoalCardWidgetState extends State<GoalCardWidget> {
                     padding: const EdgeInsets.fromLTRB(
                       6.0,
                       0.0,
-                      0.0,
+                      6.0,
                       0.0,
                     ),
                     child: Text(
@@ -69,6 +69,12 @@ class _GoalCardWidgetState extends State<GoalCardWidget> {
                     ),
                   ),
                 ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: Divider(
+                  color: AppColorScheme.onLightBackground,
+                ),
               ),
               SetsTableWidget(
                 exercise: widget.exercise,

@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_config.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_cell_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_column_widget.dart';
-import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
+import 'package:overload/infrastructure/user_interface/config/table_row.dart'
+    as config;
 
 class TableWidget extends StatelessWidget {
-
   final double rowHeight;
   final List<TableColumnConfig> columns;
   final List<config.TableRow> rows;
   final Function(int rowIndex, int cellIndex, String value) onChanged;
 
-  const TableWidget({
-    super.key,
-    required this.rowHeight,
-    required this.columns,
-    required this.rows,
-    required this.onChanged
-  });
+  const TableWidget(
+      {super.key,
+      required this.rowHeight,
+      required this.columns,
+      required this.rows,
+      required this.onChanged});
 
   Map<int, TableColumnWidth> _columnsWidths() {
     Map<int, TableColumnWidth> columnsWidth = {};
     int i = 0;
     for (TableColumnConfig config in columns) {
-      columnsWidth[i] = config.width != null
+      columnsWidth[i] =
+       config.width != null
           ? FixedColumnWidth(config.width!)
-          : const FlexColumnWidth();
+          : const FlexColumnWidth(1);
       i++;
     }
     return columnsWidth;
