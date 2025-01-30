@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/primary_button_widget.dart';
 
 class SessionPage extends StatefulWidget {
   final Session session;
@@ -44,14 +46,19 @@ class SessionPageState extends State<SessionPage> {
       },
       child: PageWidget(
         title: SessionPage.title,
+        footerButtons: [
+          PrimaryButtonWidget(text: "Finish session", onPressed: (){}),
+        ],
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ...session.sessionExercises().value().map((sessionExercise) {
-                return SessionExerciseCardWidget(
-                  sessionExercise: sessionExercise,
-                );
-              },)
+              ...session.sessionExercises().value().map(
+                (sessionExercise) {
+                  return SessionExerciseCardWidget(
+                    sessionExercise: sessionExercise,
+                  );
+                },
+              )
             ],
           ),
         ),

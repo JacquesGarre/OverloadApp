@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
-class SecondaryButtonWidget extends StatelessWidget {
+class PrimaryButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const SecondaryButtonWidget({
+  const PrimaryButtonWidget({
     super.key,
     required this.text,
     required this.onPressed,
@@ -17,10 +17,10 @@ class SecondaryButtonWidget extends StatelessWidget {
       onPressed: onPressed,
       style: ButtonStyle(
         backgroundColor: WidgetStatePropertyAll(
-          AppColorScheme.lightBackground,
+          AppColorScheme.primary,
         ),
         foregroundColor: WidgetStatePropertyAll(
-          AppColorScheme.primary,
+          AppColorScheme.onPrimary,
         ),
       ),
       child: Text(
