@@ -18,13 +18,25 @@ class TableColumnConfig {
     this.width,
   });
 
-  static List<TableColumnConfig> fromExercise(Exercise exercise) {
+  static List<TableColumnConfig> fromExercise(Exercise exercise, bool checkable) {
     List<TableColumnConfig> columns = [];
     columns.add(setIndexColumn());
     for (Unit unit in exercise.units().value()) {
       columns.add(fromUnit(unit));
     }
+    if (checkable) {
+      columns.add(setCheckColumn());
+    }
     return columns;
+  }
+
+  static TableColumnConfig setCheckColumn() {
+    return TableColumnConfig(
+      text: "✓",
+      format: TableColumnFormat.integer,
+      readOnly: false,
+      canBeNegative: false,
+    );
   }
 
   static TableColumnConfig setIndexColumn() {

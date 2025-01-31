@@ -98,7 +98,7 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
               SetsTableWidget(
                 exercise: widget.sessionExercise.workoutExercise().exercise(),
                 sets: widget.sessionExercise.sets(),
-                checkable: false,
+                checkable: true,
                 setsNumberSelector: true,
                 readonly: false,
                 onSetsUpdated: (updatedSets) {

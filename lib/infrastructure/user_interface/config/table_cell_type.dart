@@ -1,0 +1,4 @@
+enum TableCellType {
+  text,
+  checkbox
+}

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
+import 'package:overload/infrastructure/user_interface/config/table_cell_type.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_format.dart';
 import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
@@ -16,6 +18,7 @@ class TableCellWidget extends StatelessWidget {
   final config.TableRow row; 
   final int cellIndex;   
   final Function(String value) onChanged;
+  final TableCellType type;
 
   const TableCellWidget({
     super.key,
@@ -26,6 +29,7 @@ class TableCellWidget extends StatelessWidget {
     required this.row,
     required this.cellIndex,
     required this.onChanged,
+    required this.type,
     this.value,
     this.placeholder,
     this.style
@@ -38,7 +42,7 @@ class TableCellWidget extends StatelessWidget {
       child: SizedBox(
         height: height,
         child: Center(
-          child: TextFormField(
+          child: type == TableCellType.text ? TextFormField(
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             textAlignVertical: TextAlignVertical.center,
@@ -80,6 +84,15 @@ class TableCellWidget extends StatelessWidget {
               );
               row.cells[cellIndex].value = formattedValue;     
               onChanged(formattedValue);         
+            },
+          ) :                   
+          Checkbox(
+            value: row.cells[cellIndex].value == "true",
+            onChanged: (bool? value) {
+              final formattedValue = value.toString();
+              row.cells[cellIndex].value = formattedValue;
+              onChanged(formattedValue);    
+              Logger().e("CHANGED to $formattedValue");
             },
           ),
         ),

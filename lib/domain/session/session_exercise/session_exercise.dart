@@ -40,7 +40,7 @@ class SessionExercise {
       "index": _index.value(),
       "workout_exercise": _workoutExercise.toJson(),
       "sets": _sets.toJson(),
-      "notes": _notes?.value()
+      "notes": _notes?.value(),
     };
   }
 

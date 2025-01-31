@@ -43,7 +43,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void initState() {
     super.initState();
     sets = widget.sets;
-    rows = config.TableRow.fromSets(sets);
+    rows = config.TableRow.fromSets(sets, widget.checkable);
   }
 
   _updateRowsCount(int value) {
@@ -52,7 +52,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
       Set newSet = Set.fromSetIndexAndExercise(lastIndex, widget.exercise);
       setState(() {
         sets = sets.add(newSet);
-        rows.add(config.TableRow.fromSet(newSet));
+        rows.add(config.TableRow.fromSet(newSet, widget.checkable));
         widget.onSetsUpdated(sets);
       });
     }
@@ -68,11 +68,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   _onChange(int rowIndex, int cellIndex, String value) {
     config.TableRow row = rows[rowIndex];
     int setIndexValue = int.tryParse(row.cells[0].value ?? '') ?? 0;
-    SetIndex setIndex = SetIndex(value: setIndexValue);
-    Unit updatedUnit = widget.exercise.units().value()[cellIndex - 1];
-    num? updatedValue = value != "" ? num.tryParse(value) : null;
-    Metric updatedMetric = Metric(unit: updatedUnit, value: updatedValue);
-    sets = sets.updateSet(setIndex, updatedMetric);
+    sets = sets.update(setIndexValue, cellIndex, value);
     widget.onSetsUpdated(sets);
   }
 
@@ -84,7 +80,7 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
         children: [
           TableWidget(
             rowHeight: rowHeight,
-            columns: TableColumnConfig.fromExercise(widget.exercise),
+            columns: TableColumnConfig.fromExercise(widget.exercise, widget.checkable),
             rows: rows,
             onChanged: _onChange,
           ),

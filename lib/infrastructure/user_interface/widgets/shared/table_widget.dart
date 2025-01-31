@@ -11,19 +11,19 @@ class TableWidget extends StatelessWidget {
   final List<config.TableRow> rows;
   final Function(int rowIndex, int cellIndex, String value) onChanged;
 
-  const TableWidget(
-      {super.key,
-      required this.rowHeight,
-      required this.columns,
-      required this.rows,
-      required this.onChanged});
+  const TableWidget({
+    super.key,
+    required this.rowHeight,
+    required this.columns,
+    required this.rows,
+    required this.onChanged,
+  });
 
   Map<int, TableColumnWidth> _columnsWidths() {
     Map<int, TableColumnWidth> columnsWidth = {};
     int i = 0;
     for (TableColumnConfig config in columns) {
-      columnsWidth[i] =
-       config.width != null
+      columnsWidth[i] = config.width != null
           ? FixedColumnWidth(config.width!)
           : const FlexColumnWidth(1);
       i++;
@@ -63,6 +63,7 @@ class TableWidget extends StatelessWidget {
                 format: columns[cellIndex].format,
                 canBeNegative: columns[cellIndex].canBeNegative,
                 row: row,
+                type: entry.value.type,
                 onChanged: (String value) {
                   onChanged(rowIndex, cellIndex, value);
                 },

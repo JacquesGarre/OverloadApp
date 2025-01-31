@@ -37,7 +37,7 @@ class Sets {
     Set? set = lastSet();
     SetIndex index = SetIndex.nextFromSetIndex(set?.index());
     Metrics metrics = Metrics.fromExercise(exercise);
-    Set newSet = Set(index: index, metrics: metrics);
+    Set newSet = Set(index: index, metrics: metrics, isDone: false);
     newValue.add(newSet);
     return Sets(value: newValue);
   }
@@ -55,12 +55,14 @@ class Sets {
     return Sets(value: newValue);
   }
 
-  Sets updateSet(SetIndex index, Metric metric) {
+  Sets update(int setIndexValue, int cellIndex, String value) {
     List<Set> newValue = List.from(_value);
-    for (int i = 0; i < newValue.length; i++) {
-      if (newValue[i].index().equals(index)) {
-        newValue[i] = newValue[i].updateMetric(metric);
-        break;
+    SetIndex setIndex = SetIndex(value: setIndexValue);
+    for(int i in newValue.asMap().keys) {
+      Set set = newValue[i];
+      if (set.index().equals(setIndex)) {
+        set = set.update(cellIndex, value);
+        newValue[i] = set;
       }
     }
     return Sets(value: List.unmodifiable(newValue));
