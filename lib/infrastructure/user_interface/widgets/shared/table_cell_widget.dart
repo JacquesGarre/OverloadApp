@@ -92,7 +92,6 @@ class TableCellWidget extends StatelessWidget {
               final formattedValue = value.toString();
               row.cells[cellIndex].value = formattedValue;
               onChanged(formattedValue);    
-              Logger().e("CHANGED to $formattedValue");
             },
           ),
         ),
