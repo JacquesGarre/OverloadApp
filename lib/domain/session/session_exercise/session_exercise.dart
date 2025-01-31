@@ -1,3 +1,4 @@
+import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise_index.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/sets.dart';
@@ -72,6 +73,14 @@ class SessionExercise {
     return SessionExercise(
       index: index,
       workoutExercise: workoutExercise,
+      sets: sets,
+    );
+  }
+
+  SessionExercise updateSets(Sets sets) {
+    return SessionExercise(
+      index: index(),
+      workoutExercise: workoutExercise(),
       sets: sets,
     );
   }
