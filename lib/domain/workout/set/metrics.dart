@@ -56,4 +56,8 @@ class Metrics {
     }
     return Metrics(value: value);
   }
+
+  int count() {
+    return _value.length;
+  }
 }

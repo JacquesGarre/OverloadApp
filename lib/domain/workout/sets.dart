@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/metrics.dart';

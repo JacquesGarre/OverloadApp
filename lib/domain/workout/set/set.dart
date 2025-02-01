@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
@@ -36,7 +37,7 @@ class Set {
   // TODO: Refactor this, so ugly...
   Set update(int cellIndex, String value) {
     bool setDone = false;
-    if (cellIndex >= metrics().value().length) {
+    if (cellIndex > metrics().count()) {
       setDone = value == "true";
       return Set(index: index(), metrics: metrics(), isDone: setDone);
     }
