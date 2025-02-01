@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';

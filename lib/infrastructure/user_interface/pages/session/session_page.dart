@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
