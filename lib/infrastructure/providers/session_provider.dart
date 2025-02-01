@@ -7,20 +7,26 @@ import 'package:overload/application/session/get_sessions_query/get_sessions_que
 import 'package:overload/application/session/get_sessions_query/get_sessions_query_handler.dart';
 import 'package:overload/application/session/start_session_command/start_session_command.dart';
 import 'package:overload/application/session/start_session_command/start_session_command_handler.dart';
+import 'package:overload/application/session/update_session_exercise_command/update_session_exercise_command.dart';
+import 'package:overload/application/session/update_session_exercise_command/update_session_exercise_command_handler.dart';
+import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session.dart';
-import 'package:overload/domain/workout/id.dart';
+import 'package:overload/domain/session/session_exercise/session_exercise.dart';
+import 'package:overload/domain/workout/id.dart' as workout;
 
 class SessionProvider with ChangeNotifier {
   final StartSessionCommandHandler startSessionCommandHandler;
   final GetSessionsQueryHandler getSessionsQueryHandler;
   final GetCurrentSessionQueryHandler getCurrentSessionQueryHandler;
   final DeleteSessionCommandHandler deleteSessionCommandHandler;
+  final UpdateSessionExerciseCommandHandler updateSessionExerciseCommandHandler;
 
   SessionProvider({
     required this.startSessionCommandHandler,
     required this.getSessionsQueryHandler,
     required this.getCurrentSessionQueryHandler,
     required this.deleteSessionCommandHandler,
+    required this.updateSessionExerciseCommandHandler,
   });
 
   Session? _currentSession;
@@ -41,7 +47,7 @@ class SessionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Session> startSession(Id id) async {
+  Future<Session> startSession(workout.Id id) async {
     try {
       StartSessionCommand command = StartSessionCommand(
         workoutId: id.toString(),
@@ -60,6 +66,20 @@ class SessionProvider with ChangeNotifier {
         id: _currentSession?.id().toString(),
       );
       await deleteSessionCommandHandler.invoke(command);
+      await loadCurrentSession();
+      await loadSessions();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateSessionExercise(Id id, SessionExercise exercise) async {
+    try {
+      UpdateSessionExerciseCommand command = UpdateSessionExerciseCommand(
+        id: id,
+        exercise: exercise,
+      );
+      await updateSessionExerciseCommandHandler.invoke(command);
       await loadCurrentSession();
       await loadSessions();
     } catch (e) {

@@ -1,17 +1,19 @@
 import 'dart:convert';
 import 'package:overload/domain/session/session.dart';
+import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/shared/domain_event_interface.dart';
 import 'package:uuid/uuid.dart';
 
-class SessionUpdatedDomainEvent implements DomainEventInterface {
-
+class SessionExerciseUpdatedDomainEvent implements DomainEventInterface {
   final UuidValue _aggregateId;
   final UuidValue _eventId;
   final DateTime _occuredAt;
   final Session _session;
-  static const String _eventName = "SessionUpdatedDomainEvent";
+  final SessionExercise _sessionExercise;
+  static const String _eventName = "SessionExerciseUpdatedDomainEvent";
 
-  SessionUpdatedDomainEvent._(this._aggregateId, this._eventId, this._occuredAt, this._session);
+  SessionExerciseUpdatedDomainEvent._(this._aggregateId, this._eventId,
+      this._occuredAt, this._session, this._sessionExercise);
 
   @override
   UuidValue aggregateId() {
@@ -33,11 +35,18 @@ class SessionUpdatedDomainEvent implements DomainEventInterface {
     return _occuredAt;
   }
 
-  static SessionUpdatedDomainEvent fromSession(Session session) {
+  static SessionExerciseUpdatedDomainEvent fromSessionAndSessionExercise(
+      Session session, SessionExercise sessionExercise) {
     String uuid = const Uuid().v4();
     UuidValue eventId = UuidValue.fromString(uuid);
     DateTime occuredAt = DateTime.now();
-    return SessionUpdatedDomainEvent._(session.id().value(), eventId, occuredAt, session);
+    return SessionExerciseUpdatedDomainEvent._(
+      session.id().value(),
+      eventId,
+      occuredAt,
+      session,
+      sessionExercise,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -46,7 +55,8 @@ class SessionUpdatedDomainEvent implements DomainEventInterface {
       'aggregateId': _aggregateId.toString(),
       'eventId': _eventId.toString(),
       'occuredAt': _occuredAt.toString(),
-      'session': _session.toJson()
+      'session': _session.toJson(),
+      'session_exercise': _sessionExercise.toJson(),
     };
   }
 

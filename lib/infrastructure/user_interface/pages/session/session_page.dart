@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
+import 'package:overload/infrastructure/exception/exception_handler.dart';
+import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/primary_button_widget.dart';
+import 'package:provider/provider.dart';
 
 class SessionPage extends StatefulWidget {
   final Session session;
@@ -29,9 +32,22 @@ class SessionPageState extends State<SessionPage> {
     });
   }
 
-  void _updateSessionExercise(SessionExercise updatedSessionExercise) {
-    session = session.updateSessionExercise(updatedSessionExercise); // TODO: Should call provider + command + persist eventbus publish
-    Logger().e("session UPDATED");
+  Future<void> _updateSessionExercise(
+    SessionExercise updatedSessionExercise,
+  ) async {
+    try {
+      final sessionProvider = Provider.of<SessionProvider>(
+        context,
+        listen: false,
+      );
+      await sessionProvider.updateSessionExercise(
+        session.id(),
+        updatedSessionExercise,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ExceptionHandler().handleException(context, e);
+    }
   }
 
   @override
@@ -53,7 +69,7 @@ class SessionPageState extends State<SessionPage> {
       child: PageWidget(
         title: SessionPage.title,
         footerButtons: [
-          PrimaryButtonWidget(text: "Finish session", onPressed: (){}),
+          PrimaryButtonWidget(text: "Finish session", onPressed: () {}),
         ],
         child: SingleChildScrollView(
           child: Column(
