@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
+import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
-import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/primary_button_widget.dart';
@@ -26,6 +26,10 @@ class SessionPageState extends State<SessionPage> {
     setState(() {
       session = widget.session;
     });
+  }
+
+  void _updateSessionExercise(SessionExercise updatedSessionExercise) {
+    session = session.updateSessionExercise(updatedSessionExercise); // TODO: Should call provider + command + persist eventbus publish
   }
 
   @override
@@ -56,6 +60,7 @@ class SessionPageState extends State<SessionPage> {
                 (sessionExercise) {
                   return SessionExerciseCardWidget(
                     sessionExercise: sessionExercise,
+                    onSessionExerciseUpdated: _updateSessionExercise,
                   );
                 },
               )

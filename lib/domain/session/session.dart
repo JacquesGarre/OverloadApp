@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:overload/domain/session/domain_events/session_deleted_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_started_domain_event.dart';
+import 'package:overload/domain/session/domain_events/session_updated_domain_event.dart';
 import 'package:overload/domain/session/id.dart';
+import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/session/session_exercises.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/workout/workout.dart';
@@ -108,5 +110,12 @@ class Session {
 
   void delete() {
     domainEvents().publish(SessionDeletedDomainEvent.fromSession(this));
+  }
+
+  Session updateSessionExercise(SessionExercise exercise) {
+    SessionExercises exercises = _exercises.update(exercise);
+    Session updatedSession = Session._(domainEvents: DomainEventsCollection(), id: id(), workout: workout(), startDate: startDate(), exercises: exercises);
+    updatedSession.domainEvents().publish(SessionUpdatedDomainEvent.fromSession(updatedSession));
+    return updatedSession;
   }
 }

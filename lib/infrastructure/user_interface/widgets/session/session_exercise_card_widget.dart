@@ -6,10 +6,12 @@ import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_w
 
 class SessionExerciseCardWidget extends StatefulWidget {
   final SessionExercise sessionExercise;
+  final void Function(SessionExercise updatedSessionExercise) onSessionExerciseUpdated;
 
   const SessionExerciseCardWidget({
     super.key,
     required this.sessionExercise,
+    required this.onSessionExerciseUpdated,
   });
 
   @override
@@ -27,9 +29,8 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
   }
 
   void _updateSets(Sets updatedSets) {
-    setState(() {
-      sessionExercise = sessionExercise.updateSets(updatedSets);
-    });
+    sessionExercise = sessionExercise.updateSets(updatedSets);
+    widget.onSessionExerciseUpdated(sessionExercise);    
   }
 
   @override
