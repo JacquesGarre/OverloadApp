@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/unit.dart';
@@ -68,8 +69,10 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   _onChange(int rowIndex, int cellIndex, String value) {
     config.TableRow row = rows[rowIndex];
     int setIndexValue = int.tryParse(row.cells[0].value ?? '') ?? 0;
-    sets = sets.update(setIndexValue, cellIndex, value);
-    widget.onSetsUpdated(sets);
+    setState(() {
+      sets = sets.update(setIndexValue, cellIndex, value);
+      widget.onSetsUpdated(sets);
+    });
   }
 
   @override
@@ -80,7 +83,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
         children: [
           TableWidget(
             rowHeight: rowHeight,
-            columns: TableColumnConfig.fromExercise(widget.exercise, widget.checkable),
+            columns: TableColumnConfig.fromExercise(
+                widget.exercise, widget.checkable),
             rows: rows,
             onChanged: _onChange,
           ),

@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_cell_type.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_format.dart';
-import 'package:overload/infrastructure/user_interface/config/table_row.dart' as config;
+import 'package:overload/infrastructure/user_interface/config/table_row.dart'
+    as config;
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
-class TableCellWidget extends StatelessWidget {
-
+class TableCellWidget extends StatefulWidget {
   final double height;
   final bool readOnly;
   final bool canBeNegative;
@@ -15,8 +15,8 @@ class TableCellWidget extends StatelessWidget {
   final TableColumnFormat format;
   final String? placeholder;
   final TextStyle? style;
-  final config.TableRow row; 
-  final int cellIndex;   
+  final config.TableRow row;
+  final int cellIndex;
   final Function(String value) onChanged;
   final TableCellType type;
 
@@ -32,68 +32,97 @@ class TableCellWidget extends StatelessWidget {
     required this.type,
     this.value,
     this.placeholder,
-    this.style
+    this.style,
   });
 
   @override
+  TableCellWidgetState createState() => TableCellWidgetState();
+}
+
+class TableCellWidgetState extends State<TableCellWidget> {
+  late TextEditingController _controller;
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.row.cells[widget.cellIndex].value);
+    _focusNode = FocusNode();
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        widget.onChanged(widget.row.cells[widget.cellIndex].value ?? "");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController(text: row.cells[cellIndex].value);
     return TableCell(
       child: SizedBox(
-        height: height,
+        height: widget.height,
         child: Center(
-          child: type == TableCellType.text ? TextFormField(
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            textAlignVertical: TextAlignVertical.center,
-            readOnly: readOnly,
-            enabled: !readOnly,
-            enableSuggestions: false,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isDense: true,
-              contentPadding: EdgeInsets.zero,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              hintText: placeholder, 
-              hintStyle: TextStyle(
-                color: AppColorScheme.onPrimary.withOpacity(0.5),
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            controller: controller,
-            style: style ?? TextStyle(
-              color: AppColorScheme.onPrimary,
-              fontWeight: FontWeight.w400,
-            ),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(
-                RegExp(r'[0-9\-\.:]'),
-              ),
-              _getInputFormatter(format),
-            ],
-            onChanged: (value) {
-              final formattedValue = _formatInput(value, format, canBeNegative);
-              controller.value = TextEditingValue(
-                text: formattedValue,
-                selection: TextSelection.collapsed(
-                  offset: formattedValue.length,
+          child: widget.type == TableCellType.text
+              ? TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  textAlignVertical: TextAlignVertical.center,
+                  readOnly: widget.readOnly,
+                  enabled: !widget.readOnly,
+                  enableSuggestions: false,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    hintText: widget.placeholder,
+                    hintStyle: TextStyle(
+                      color: AppColorScheme.onPrimary.withOpacity(0.5),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  focusNode: _focusNode,
+                  controller: _controller,
+                  style: widget.style ??
+                      TextStyle(
+                        color: AppColorScheme.onPrimary,
+                        fontWeight: FontWeight.w400,
+                      ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'[0-9\-\.:]'),
+                    ),
+                    _getInputFormatter(widget.format),
+                  ],
+                  onChanged: (value) {
+                    final formattedValue = _formatInput(
+                        value, widget.format, widget.canBeNegative);
+                    _controller.value = TextEditingValue(
+                      text: formattedValue,
+                      selection: TextSelection.collapsed(
+                        offset: formattedValue.length,
+                      ),
+                    );
+                    widget.row.cells[widget.cellIndex].value = formattedValue;
+                  },
+                )
+              : Checkbox(
+                  value: widget.row.cells[widget.cellIndex].value == "true",
+                  onChanged: (bool? value) {
+                    final formattedValue = value.toString();
+                    widget.row.cells[widget.cellIndex].value = formattedValue;
+                    widget.onChanged(formattedValue);
+                  },
                 ),
-              );
-              row.cells[cellIndex].value = formattedValue;     
-              onChanged(formattedValue);         
-            },
-          ) :                   
-          Checkbox(
-            value: row.cells[cellIndex].value == "true",
-            onChanged: (bool? value) {
-              final formattedValue = value.toString();
-              row.cells[cellIndex].value = formattedValue;
-              onChanged(formattedValue);    
-            },
-          ),
         ),
       ),
     );
@@ -103,11 +132,11 @@ class TableCellWidget extends StatelessWidget {
     switch (format) {
       case TableColumnFormat.double:
         return FilteringTextInputFormatter.allow(
-          canBeNegative ? RegExp(r'[0-9\.\-]') : RegExp(r'[0-9\.]'),
+          widget.canBeNegative ? RegExp(r'[0-9\.\-]') : RegExp(r'[0-9\.]'),
         );
       case TableColumnFormat.integer:
         return FilteringTextInputFormatter.allow(
-          canBeNegative ? RegExp(r'[0-9\-]') : RegExp(r'[0-9]'),
+          widget.canBeNegative ? RegExp(r'[0-9\-]') : RegExp(r'[0-9]'),
         );
       case TableColumnFormat.timeMinutesSeconds:
       case TableColumnFormat.timeHoursMinutesSeconds:
@@ -118,10 +147,7 @@ class TableCellWidget extends StatelessWidget {
   }
 
   String _formatInput(
-    String value,
-    TableColumnFormat format,
-    bool allowNegative,
-  ) {
+      String value, TableColumnFormat format, bool allowNegative) {
     switch (format) {
       case TableColumnFormat.double:
         return _formatDouble(value, allowNegative: allowNegative);
@@ -138,8 +164,8 @@ class TableCellWidget extends StatelessWidget {
 
   String _formatDouble(String value, {bool allowNegative = false}) {
     final doubleRegex = allowNegative
-        ? RegExp(r'^-?\d*(\.\d{0,2})?$')
-        : RegExp(r'^\d*(\.\d{0,2})?$');
+        ? RegExp(r'^-?\d*(\.\d{0,2})?\$')
+        : RegExp(r'^\d*(\.\d{0,2})?\$');
     if (allowNegative && value == '-') {
       return value;
     }
@@ -165,24 +191,15 @@ class TableCellWidget extends StatelessWidget {
   }
 
   String _formatTime(String value, {bool hasHours = false}) {
-    // Remove non-digit characters
     String digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
-
-    // Handle empty input by returning the default time format
     if (digitsOnly.isEmpty) {
       return hasHours ? '00:00:00' : '00:00';
     }
-
-    // Ensure the input has a maximum length (4 for MM:SS, 6 for HH:MM:SS)
     final maxLength = hasHours ? 6 : 4;
     if (digitsOnly.length > maxLength) {
       digitsOnly = digitsOnly.substring(digitsOnly.length - maxLength);
     }
-
-    // Pad the input with leading zeros to maintain the proper format
     digitsOnly = digitsOnly.padLeft(maxLength, '0');
-
-    // Format the string based on whether hours are included
     if (hasHours) {
       final hours = digitsOnly.substring(0, 2);
       final minutes = digitsOnly.substring(2, 4);
