@@ -17,9 +17,9 @@ class TableCellValue {
     );
   }
 
-  static TableCellValue checkbox() {
+  static TableCellValue checkbox(bool checked) {
     return TableCellValue(
-      value: "",
+      value: checked ? "true" : "false",
       placeholder: "",
       type: TableCellType.checkbox
     );

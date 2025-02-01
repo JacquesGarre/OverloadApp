@@ -32,7 +32,7 @@ class TableRow {
       cells.add(TableCellValue.fromMetric(metric));
     }
     if (checkable) {
-      cells.add(TableCellValue.checkbox());
+      cells.add(TableCellValue.checkbox(set.isDone()));
     }
     return TableRow(cells: cells);
   }
@@ -49,7 +49,7 @@ class TableRow {
       cells.add(TableCellValue.fromMetric(metric));
     }
     if (checkable) {
-      cells.add(TableCellValue.checkbox());
+      cells.add(TableCellValue.checkbox(false));
     }
     return TableRow(cells: cells);
   }
