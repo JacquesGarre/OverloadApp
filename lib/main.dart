@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:overload/app.dart';
-import 'package:overload/dependency_injection.dart';
+import 'package:overload/infrastructure/user_interface/layout/app.dart';
+import 'package:overload/infrastructure/dependency_injection.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
