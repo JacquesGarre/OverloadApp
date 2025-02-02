@@ -6,6 +6,7 @@ class PageWidget extends StatelessWidget {
   final Widget child;
   final Widget? floatingActionButton;
   final List<Widget>? footerButtons;
+  final Widget? bottomSheet;
 
   const PageWidget({
     super.key,
@@ -13,6 +14,7 @@ class PageWidget extends StatelessWidget {
     required this.child,
     this.floatingActionButton,
     this.footerButtons,
+    this.bottomSheet,
   });
 
   @override
@@ -30,6 +32,7 @@ class PageWidget extends StatelessWidget {
               child: floatingActionButton,
             )
           : null,
+      bottomSheet: bottomSheet,
     );
   }
 }

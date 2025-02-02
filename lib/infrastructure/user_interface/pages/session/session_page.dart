@@ -67,9 +67,76 @@ class SessionPageState extends State<SessionPage> {
       },
       child: PageWidget(
         title: SessionPage.title,
-        footerButtons: [
-          PrimaryButtonWidget(text: "Finish session", onPressed: () {}),
-        ],
+        bottomSheet: DraggableScrollableSheet(
+          initialChildSize: 0.12, // Starting size of the sheet
+          minChildSize: 0.12, // Minimum height when dragged down
+          maxChildSize: 0.5, // Maximum height when dragged up
+          expand: false,
+          builder: (context, scrollController) {
+            return Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.blueGrey[900],
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: [
+                  // Drag Handle
+                  Container(
+                    width: 40,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[500],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.only(bottom: 10),
+                  ),
+
+                  // Content Area
+                  Expanded(
+                    child: ListView(
+                      controller: scrollController,
+                      children: [
+                        Center(
+                          child: Text(
+                            "Session Summary",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+
+                        // Example Summary Details
+                        Text("TEST"),
+
+                        SizedBox(height: 20),
+
+                        // Finish Button
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Handle finish session
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            child: Text('Finish Session',
+                                style: TextStyle(fontSize: 16)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
