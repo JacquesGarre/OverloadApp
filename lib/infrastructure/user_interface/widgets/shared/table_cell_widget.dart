@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_cell_type.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_format.dart';
 import 'package:overload/infrastructure/user_interface/config/table_row.dart'
@@ -45,7 +46,8 @@ class TableCellWidgetState extends State<TableCellWidget> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.row.cells[widget.cellIndex].value);
+    _controller =
+        TextEditingController(text: widget.row.cells[widget.cellIndex].value);
     _focusNode = FocusNode();
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
@@ -104,7 +106,10 @@ class TableCellWidgetState extends State<TableCellWidget> {
                   ],
                   onChanged: (value) {
                     final formattedValue = _formatInput(
-                        value, widget.format, widget.canBeNegative);
+                      value,
+                      widget.format,
+                      widget.canBeNegative,
+                    );
                     _controller.value = TextEditingValue(
                       text: formattedValue,
                       selection: TextSelection.collapsed(
@@ -146,7 +151,10 @@ class TableCellWidgetState extends State<TableCellWidget> {
   }
 
   String _formatInput(
-      String value, TableColumnFormat format, bool allowNegative) {
+    String value,
+    TableColumnFormat format,
+    bool allowNegative,
+  ) {
     switch (format) {
       case TableColumnFormat.double:
         return _formatDouble(value, allowNegative: allowNegative);
@@ -162,20 +170,31 @@ class TableCellWidgetState extends State<TableCellWidget> {
   }
 
   String _formatDouble(String value, {bool allowNegative = false}) {
+    Logger().e(value);
     final doubleRegex = allowNegative
-        ? RegExp(r'^-?\d*(\.\d{0,2})?\$')
-        : RegExp(r'^\d*(\.\d{0,2})?\$');
+        ? RegExp(r'^-?\d*(\.\d{0,1})?$')
+        : RegExp(r'^\d*(\.\d{0,1})?$');
+
     if (allowNegative && value == '-') {
       return value;
     }
     if (doubleRegex.hasMatch(value)) {
       return value;
     }
+    if (value.contains('.')) {
+      final parts = value.split('.');
+      final integerPart = parts[0];
+      final decimalPart = parts[1];
+      final truncatedDecimal =
+          decimalPart.isNotEmpty ? decimalPart.substring(0, 1) : '';
+      final truncatedValue = '$integerPart.$truncatedDecimal';
+      return truncatedValue;
+    }
     double? parsedValue = double.tryParse(value);
     if (parsedValue != null) {
-      return parsedValue.toStringAsFixed(2);
+      return parsedValue.toStringAsFixed(1);
     }
-    return '0.00';
+    return '0.0';
   }
 
   String _formatInteger(String value, {bool allowNegative = false}) {

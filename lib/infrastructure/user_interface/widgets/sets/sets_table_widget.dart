@@ -81,7 +81,9 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
           TableWidget(
             rowHeight: rowHeight,
             columns: TableColumnConfig.fromExercise(
-                widget.exercise, widget.checkable),
+              widget.exercise,
+              widget.checkable,
+            ),
             rows: rows,
             onChanged: _onChange,
           ),
