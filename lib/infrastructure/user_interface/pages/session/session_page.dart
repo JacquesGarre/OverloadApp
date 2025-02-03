@@ -5,6 +5,7 @@ import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/chrono_timer_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/primary_button_widget.dart';
 import 'package:provider/provider.dart';
@@ -68,21 +69,24 @@ class SessionPageState extends State<SessionPage> {
       child: PageWidget(
         title: SessionPage.title,
         bottomSheet: DraggableScrollableSheet(
-          initialChildSize: 0.12, // Starting size of the sheet
-          minChildSize: 0.12, // Minimum height when dragged down
-          maxChildSize: 0.5, // Maximum height when dragged up
+          initialChildSize: 0.12,
+          minChildSize: 0.12,
+          maxChildSize: 0.5,
           expand: false,
           builder: (context, scrollController) {
             return Container(
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.blueGrey[900],
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
               ),
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+              ),
               child: Column(
                 children: [
-                  // Drag Handle
                   Container(
                     width: 40,
                     height: 5,
@@ -90,20 +94,21 @@ class SessionPageState extends State<SessionPage> {
                       color: Colors.grey[500],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 10),
                   ),
-
-                  // Content Area
                   Expanded(
                     child: ListView(
                       controller: scrollController,
                       children: [
-                        Center(
-                          child: Text(
-                            "Session Summary",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
+                        Row(
+                          children: [
+                            ChronoTimerWidget(startDate: session.startDate(),),
+                            Text("Sets: 15"),
+                            Text("Volume: 1253kg"),
+                            
+                            ],
                         ),
+
                         SizedBox(height: 10),
 
                         // Example Summary Details
