@@ -4,6 +4,7 @@ import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/chrono_timer_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
@@ -77,7 +78,15 @@ class SessionPageState extends State<SessionPage> {
             return Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.blueGrey[900],
+                color: AppColorScheme.lightBackground,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColorScheme.background.withOpacity(0.2), 
+                    spreadRadius: 0.1, 
+                    blurRadius: 0.1, 
+                    offset: const Offset(0, -3), 
+                  ),
+                ],
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(20),
                 ),
@@ -102,11 +111,12 @@ class SessionPageState extends State<SessionPage> {
                       children: [
                         Row(
                           children: [
-                            ChronoTimerWidget(startDate: session.startDate(),),
+                            ChronoTimerWidget(
+                              startDate: session.startDate(),
+                            ),
                             Text("Sets: 15"),
                             Text("Volume: 1253kg"),
-                            
-                            ],
+                          ],
                         ),
 
                         SizedBox(height: 10),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 
 class ChronoTimerWidget extends StatefulWidget {
   final DateTime startDate;
@@ -38,16 +39,29 @@ class ChronoTimerWidgetState extends State<ChronoTimerWidget> {
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final hours = twoDigits(duration.inHours);
+    final hoursString = duration.inHours == 0
+        ? ""
+        : "${hours}h${duration.inHours > 1 ? "rs " : " "}";
     final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final minutesString = duration.inMinutes == 0
+        ? ""
+        : "${minutes}min${duration.inMinutes > 1 ? "s " : " "}";
     final seconds = twoDigits(duration.inSeconds.remainder(60));
-    return "${hours}hours ${minutes}mins ${seconds}s";
+    final secondsString = duration.inSeconds == 0
+        ? ""
+        : "${seconds}min${duration.inSeconds > 1 ? "s" : ""}";
+    return "$hoursString$minutesString$secondsString";
   }
 
   @override
   Widget build(BuildContext context) {
     return Text(
       _formatDuration(_elapsed),
-      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+      style: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+        color: AppColorScheme.primary,
+      ),
     );
   }
 }
