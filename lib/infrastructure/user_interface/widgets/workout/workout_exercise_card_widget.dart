@@ -76,13 +76,14 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
               children: [
                 Expanded(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 5.0),
+                                const EdgeInsets.fromLTRB(6.0, 5.0, 6.0, 5.0),
                             child: Text(
                               workoutExercise.exercise().name().value(),
                               style: const TextStyle(
@@ -93,11 +94,11 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 6.0, 5.0),
+                                const EdgeInsets.fromLTRB(0.0, 5.0, 6.0, 5.0),
                             child: Text(
                               "(${workoutExercise.setsCount().value()} set${workoutExercise.setsCount().value() > 1 ? 's' : ''})",
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),

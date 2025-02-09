@@ -46,6 +46,7 @@ class ExerciseProvider with ChangeNotifier {
       AddExerciseCommand command = AddExerciseCommand(
         name: formData["name"],
         units: formData["units"],
+        isBodyWeightExercise: formData["is_body_weight_exercise"],
       );
       await addExerciseCommandHandler.invoke(command);
       await loadExercises();
@@ -75,6 +76,7 @@ class ExerciseProvider with ChangeNotifier {
         id: exercise.id().toString(),
         name: formData["name"],
         units: formData["units"],
+        isBodyWeightExercise: formData["is_body_weight_exercise"],
       );
       await updateExerciseCommandHandler.invoke(command);
       await loadExercises();

@@ -4,6 +4,7 @@ import 'package:overload/domain/exercise/domain_events/exercise_created_domain_e
 import 'package:overload/domain/exercise/domain_events/exercise_deleted_domain_event.dart';
 import 'package:overload/domain/exercise/domain_events/exercise_updated_domain_event.dart';
 import 'package:overload/domain/exercise/id.dart';
+import 'package:overload/domain/exercise/is_body_weight_exercise.dart';
 import 'package:overload/domain/exercise/name.dart';
 import 'package:overload/domain/exercise/units.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
@@ -13,16 +14,19 @@ class Exercise {
   final Id _id;
   final Name _name;
   final Units _units;
+  final IsBodyWeightExercise _isBodyWeightExercise;
 
   Exercise({
     required DomainEventsCollection domainEvents,
     required Id id,
     required Name name,
     required Units units,
+    required IsBodyWeightExercise isBodyWeightExercise,
   })  : _domainEvents = domainEvents,
         _id = id,
         _name = name,
-        _units = units;
+        _units = units,
+        _isBodyWeightExercise = isBodyWeightExercise;
 
   DomainEventsCollection domainEvents() {
     return _domainEvents;
@@ -40,12 +44,17 @@ class Exercise {
     return _units;
   }
 
-  static Exercise create(Name name, Units units) {
+  IsBodyWeightExercise isBodyWeightExercise() {
+    return _isBodyWeightExercise;
+  }
+
+  static Exercise create(Name name, Units units, IsBodyWeightExercise isBodyWeightExercise) {
     Exercise exercise = Exercise(
       domainEvents: DomainEventsCollection(),
       id: Id.create(),
       name: name,
       units: units,
+      isBodyWeightExercise: isBodyWeightExercise,
     );
     exercise
         .domainEvents()
@@ -53,12 +62,13 @@ class Exercise {
     return exercise;
   }
 
-  Exercise update(Name newName, Units newUnits) {
+  Exercise update(Name newName, Units newUnits, IsBodyWeightExercise isBodyWeightExercise) {
     Exercise exercise = Exercise(
       domainEvents: domainEvents(),
       id: id(),
       name: newName,
       units: newUnits,
+      isBodyWeightExercise: isBodyWeightExercise
     );
     exercise
         .domainEvents()
@@ -80,6 +90,7 @@ class Exercise {
       'id': _id.toString(),
       'name': _name.value(),
       'units': jsonEncode(_units.toStringList()),
+      'is_body_weight_exercise': _isBodyWeightExercise.value().toString()
     };
   }
 
@@ -89,11 +100,13 @@ class Exercise {
     Units units = Units.fromStringList(
       List<String>.from(jsonDecode(json['units'] as String)),
     );
+    IsBodyWeightExercise isBodyWeightExercise = IsBodyWeightExercise.fromString(json['is_body_weight_exercise']);
     return Exercise(
       domainEvents: DomainEventsCollection(),
       id: id,
       name: name,
       units: units,
+      isBodyWeightExercise: isBodyWeightExercise
     );
   }
 }

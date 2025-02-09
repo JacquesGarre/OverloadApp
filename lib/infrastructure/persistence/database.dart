@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/id.dart';
+import 'package:overload/domain/exercise/is_body_weight_exercise.dart';
 import 'package:overload/domain/workout/id.dart' as workout_id;
 import 'package:overload/domain/workout/name.dart' as workout_name;
 import 'package:overload/domain/workout/notes.dart';
@@ -44,7 +45,8 @@ class Database {
       CREATE TABLE ${ExerciseRepository.table} (
         id TEXT PRIMARY KEY,
         name TEXT NULL,
-        units TEXT NULL
+        units TEXT NULL,
+        is_body_weight_exercise TEXT NULL
       )
     ''');
     await db.execute('''
@@ -75,42 +77,49 @@ class Database {
         id: Id.create(),
         name: Name.fromString("Pull-ups"),
         units: Units.fromUnitList([Unit.reps]),
+        isBodyWeightExercise: IsBodyWeightExercise(value: true),
       ),
       Exercise(
         domainEvents: DomainEventsCollection(),
         id: Id.create(),
         name: Name.fromString("Dips"),
         units: Units.fromUnitList([Unit.reps]),
+        isBodyWeightExercise: IsBodyWeightExercise(value: true),
       ),
       Exercise(
         domainEvents: DomainEventsCollection(),
         id: Id.create(),
         name: Name.fromString("Chest press"),
         units: Units.fromUnitList([Unit.reps, Unit.kgs]),
+        isBodyWeightExercise: IsBodyWeightExercise(value: false),
       ),
       Exercise(
         domainEvents: DomainEventsCollection(),
         id: Id.create(),
         name: Name.fromString("Shoulder press"),
         units: Units.fromUnitList([Unit.reps, Unit.kgs]),
+        isBodyWeightExercise: IsBodyWeightExercise(value: false),
       ),
       Exercise(
         domainEvents: DomainEventsCollection(),
         id: Id.create(),
         name: Name.fromString("Biceps curls"),
         units: Units.fromUnitList([Unit.reps, Unit.kgs]),
+        isBodyWeightExercise: IsBodyWeightExercise(value: false),
       ),
       Exercise(
         domainEvents: DomainEventsCollection(),
         id: Id.create(),
         name: Name.fromString("Lat pulldown"),
         units: Units.fromUnitList([Unit.reps, Unit.kgs]),
+        isBodyWeightExercise: IsBodyWeightExercise(value: false),
       ),
       Exercise(
         domainEvents: DomainEventsCollection(),
         id: Id.create(),
         name: Name.fromString("Row"),
         units: Units.fromUnitList([Unit.reps, Unit.kgs]),
+        isBodyWeightExercise: IsBodyWeightExercise(value: false),
       ),
     ];
     for (Exercise exercise in exercises) {
