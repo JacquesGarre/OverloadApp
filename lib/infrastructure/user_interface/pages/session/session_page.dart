@@ -81,10 +81,10 @@ class SessionPageState extends State<SessionPage> {
                 color: AppColorScheme.lightBackground,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColorScheme.background.withOpacity(0.2), 
-                    spreadRadius: 0.1, 
-                    blurRadius: 0.1, 
-                    offset: const Offset(0, -3), 
+                    color: AppColorScheme.background.withOpacity(0.2),
+                    spreadRadius: 0.1,
+                    blurRadius: 0.1,
+                    offset: const Offset(0, -3),
                   ),
                 ],
                 borderRadius: const BorderRadius.vertical(
@@ -109,24 +109,94 @@ class SessionPageState extends State<SessionPage> {
                     child: ListView(
                       controller: scrollController,
                       children: [
-                        Row(
+                        Table(
                           children: [
-                            ChronoTimerWidget(
-                              startDate: session.startDate(),
+                            TableRow(
+                              children: [
+                                Text(
+                                  "Time",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onLightBackground,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  "Sets",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onLightBackground,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  "Volume",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onLightBackground,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  "Distance",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onLightBackground,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text("Sets: 15"),
-                            Text("Volume: 1253kg"),
+                            const TableRow(
+                              children: [
+                                SizedBox(
+                                  height: 4.0,
+                                ),
+                                SizedBox(
+                                  height: 4.0,
+                                ),
+                                SizedBox(
+                                  height: 4.0,
+                                ),
+                                SizedBox(
+                                  height: 4.0,
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                ChronoTimerWidget(
+                                  startDate: session.startDate(),
+                                ),
+                                Text(
+                                  "15",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onPrimary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  "1253kg",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onPrimary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  "3.2kms",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onPrimary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-
-                        SizedBox(height: 10),
-
-                        // Example Summary Details
-                        Text("TEST"),
-
-                        SizedBox(height: 20),
-
-                        // Finish Button
+                        const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: ElevatedButton(
@@ -134,14 +204,17 @@ class SessionPageState extends State<SessionPage> {
                               // Handle finish session
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              padding: EdgeInsets.symmetric(vertical: 12),
+                              foregroundColor: AppColorScheme.onPrimary,
+                              backgroundColor: AppColorScheme.primary,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            child: Text('Finish Session',
-                                style: TextStyle(fontSize: 16)),
+                            child: const Text(
+                              'Finish Session',
+                              style: TextStyle(fontSize: 16),
+                            ),
                           ),
                         ),
                       ],

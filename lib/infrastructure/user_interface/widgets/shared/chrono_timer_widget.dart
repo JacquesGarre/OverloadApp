@@ -47,9 +47,7 @@ class ChronoTimerWidgetState extends State<ChronoTimerWidget> {
         ? ""
         : "${minutes}min${duration.inMinutes > 1 ? "s " : " "}";
     final seconds = twoDigits(duration.inSeconds.remainder(60));
-    final secondsString = duration.inSeconds == 0
-        ? ""
-        : "${seconds}s";
+    final secondsString = duration.inSeconds == 0 ? "" : "${seconds}s";
     return "$hoursString$minutesString$secondsString";
   }
 
@@ -57,10 +55,10 @@ class ChronoTimerWidgetState extends State<ChronoTimerWidget> {
   Widget build(BuildContext context) {
     return Text(
       _formatDuration(_elapsed),
+      textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.normal,
         color: AppColorScheme.primary,
+        fontSize: 12,
       ),
     );
   }
