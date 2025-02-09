@@ -49,7 +49,7 @@ class ChronoTimerWidgetState extends State<ChronoTimerWidget> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
     final secondsString = duration.inSeconds == 0
         ? ""
-        : "${seconds}min${duration.inSeconds > 1 ? "s" : ""}";
+        : "${seconds}s";
     return "$hoursString$minutesString$secondsString";
   }
 
