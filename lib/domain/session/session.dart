@@ -118,4 +118,8 @@ class Session {
     updatedSession.domainEvents().publish(SessionExerciseUpdatedDomainEvent.fromSessionAndSessionExercise(updatedSession, exercise));
     return updatedSession;
   }
+
+  int finishedSetsCount() {
+    return _exercises.finishedSetsCount();
+  }
 }

@@ -88,4 +88,12 @@ class SessionExercises {
     }
     return SessionExercises(value: value);
   }
+
+  int finishedSetsCount() {
+    int count = 0;
+    for(SessionExercise exercise in _value) {
+      count += exercise.finishedSetsCount();
+    }
+    return count;
+  }
 }

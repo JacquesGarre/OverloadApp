@@ -6,6 +6,7 @@ import 'package:overload/application/exercise/get_exercises_query/get_exercises_
 import 'package:overload/application/exercise/update_exercise_command/update_exercise_command_handler.dart';
 import 'package:overload/application/session/delete_session_command/delete_session_command_handler.dart';
 import 'package:overload/application/session/get_current_session_query/get_current_session_query_handler.dart';
+import 'package:overload/application/session/get_session_query/get_session_query_handler.dart';
 import 'package:overload/application/session/get_sessions_query/get_sessions_query_handler.dart';
 import 'package:overload/application/session/start_session_command/start_session_command_handler.dart';
 import 'package:overload/application/session/update_session_exercise_command/update_session_exercise_command_handler.dart';
@@ -146,6 +147,11 @@ Future<void> registerHandlers() async {
       domainEventBus: container<DomainEventBusInterface>(),
     ),
   );
+  container.registerFactory<GetSessionQueryHandler>(
+    () => GetSessionQueryHandler(
+      repository: container<SessionRepositoryInterface>(),
+    ),
+  );
 }
 
 Future<void> registerProviders() async {
@@ -173,6 +179,7 @@ Future<void> registerProviders() async {
       deleteSessionCommandHandler: container<DeleteSessionCommandHandler>(),
       updateSessionExerciseCommandHandler:
           container<UpdateSessionExerciseCommandHandler>(),
+      getSessionQueryHandler: container<GetSessionQueryHandler>(),
     ),
   );
 }

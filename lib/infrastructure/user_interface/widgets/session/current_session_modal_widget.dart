@@ -25,7 +25,7 @@ void showCurrentSessionModal({
             context,
             MaterialPageRoute(
               builder: (context) => SessionPage(
-                session: sessionProvider.currentSession!,
+                sessionId: sessionProvider.currentSession!.id(),
               ),
             ),
           );

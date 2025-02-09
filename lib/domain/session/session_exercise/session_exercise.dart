@@ -1,6 +1,7 @@
 import 'package:overload/domain/session/session_exercise/session_exercise_index.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/sets.dart';
+import 'package:overload/domain/workout/set/set.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 
 class SessionExercise {
@@ -82,5 +83,15 @@ class SessionExercise {
       workoutExercise: workoutExercise(),
       sets: sets,
     );
+  }
+
+  int finishedSetsCount() {
+    int count = 0;
+    for(Set set in _sets.value()) {
+      if (set.isDone()) {
+        count += 1;
+      }
+    }
+    return count;
   }
 }

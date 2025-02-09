@@ -30,7 +30,7 @@ class StartWorkoutCardWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => SessionPage(
-                session: session,
+                sessionId: session.id(),
               ),
             ),
           );

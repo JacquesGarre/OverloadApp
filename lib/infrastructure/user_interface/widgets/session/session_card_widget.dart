@@ -30,7 +30,7 @@ class SessionCardWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => SessionPage(
-                    session: sessionProvider.currentSession!,
+                    sessionId: session.id(),
                   ),
                 ),
               );

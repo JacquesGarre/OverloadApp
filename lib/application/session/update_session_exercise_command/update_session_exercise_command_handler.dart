@@ -13,7 +13,7 @@ class UpdateSessionExerciseCommandHandler {
     required this.domainEventBus,
   });
 
-  Future<void> invoke(UpdateSessionExerciseCommand command) async {
+  Future<Session> invoke(UpdateSessionExerciseCommand command) async {
     Session? session = await repository.ofId(command.id);
     if (session == null) {
       throw SessionNotFoundException();
@@ -21,5 +21,6 @@ class UpdateSessionExerciseCommandHandler {
     Session updatedSession = session.updateSessionExercise(command.exercise);
     await repository.update(updatedSession);
     domainEventBus.publish(updatedSession.domainEvents());
+    return updatedSession;
   }
 }
