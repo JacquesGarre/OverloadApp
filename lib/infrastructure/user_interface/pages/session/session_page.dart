@@ -149,21 +149,10 @@ class SessionPageState extends State<SessionPage> {
                                     fontSize: 12,
                                   ),
                                 ),
-                                Text(
-                                  "Distance",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onLightBackground,
-                                    fontSize: 12,
-                                  ),
-                                ),
                               ],
                             ),
                             const TableRow(
                               children: [
-                                SizedBox(
-                                  height: 4.0,
-                                ),
                                 SizedBox(
                                   height: 4.0,
                                 ),
@@ -190,14 +179,6 @@ class SessionPageState extends State<SessionPage> {
                                 ),
                                 Text(
                                   "${session!.finishedVolume()} kgs",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onPrimary,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  "3.2 kms",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: AppColorScheme.onPrimary,
