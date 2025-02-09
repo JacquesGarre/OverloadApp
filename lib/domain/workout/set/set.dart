@@ -1,4 +1,5 @@
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/set/metrics.dart';
@@ -65,5 +66,20 @@ class Set {
       ),
       isDone: json["is_done"] ?? false,
     );
+  }
+
+  num finishedVolume() {
+    if (!_isDone) {
+      return 0;
+    }
+    Metric? kgsMetric = _metrics.findByUnit(Unit.kgs);
+    if (kgsMetric == null || kgsMetric.value() == null) {
+      return 0;
+    }
+    Metric? repsMetric = _metrics.findByUnit(Unit.reps);
+    if (repsMetric == null || repsMetric.value() == null) {
+      return 0;
+    }
+    return repsMetric.value()! * kgsMetric.value()!;
   }
 }

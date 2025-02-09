@@ -122,4 +122,8 @@ class Session {
   int finishedSetsCount() {
     return _exercises.finishedSetsCount();
   }
+
+  num finishedVolume() {
+    return _exercises.finishedVolume();
+  }
 }

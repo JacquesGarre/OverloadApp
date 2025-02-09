@@ -189,7 +189,7 @@ class SessionPageState extends State<SessionPage> {
                                   ),
                                 ),
                                 Text(
-                                  "1253kg",
+                                  "${session!.finishedVolume()} kgs",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: AppColorScheme.onPrimary,
@@ -197,7 +197,7 @@ class SessionPageState extends State<SessionPage> {
                                   ),
                                 ),
                                 Text(
-                                  "3.2kms",
+                                  "3.2 kms",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: AppColorScheme.onPrimary,

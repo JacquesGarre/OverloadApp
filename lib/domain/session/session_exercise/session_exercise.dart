@@ -94,4 +94,14 @@ class SessionExercise {
     }
     return count;
   }
+
+  num finishedVolume() {
+    num volume = 0;
+    for(Set set in _sets.value()) {
+      if (set.isDone()) {
+        volume += set.finishedVolume();
+      }
+    }
+    return volume;
+  }
 }

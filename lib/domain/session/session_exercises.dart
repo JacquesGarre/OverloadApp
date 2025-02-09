@@ -96,4 +96,12 @@ class SessionExercises {
     }
     return count;
   }
+
+  num finishedVolume() {
+    num volume = 0;
+    for(SessionExercise exercise in _value) {
+      volume += exercise.finishedVolume();
+    }
+    return volume;
+  }
 }
