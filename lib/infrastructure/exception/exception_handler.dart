@@ -6,6 +6,10 @@ import 'package:overload/domain/exercise/exception/exercise_not_found_exception.
 import 'package:overload/domain/exercise/exception/invalid_exercise_id_exception.dart';
 import 'package:overload/domain/exercise/exception/invalid_exercise_name_exception.dart';
 import 'package:overload/domain/exercise/exception/invalid_exercise_unit_exception.dart';
+import 'package:overload/domain/user/exception/invalid_age_exception.dart';
+import 'package:overload/domain/user/exception/invalid_weight_exception.dart';
+import 'package:overload/domain/user/exception/username_cannot_be_empty_exception.dart';
+import 'package:overload/domain/user/exception/username_too_long_exception.dart';
 import 'package:overload/domain/workout/exception/notes_too_long_exception.dart';
 import 'package:overload/domain/workout/exception/workout_already_exists_exception.dart';
 import 'package:overload/domain/workout/exception/workout_exercise_required_exception.dart';
@@ -50,6 +54,10 @@ class ExceptionHandler {
       ExerciseNameTooLongException _ => 'Exercise name cannot exceed 30 characters length',
       WorkoutNameTooLongException _ => 'Workout name cannot exceed 50 characters length',
       NotesTooLongException _ => 'Notes cannot exceed 500 characters length',
+      UsernameCannotBeEmptyException _ => 'Username cannot be empty',
+      UsernameTooLongException _ => 'Username cannot exceed 30 characters length',
+      InvalidAgeException _ => 'Invalid age',
+      InvalidWeightException _ => 'Invalid weight',
       _ => 'An unknown error occurred',
     };
   }

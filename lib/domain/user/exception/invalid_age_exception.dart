@@ -1,0 +1,1 @@
+class InvalidAgeException implements Exception {}

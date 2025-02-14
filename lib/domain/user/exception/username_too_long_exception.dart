@@ -1,0 +1,1 @@
+class UsernameTooLongException implements Exception {}
