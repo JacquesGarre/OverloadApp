@@ -1,0 +1,1 @@
+class WorkoutNameTooLongException implements Exception {}

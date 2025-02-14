@@ -1,12 +1,15 @@
+import 'package:overload/domain/exercise/exception/exercise_name_too_long_exception.dart';
 import 'package:overload/domain/exercise/exception/invalid_exercise_name_exception.dart';
 
 class Name {
+
   final String _value;
+  static const int maxLength = 30;
 
   Name._({required String value}) : _value = value;
 
   static Name fromString(String value) {
-    String trimmedValue = value.trim(); // TODO: Add a max length here
+    String trimmedValue = value.trim();
     assertValid(trimmedValue);
     return Name._(value: trimmedValue);
   }
@@ -20,9 +23,11 @@ class Name {
   }
 
   static void assertValid(String value) {
-    if (value.isNotEmpty) {
-      return;
+    if (value.isEmpty) {
+      throw InvalidExerciseNameException();
     }
-    throw InvalidExerciseNameException();
+    if (value.length > Name.maxLength) {
+      throw ExerciseNameTooLongException();
+    }
   }
 }

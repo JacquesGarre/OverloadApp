@@ -1,0 +1,1 @@
+class ExerciseNameTooLongException implements Exception {}

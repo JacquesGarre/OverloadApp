@@ -1,0 +1,1 @@
+class NotesTooLongException implements Exception {}

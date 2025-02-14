@@ -57,8 +57,7 @@ class _ExerciseFormWidgetState extends State<ExerciseFormWidget> {
       widget.onSubmit({
         'name': _nameController.text,
         'units': _selectedUnits,
-        'is_body_weight_exercise':
-            _isBodyWeightExercise, // TODO: Value of the toggle
+        'is_body_weight_exercise': _isBodyWeightExercise,
       });
     }
   }
