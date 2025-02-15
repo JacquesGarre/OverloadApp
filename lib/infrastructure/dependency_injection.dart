@@ -25,6 +25,7 @@ import 'package:overload/infrastructure/persistence/repositories/session_reposit
 import 'package:overload/infrastructure/persistence/repositories/workout_repository.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
+import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
@@ -181,5 +182,8 @@ Future<void> registerProviders() async {
           container<UpdateSessionExerciseCommandHandler>(),
       getSessionQueryHandler: container<GetSessionQueryHandler>(),
     ),
+  );
+  container.registerSingleton<UserProvider>(
+    UserProvider()
   );
 }

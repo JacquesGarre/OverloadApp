@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/icons/healthicons.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
+import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/user_interface/pages/exercise/exercises_page.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/sessions_page.dart';
+import 'package:overload/infrastructure/user_interface/pages/user/onboard_user_page.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/workouts_page.dart';
 import 'package:overload/infrastructure/user_interface/widgets/layout/app_bar_widget.dart';
 import 'package:overload/infrastructure/user_interface/config/app_page_config.dart';
 import 'package:overload/infrastructure/user_interface/widgets/layout/bottom_bar_widget.dart';
+import 'package:provider/provider.dart';
 
 class AppLayout extends StatefulWidget {
   static int sessionsPageIndex = 0;
@@ -57,7 +60,8 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+    return userProvider.user != null ? Scaffold(
       appBar: AppBarWidget(title: _currentPage.title),
       body: _currentPage.page,
       bottomNavigationBar: BottomBarWidget(
@@ -70,6 +74,6 @@ class _AppLayoutState extends State<AppLayout> {
           });
         },
       ),
-    );
+    ) : const OnboardUserPage();
   }
 }
