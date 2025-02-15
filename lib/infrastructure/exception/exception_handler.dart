@@ -28,6 +28,7 @@ class ExceptionHandler {
 
   void handleException(BuildContext context, dynamic exception) {
     String errorMessage = _getErrorMessage(exception);
+    Logger().e(exception);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -43,9 +44,9 @@ class ExceptionHandler {
   }
 
   String _getErrorMessage(dynamic exception) {
-    Logger().e(exception);
     return switch (exception) {
-      DuplicateExerciseUnitException _ => 'This exercise cannot have more than once the same unit',
+      DuplicateExerciseUnitException _ =>
+        'This exercise cannot have more than once the same unit',
       ExerciseAlreadyExistsException _ => 'This exercise already exists',
       ExerciseNotFoundException _ => 'Exercise not found',
       InvalidExerciseIdException _ => 'Invalid exercise id. Please try again',
@@ -54,11 +55,14 @@ class ExceptionHandler {
       WorkoutExerciseRequiredException _ => 'At least one exercise is required',
       WorkoutAlreadyExistsException _ => 'This workout already exists',
       WorkoutNotFoundException _ => 'Workout not found',
-      ExerciseNameTooLongException _ => 'Exercise name cannot exceed 30 characters length',
-      WorkoutNameTooLongException _ => 'Workout name cannot exceed 50 characters length',
+      ExerciseNameTooLongException _ =>
+        'Exercise name cannot exceed 30 characters length',
+      WorkoutNameTooLongException _ =>
+        'Workout name cannot exceed 50 characters length',
       NotesTooLongException _ => 'Notes cannot exceed 500 characters length',
       UsernameCannotBeEmptyException _ => 'Username cannot be empty',
-      UsernameTooLongException _ => 'Username cannot exceed 30 characters length',
+      UsernameTooLongException _ =>
+        'Username cannot exceed 30 characters length',
       InvalidAgeException _ => 'Invalid age',
       InvalidWeightException _ => 'Invalid weight',
       UserAlreadyExistsException _ => 'User already exists',

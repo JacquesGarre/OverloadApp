@@ -50,4 +50,27 @@ class FitnessGoals {
     ];
     return FitnessGoals(value: all);
   }
+
+  static FitnessGoals fromStringList(List<String> fitnessGoals) {
+    List<FitnessGoalValue> value = [];
+    for (String fitnessGoal in fitnessGoals) {
+      switch (fitnessGoal) {
+        case "Lose Weight":
+          value.add(FitnessGoalValue.loseWeight);
+        case "Build Muscle":
+          value.add(FitnessGoalValue.buildMuscle);
+        case "Improve Endurance":
+          value.add(FitnessGoalValue.improveEndurance);
+        case "Increase Strength":
+          value.add(FitnessGoalValue.increaseStrength);
+        case "Enhance Flexibility & Mobility":
+          value.add(FitnessGoalValue.enhanceFlexibilityMobility);
+        case "General Fitness":
+          value.add(FitnessGoalValue.generalFitness);
+        default:
+          throw InvalidFitnessGoalException();
+      }
+    }
+    return FitnessGoals(value: value);
+  }
 }

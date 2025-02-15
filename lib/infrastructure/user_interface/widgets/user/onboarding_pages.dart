@@ -192,7 +192,19 @@ class OnboardingPages {
               ),
               const SizedBox(height: 26),
               UserFitnessGoalsFormWidget(
-                onSubmit: (Map<String, dynamic> formData) {},
+                onSubmit: (Map<String, dynamic> formData) async {
+                  final userProvider = Provider.of<UserProvider>(
+                    context,
+                    listen: false,
+                  );
+                  try {
+                    await userProvider.updateUserFitnessGoals(formData);
+                    if (!context.mounted) return;
+                    onboardUserPageKey.currentState?.next();
+                  } catch (e) {
+                    ExceptionHandler().handleException(context, e);
+                  }
+                },
               )
             ],
           ),

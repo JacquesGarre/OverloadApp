@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/application/user/create_user_command/create_user_command.dart';
 import 'package:overload/application/user/create_user_command/create_user_command_handler.dart';
 import 'package:overload/application/user/delete_user_command/delete_user_command.dart';
 import 'package:overload/application/user/delete_user_command/delete_user_command_handler.dart';
+import 'package:overload/application/user/update_user_command/update_user_command.dart';
+import 'package:overload/application/user/update_user_command/update_user_command_handler.dart';
 import 'package:overload/domain/user/user.dart';
 
 class UserProvider with ChangeNotifier {
   final CreateUserCommandHandler createUserCommandHandler;
   final DeleteUserCommandHandler deleteUserCommandHandler;
+  final UpdateUserCommandHandler updateUserCommandHandler;
 
   UserProvider({
     required this.createUserCommandHandler,
     required this.deleteUserCommandHandler,
+    required this.updateUserCommandHandler,
   });
 
   User? _user;
@@ -31,6 +36,19 @@ class UserProvider with ChangeNotifier {
         gender: formData["gender"],
       );
       await createUserCommandHandler.invoke(command);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateUserFitnessGoals(Map<String, dynamic> formData) async {
+    try {
+      UpdateUserCommand command = UpdateUserCommand(
+        workoutDurationPreference: formData["workout_duration_preference"],
+        fitnessGoals: formData["fitness_goals"],
+        workoutWeeklyDays: formData["workout_weekly_days"],
+      );
+      await updateUserCommandHandler.invoke(command);
     } catch (e) {
       rethrow;
     }

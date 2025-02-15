@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:logger/logger.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/user/age.dart';
 import 'package:overload/domain/user/domain_events/user_created_domain_event.dart';
 import 'package:overload/domain/user/domain_events/user_deleted_domain_event.dart';
+import 'package:overload/domain/user/domain_events/user_updated_domain_event.dart';
 import 'package:overload/domain/user/equipment.dart';
 import 'package:overload/domain/user/fitness_goals.dart';
 import 'package:overload/domain/user/fitness_level.dart';
@@ -139,6 +141,26 @@ class User {
     return user;
   }
 
+  User update({
+    WorkoutDurationPreference? newWorkoutDurationPreference,
+    FitnessGoals? newFitnessGoals,
+    WorkoutWeeklyDays? newWorkoutWeeklyDays,
+  }) {
+    User user = User._(
+        domainEvents: domainEvents(),
+        id: id(),
+        username: username(),
+        age: age(),
+        weight: weight(),
+        gender: gender(),
+        workoutDurationPreference:
+            newWorkoutDurationPreference ?? workoutDurationPreference(),
+        fitnessGoals: newFitnessGoals ?? fitnessGoals(),
+        workoutWeeklyDays: newWorkoutWeeklyDays ?? workoutWeeklyDays());
+    user.domainEvents().publish(UserUpdatedDomainEvent.fromUser(user));
+    return user;
+  }
+
   void delete() {
     domainEvents().publish(UserDeletedDomainEvent.fromUser(this));
   }
@@ -150,13 +172,21 @@ class User {
       'age': _age.value(), // OK in form
       'weight': _weight.value(), // OK in form
       'gender': _gender.value(), // OK in form
-      'training_types': jsonEncode(_trainingTypes?.toStringList()),
-      'workout_duration_preference': _workoutDurationPreference?.value(),
-      'training_locations': jsonEncode(_trainingLocations?.toStringList()),
+      'training_types': _trainingTypes != null
+          ? jsonEncode(_trainingTypes.toStringList())
+          : null,
+      'workout_duration_preference':
+          _workoutDurationPreference?.value(), // OK in form
+      'training_locations': _trainingLocations != null
+          ? jsonEncode(_trainingLocations.toStringList())
+          : null,
       'motivation_preferences': _motivationPreference?.toString(),
       'fitness_level': _fitnessLevel?.toString(),
-      'fitness_goals': jsonEncode(_fitnessGoals?.toStringList()), // OK in form
-      'equipment': jsonEncode(_equipment?.toStringList()),
+      'fitness_goals': _fitnessGoals != null
+          ? jsonEncode(_fitnessGoals.toStringList())
+          : null, // OK in form
+      'equipment':
+          _equipment != null ? jsonEncode(_equipment.toStringList()) : null,
       'workout_weekly_days': _workoutWeeklyDays?.value() // OK in form
     };
   }
@@ -168,7 +198,30 @@ class User {
     Age age = Age.fromString(json['age'] as String);
     Weight weight = Weight.fromString(json['weight'] as String);
     Gender gender = Gender.fromString(json['gender'] as String);
+    WorkoutDurationPreference? workoutDurationPreference;
+    if (json['workout_duration_preference'] != null) {
+      workoutDurationPreference = WorkoutDurationPreference(
+        value: int.parse(json['workout_duration_preference']),
+      );
+    }
+    WorkoutWeeklyDays? workoutWeeklyDays;
+    if (json['workout_weekly_days'] != null) {
+      workoutWeeklyDays = WorkoutWeeklyDays.fromInt(
+        int.parse(json['workout_weekly_days']),
+      );
+    }
+    FitnessGoals? fitnessGoals;
+    if (json['fitness_goals'] != null) {
+      fitnessGoals = FitnessGoals.fromStringList(
+        List<String>.from(jsonDecode(json['fitness_goals'] as String)),
+      );
+    }
     // TODO: Other properties
+    //training_types
+    //training_locations
+    //motivation_preferences
+    //fitness_level
+    //equipment
     return User._(
       domainEvents: domainEvents,
       id: id,
@@ -176,6 +229,9 @@ class User {
       age: age,
       gender: gender,
       weight: weight,
+      workoutDurationPreference: workoutDurationPreference,
+      workoutWeeklyDays: workoutWeeklyDays,
+      fitnessGoals: fitnessGoals,
     );
   }
 }

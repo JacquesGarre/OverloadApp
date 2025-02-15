@@ -1,5 +1,6 @@
 import 'package:overload/application/user/delete_user_command/delete_user_command.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
+import 'package:overload/domain/user/exception/user_not_found_exception.dart';
 import 'package:overload/domain/user/user.dart';
 import 'package:overload/domain/user/user_repository_interface.dart';
 
@@ -15,7 +16,7 @@ class DeleteUserCommandHandler {
  Future<void> invoke(DeleteUserCommand command) async {
   User? existingUser = await repository.findCurrentUser();
   if (existingUser == null) {
-    return;
+    throw UserNotFoundException();
   }
   existingUser.delete();
   await repository.delete(existingUser);

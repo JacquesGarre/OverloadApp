@@ -5,7 +5,6 @@ import 'package:overload/domain/user/user.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/badge_selector_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/form_widget.dart';
-import 'package:overload/infrastructure/user_interface/widgets/shared/text_field_widget.dart';
 
 class UserFitnessGoalsFormWidget extends StatefulWidget {
   final User? user;
@@ -64,6 +63,7 @@ class _UserFitnessGoalsFormWidgetState
       widget.onSubmit({
         'fitness_goals': _selectedGoals,
         'workout_weekly_days': _workoutWeeklyDays,
+        'workout_duration_preference': _workoutDurationPreference,
       });
     }
   }
@@ -128,10 +128,13 @@ class _UserFitnessGoalsFormWidgetState
               });
             },
           ),
-        )
+        ),
+        const SizedBox(
+          height: 6.0,
+        ),
       ],
       onSubmit: _submitForm,
-      submitButtonLabel: "Save my preferences",
+      submitButtonLabel: widget.user != null ? "Update my fitness goals" : "Save my fitness goals",
     );
   }
 }

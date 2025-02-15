@@ -170,7 +170,6 @@ class TableCellWidgetState extends State<TableCellWidget> {
   }
 
   String _formatDouble(String value, {bool allowNegative = false}) {
-    Logger().e(value);
     final doubleRegex = allowNegative
         ? RegExp(r'^-?\d*(\.\d{0,1})?$')
         : RegExp(r'^\d*(\.\d{0,1})?$');
