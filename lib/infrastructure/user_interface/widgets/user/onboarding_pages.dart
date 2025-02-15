@@ -100,7 +100,7 @@ class OnboardingPages {
               ),
               const SizedBox(height: 16),
               Text(
-                'Your information is securely stored only on your device only, ensuring privacy while helping us tailor workouts and programs to your goals.',
+                'Your information is securely stored only on your device, ensuring privacy while helping us tailor workouts and programs to your goals.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
