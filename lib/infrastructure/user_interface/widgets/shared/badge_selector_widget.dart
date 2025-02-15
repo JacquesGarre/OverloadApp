@@ -22,6 +22,7 @@ class BadgeSelectorWidgetState extends State<BadgeSelectorWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(widget.label),
         const SizedBox(height: 2),

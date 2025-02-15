@@ -145,17 +145,17 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': _id.toString(),
-      'username': _username.value(),
-      'age': _age.value(),
-      'weight': _weight.value(),
-      'gender': _gender.value(),
+      'id': _id.toString(), // OK in form
+      'username': _username.value(), // OK in form
+      'age': _age.value(), // OK in form
+      'weight': _weight.value(), // OK in form
+      'gender': _gender.value(), // OK in form
       'training_types': jsonEncode(_trainingTypes?.toStringList()),
       'workout_duration_preference': _workoutDurationPreference?.toString(),
       'training_locations': jsonEncode(_trainingLocations?.toStringList()),
       'motivation_preferences': _motivationPreference?.toString(),
       'fitness_level': _fitnessLevel?.toString(),
-      'fitness_goals': jsonEncode(_fitnessGoals?.toStringList()),
+      'fitness_goals': jsonEncode(_fitnessGoals?.toStringList()), // OK in form
       'equipment': jsonEncode(_equipment?.toStringList()),
       'workout_weekly_days': _workoutWeeklyDays?.value()
     };

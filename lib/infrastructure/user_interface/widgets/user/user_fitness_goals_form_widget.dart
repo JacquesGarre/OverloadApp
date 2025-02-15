@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/user/fitness_goals.dart';
 import 'package:overload/domain/user/user.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/badge_selector_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/text_field_widget.dart';
@@ -26,10 +28,18 @@ class _UserFitnessGoalsFormWidgetState
   List<String> _selectedGoals = [];
   final List<String> _availableGoals = FitnessGoals.all().toStringList();
   String? _goalError;
+  late int _workoutWeeklyDays = 3;
 
   @override
   void initState() {
     super.initState();
+    _selectedGoals = widget.user != null && widget.user!.fitnessGoals() != null
+        ? widget.user!.fitnessGoals()!.toStringList()
+        : [];
+    _workoutWeeklyDays =
+        widget.user != null && widget.user!.workoutWeeklyDays() != null
+            ? widget.user!.workoutWeeklyDays()!.value()
+            : 3;
   }
 
   @override
@@ -39,8 +49,17 @@ class _UserFitnessGoalsFormWidgetState
 
   void _submitForm() {
     final isFormValid = _formKey.currentState!.validate();
+    final isGoalsValid = _selectedGoals.isNotEmpty;
+    if (!isGoalsValid) {
+      setState(() {
+        _goalError = 'Please select at least one fitness goal';
+      });
+    }
     if (isFormValid) {
-      widget.onSubmit({});
+      widget.onSubmit({
+        'fitness_goals': _selectedGoals,
+        'workout_weekly_days': _workoutWeeklyDays,
+      });
     }
   }
 
@@ -49,18 +68,41 @@ class _UserFitnessGoalsFormWidgetState
     return FormWidget(
       formKey: _formKey,
       fields: [
-        Center(
-          child: BadgeSelectorWidget(
-            label: "What are your fitness goals?",
-            items: _availableGoals,
-            selectedItems: _selectedGoals,
-            errorMessage: _goalError,
-          ),
+        BadgeSelectorWidget(
+          label: "What are your fitness goals?",
+          items: _availableGoals,
+          selectedItems: _selectedGoals,
+          errorMessage: _goalError,
         ),
+        const SizedBox(
+          height: 6.0,
+        ),
+        const Text("How many days per week would you like to workout?"),
+        Center(
+          child: NumberSelector.plain(
+            width: double.infinity,
+            height: 40,
+            iconColor: AppColorScheme.primary,
+            borderRadius: 5.0,
+            backgroundColor: AppColorScheme.lightBackground,
+            borderColor: Colors.transparent,
+            showMinMax: false,
+            showSuffix: false,
+            hasDividers: false,
+            hasBorder: true,
+            current: _workoutWeeklyDays,
+            min: 1,
+            max: 7,
+            onUpdate: (int value) {
+              setState(() {
+                _workoutWeeklyDays = value;
+              });
+            },
+          ),
+        )
       ],
       onSubmit: _submitForm,
-      submitButtonLabel:
-          widget.user != null ? "Update my profile" : "Create my profile",
+      submitButtonLabel: "Save my preferences",
     );
   }
 }
