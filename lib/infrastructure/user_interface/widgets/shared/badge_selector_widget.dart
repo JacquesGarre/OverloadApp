@@ -22,17 +22,20 @@ class BadgeSelectorWidgetState extends State<BadgeSelectorWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(widget.label),
         const SizedBox(height: 2),
         Wrap(
           spacing: 8.0,
-          runSpacing: 4.0,
+          runSpacing: 0.0,
           children: widget.items.map((item) {
             final isSelected = widget.selectedItems.contains(item);
             return FilterChip(
-              label: Text(item),
+              padding: const EdgeInsets.all(0.0),
+              label: Text(
+                item,
+                style: TextStyle(fontSize: 13.0),
+              ),
               selected: isSelected,
               onSelected: (_) {
                 if (widget.selectedItems.contains(item)) {

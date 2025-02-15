@@ -1,0 +1,1 @@
+class InvalidFitnessGoalException implements Exception {}

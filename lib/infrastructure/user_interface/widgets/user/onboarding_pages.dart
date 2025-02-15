@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:logger/logger.dart';
+import 'package:overload/infrastructure/exception/exception_handler.dart';
+import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/user/user_fitness_goals_form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/user/user_profile_form_widget.dart';
+import 'package:provider/provider.dart';
 
 class OnboardingPages {
-  static List<PageViewModel> pages() {
+  static List<PageViewModel> pages(
+    BuildContext context,
+    GlobalKey<IntroductionScreenState> onboardUserPageKey,
+  ) {
     return [
-      page1(),
-      page2(),
+      page1(onboardUserPageKey),
+      page2(context, onboardUserPageKey),
+      page3(context, onboardUserPageKey),
     ];
   }
 
-  static PageViewModel page1() {
+  static PageViewModel page1(
+    GlobalKey<IntroductionScreenState> onboardUserPageKey,
+  ) {
     return PageViewModel(
       title: "",
       bodyWidget: Padding(
@@ -71,7 +80,9 @@ class OnboardingPages {
               const SizedBox(height: 50),
               FloatingCenteredButtonWidget(
                 text: "Let's go!",
-                onPressed: () {},
+                onPressed: () {
+                  onboardUserPageKey.currentState?.next();
+                },
               ),
             ],
           ),
@@ -80,7 +91,10 @@ class OnboardingPages {
     );
   }
 
-  static PageViewModel page2() {
+  static PageViewModel page2(
+    BuildContext context,
+    GlobalKey<IntroductionScreenState> onboardUserPageKey,
+  ) {
     return PageViewModel(
       title: "",
       bodyWidget: Padding(
@@ -94,7 +108,7 @@ class OnboardingPages {
                 'Set up your profile',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -108,9 +122,78 @@ class OnboardingPages {
                 ),
               ),
               const SizedBox(height: 26),
-              UserProfileFormWidget(onSubmit: (Map<String, dynamic> formData) {
-                Logger().i(formData);
-              }),
+              UserProfileFormWidget(
+                onSubmit: (Map<String, dynamic> formData) async {
+                  final userProvider = Provider.of<UserProvider>(
+                    context,
+                    listen: false,
+                  );
+                  try {
+                    await userProvider.createUser(formData);
+                    if (!context.mounted) return;
+                    onboardUserPageKey.currentState?.next();
+                  } catch (e) {
+                    ExceptionHandler().handleException(context, e);
+                  }
+                },
+              ),
+              ElevatedButton(
+                // TODO : To remove, only for tests
+                onPressed: () async {
+                  final userProvider = Provider.of<UserProvider>(
+                    context,
+                    listen: false,
+                  );
+                  try {
+                    await userProvider.deleteCurrentUser();
+                    if (!context.mounted) return;
+                  } catch (e) {
+                    ExceptionHandler().handleException(context, e);
+                  }
+                },
+                child: Text("Delete user"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static PageViewModel page3(
+    BuildContext context,
+    GlobalKey<IntroductionScreenState> onboardUserPageKey,
+  ) {
+    return PageViewModel(
+      title: "",
+      bodyWidget: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Your Fitness Goals',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'To build the perfect workout plan for you, we need to know your goals! Let’s get started on your personalized fitness journey!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColorScheme.onLightBackground,
+                ),
+              ),
+              const SizedBox(height: 26),
+              UserFitnessGoalsFormWidget(
+                onSubmit: (Map<String, dynamic> formData) {},
+              )
             ],
           ),
         ),

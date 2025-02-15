@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/user/age.dart';
 import 'package:overload/domain/user/domain_events/user_created_domain_event.dart';
+import 'package:overload/domain/user/domain_events/user_deleted_domain_event.dart';
 import 'package:overload/domain/user/equipment.dart';
 import 'package:overload/domain/user/fitness_goals.dart';
 import 'package:overload/domain/user/fitness_level.dart';
@@ -119,13 +120,13 @@ class User {
   }
 
   static User create(
-    Id id,
     Username username,
     Age age,
     Weight weight,
     Gender gender,
   ) {
     DomainEventsCollection domainEvents = DomainEventsCollection();
+    Id id = Id.create();
     User user = User._(
       domainEvents: domainEvents,
       id: id,
@@ -136,6 +137,10 @@ class User {
     );
     user.domainEvents().publish(UserCreatedDomainEvent.fromUser(user));
     return user;
+  }
+
+  void delete() {
+    domainEvents().publish(UserDeletedDomainEvent.fromUser(this));
   }
 
   Map<String, dynamic> toJson() {
@@ -154,5 +159,23 @@ class User {
       'equipment': jsonEncode(_equipment?.toStringList()),
       'workout_weekly_days': _workoutWeeklyDays?.value()
     };
+  }
+
+  static User fromJson(Map<String, dynamic> json) {
+    DomainEventsCollection domainEvents = DomainEventsCollection();
+    Id id = Id.fromString(json['id'] as String);
+    Username username = Username.fromString(json['username'] as String);
+    Age age = Age.fromString(json['age'] as String);
+    Weight weight = Weight.fromString(json['weight'] as String);
+    Gender gender = Gender.fromString(json['gender'] as String);
+    // TODO: Other properties
+    return User._(
+      domainEvents: domainEvents,
+      id: id,
+      username: username,
+      age: age,
+      gender: gender,
+      weight: weight,
+    );
   }
 }

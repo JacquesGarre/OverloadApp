@@ -22,4 +22,10 @@ class Age {
   int value() {
     return _value;
   }
+
+  static Age fromString(String value) {
+    int intValue = int.parse(value);
+    assertValid(intValue);
+    return Age._(value: intValue);
+  }
 }

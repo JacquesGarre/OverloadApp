@@ -10,13 +10,16 @@ class OnboardUserPage extends StatefulWidget {
 }
 
 class _OnboardUserPageState extends State<OnboardUserPage> {
+  final onboardUserPageKey = GlobalKey<IntroductionScreenState>();
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
-      pages: OnboardingPages.pages(),
+      key: onboardUserPageKey,
+      pages: OnboardingPages.pages(context, onboardUserPageKey),
       showDoneButton: false,
       showSkipButton: false,
       showNextButton: false,
+      freeze: true,
     );
   }
 }

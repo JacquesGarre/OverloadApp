@@ -10,6 +10,8 @@ import 'package:overload/application/session/get_session_query/get_session_query
 import 'package:overload/application/session/get_sessions_query/get_sessions_query_handler.dart';
 import 'package:overload/application/session/start_session_command/start_session_command_handler.dart';
 import 'package:overload/application/session/update_session_exercise_command/update_session_exercise_command_handler.dart';
+import 'package:overload/application/user/create_user_command/create_user_command_handler.dart';
+import 'package:overload/application/user/delete_user_command/delete_user_command_handler.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
 import 'package:overload/application/workout/delete_workout_command/delete_workout_command_handler.dart';
 import 'package:overload/application/workout/get_workouts_query/get_workouts_query_handler.dart';
@@ -17,11 +19,13 @@ import 'package:overload/application/workout/update_workout_command/update_worko
 import 'package:overload/domain/exercise/exercise_repository_interface.dart';
 import 'package:overload/domain/session/session_repository_interface.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
+import 'package:overload/domain/user/user_repository_interface.dart';
 import 'package:overload/domain/workout/workout_repository_interface.dart';
 import 'package:overload/infrastructure/bus/domain_event_bus.dart';
 import 'package:overload/infrastructure/persistence/database.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';
 import 'package:overload/infrastructure/persistence/repositories/session_repository.dart';
+import 'package:overload/infrastructure/persistence/repositories/user_repository.dart';
 import 'package:overload/infrastructure/persistence/repositories/workout_repository.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
@@ -57,6 +61,11 @@ Future<void> registerRepositories() async {
   );
   container.registerFactory<SessionRepositoryInterface>(
     () => SessionRepository(
+      db: container<sqflite.Database>(),
+    ),
+  );
+  container.registerFactory<UserRepositoryInterface>(
+    () => UserRepository(
       db: container<sqflite.Database>(),
     ),
   );
@@ -153,6 +162,18 @@ Future<void> registerHandlers() async {
       repository: container<SessionRepositoryInterface>(),
     ),
   );
+  container.registerFactory<CreateUserCommandHandler>(
+    () => CreateUserCommandHandler(
+      repository: container<UserRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
+  container.registerFactory<DeleteUserCommandHandler>(
+    () => DeleteUserCommandHandler(
+      repository: container<UserRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
 }
 
 Future<void> registerProviders() async {
@@ -183,7 +204,8 @@ Future<void> registerProviders() async {
       getSessionQueryHandler: container<GetSessionQueryHandler>(),
     ),
   );
-  container.registerSingleton<UserProvider>(
-    UserProvider()
-  );
+  container.registerSingleton<UserProvider>(UserProvider(
+    createUserCommandHandler: container<CreateUserCommandHandler>(),
+    deleteUserCommandHandler: container<DeleteUserCommandHandler>(),
+  ));
 }

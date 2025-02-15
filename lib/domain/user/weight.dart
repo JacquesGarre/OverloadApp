@@ -20,4 +20,10 @@ class Weight {
   num value() {
     return _value;
   }
+
+  static Weight fromString(String value) {
+    num numValue = num.parse(value);
+    assertValid(numValue);
+    return Weight._(value: numValue);
+  }
 }

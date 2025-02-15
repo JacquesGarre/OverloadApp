@@ -3,15 +3,15 @@ import 'package:overload/domain/shared/domain_event_interface.dart';
 import 'package:overload/domain/user/user.dart';
 import 'package:uuid/uuid.dart';
 
-class UserCreatedDomainEvent implements DomainEventInterface {
+class UserDeletedDomainEvent implements DomainEventInterface {
 
   final UuidValue _aggregateId;
   final UuidValue _eventId;
   final DateTime _occuredAt;
   final User _user;
-  static const String _eventName = "UserCreatedDomainEvent";
+  static const String _eventName = "UserDeletedDomainEvent";
 
-  UserCreatedDomainEvent._(this._aggregateId, this._eventId, this._occuredAt, this._user);
+  UserDeletedDomainEvent._(this._aggregateId, this._eventId, this._occuredAt, this._user);
 
   @override
   UuidValue aggregateId() {
@@ -33,11 +33,11 @@ class UserCreatedDomainEvent implements DomainEventInterface {
     return _occuredAt;
   }
 
-  static UserCreatedDomainEvent fromUser(User user) {
+  static UserDeletedDomainEvent fromUser(User user) {
     String uuid = const Uuid().v4();
     UuidValue eventId = UuidValue.fromString(uuid);
     DateTime occuredAt = DateTime.now();
-    return UserCreatedDomainEvent._(user.id().value(), eventId, occuredAt, user);
+    return UserDeletedDomainEvent._(user.id().value(), eventId, occuredAt, user);
   }
 
   Map<String, dynamic> toJson() {

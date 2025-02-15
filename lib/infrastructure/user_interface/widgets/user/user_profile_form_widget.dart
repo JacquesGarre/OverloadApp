@@ -182,7 +182,7 @@ class _UserProfileFormWidgetState extends State<UserProfileFormWidget> {
       ],
       onSubmit: _submitForm,
       submitButtonLabel:
-          widget.user != null ? "Update my profile" : "Save my profile",
+          widget.user != null ? "Update my profile" : "Create my profile",
     );
   }
 }

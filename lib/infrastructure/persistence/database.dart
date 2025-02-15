@@ -18,6 +18,7 @@ import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.
 import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';
 import 'package:overload/infrastructure/persistence/repositories/session_repository.dart';
+import 'package:overload/infrastructure/persistence/repositories/user_repository.dart';
 import 'package:overload/infrastructure/persistence/repositories/workout_repository.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:path/path.dart';
@@ -30,7 +31,7 @@ class Database {
     if (!exists) {
       return await sqflite.openDatabase(
         path,
-        version: 3,
+        version: 4,
         onCreate: (db, version) async {
           await createDatabase(db);
           await seedDatabase(db);
@@ -64,6 +65,23 @@ class Database {
         start_date TEXT NULL,
         end_date TEXT NULL,
         exercises TEXT NULL
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE ${UserRepository.table} (
+        id TEXT PRIMARY KEY,
+        username TEXT NULL,
+        age TEXT NULL,
+        weight TEXT NULL,
+        gender TEXT NULL,
+        training_types TEXT NULL,
+        workout_duration_preference TEXT NULL,
+        training_locations TEXT NULL,
+        motivation_preferences TEXT NULL,
+        fitness_level TEXT NULL,
+        fitness_goals TEXT NULL,
+        equipment TEXT NULL,
+        workout_weekly_days TEXT NULL
       )
     ''');
   }

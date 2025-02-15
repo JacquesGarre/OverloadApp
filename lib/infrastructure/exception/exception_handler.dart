@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exception/duplicate_exercise_unit_exception.dart';
 import 'package:overload/domain/exercise/exception/exercise_already_exists_exception.dart';
 import 'package:overload/domain/exercise/exception/exercise_name_too_long_exception.dart';
@@ -8,6 +9,7 @@ import 'package:overload/domain/exercise/exception/invalid_exercise_name_excepti
 import 'package:overload/domain/exercise/exception/invalid_exercise_unit_exception.dart';
 import 'package:overload/domain/user/exception/invalid_age_exception.dart';
 import 'package:overload/domain/user/exception/invalid_weight_exception.dart';
+import 'package:overload/domain/user/exception/user_already_exists_exception.dart';
 import 'package:overload/domain/user/exception/username_cannot_be_empty_exception.dart';
 import 'package:overload/domain/user/exception/username_too_long_exception.dart';
 import 'package:overload/domain/workout/exception/notes_too_long_exception.dart';
@@ -41,6 +43,7 @@ class ExceptionHandler {
   }
 
   String _getErrorMessage(dynamic exception) {
+    Logger().e(exception);
     return switch (exception) {
       DuplicateExerciseUnitException _ => 'This exercise cannot have more than once the same unit',
       ExerciseAlreadyExistsException _ => 'This exercise already exists',
@@ -58,6 +61,7 @@ class ExceptionHandler {
       UsernameTooLongException _ => 'Username cannot exceed 30 characters length',
       InvalidAgeException _ => 'Invalid age',
       InvalidWeightException _ => 'Invalid weight',
+      UserAlreadyExistsException _ => 'User already exists',
       _ => 'An unknown error occurred',
     };
   }
