@@ -28,7 +28,8 @@ class _UserFitnessGoalsFormWidgetState
   List<String> _selectedGoals = [];
   final List<String> _availableGoals = FitnessGoals.all().toStringList();
   String? _goalError;
-  late int _workoutWeeklyDays = 3;
+  late int _workoutWeeklyDays;
+  late int _workoutDurationPreference;
 
   @override
   void initState() {
@@ -40,6 +41,10 @@ class _UserFitnessGoalsFormWidgetState
         widget.user != null && widget.user!.workoutWeeklyDays() != null
             ? widget.user!.workoutWeeklyDays()!.value()
             : 3;
+    _workoutDurationPreference =
+        widget.user != null && widget.user!.workoutDurationPreference() != null
+            ? widget.user!.workoutDurationPreference()!.value()
+            : 45;
   }
 
   @override
@@ -96,6 +101,30 @@ class _UserFitnessGoalsFormWidgetState
             onUpdate: (int value) {
               setState(() {
                 _workoutWeeklyDays = value;
+              });
+            },
+          ),
+        ),
+        const Text("What is your ideal workout duration in minutes?"),
+        Center(
+          child: NumberSelector.plain(
+            step: 15,
+            width: double.infinity,
+            height: 40,
+            iconColor: AppColorScheme.primary,
+            borderRadius: 5.0,
+            backgroundColor: AppColorScheme.lightBackground,
+            borderColor: Colors.transparent,
+            showMinMax: false,
+            showSuffix: false,
+            hasDividers: false,
+            hasBorder: true,
+            current: _workoutDurationPreference,
+            min: 15,
+            max: 240,
+            onUpdate: (int value) {
+              setState(() {
+                _workoutDurationPreference = value;
               });
             },
           ),

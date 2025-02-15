@@ -151,13 +151,13 @@ class User {
       'weight': _weight.value(), // OK in form
       'gender': _gender.value(), // OK in form
       'training_types': jsonEncode(_trainingTypes?.toStringList()),
-      'workout_duration_preference': _workoutDurationPreference?.toString(),
+      'workout_duration_preference': _workoutDurationPreference?.value(),
       'training_locations': jsonEncode(_trainingLocations?.toStringList()),
       'motivation_preferences': _motivationPreference?.toString(),
       'fitness_level': _fitnessLevel?.toString(),
       'fitness_goals': jsonEncode(_fitnessGoals?.toStringList()), // OK in form
       'equipment': jsonEncode(_equipment?.toStringList()),
-      'workout_weekly_days': _workoutWeeklyDays?.value()
+      'workout_weekly_days': _workoutWeeklyDays?.value() // OK in form
     };
   }
 
