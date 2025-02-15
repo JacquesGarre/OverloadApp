@@ -19,4 +19,7 @@ class Equipment {
     return _value;
   }
 
+  List<String> toStringList() {
+    return _value.map((e) => e.name).toList();
+  }
 }

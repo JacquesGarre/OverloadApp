@@ -1,0 +1,1 @@
+class InvalidWorkoutWeeklyDaysException implements Exception {}

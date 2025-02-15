@@ -14,4 +14,10 @@ class WorkoutDurationPreference {
   WorkoutDurationPreferenceValue value() {
     return _value;
   }
+
+  @override
+  String toString() {
+    return _value.name;
+  }
+
 }

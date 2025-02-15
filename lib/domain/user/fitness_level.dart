@@ -13,4 +13,9 @@ class FitnessLevel {
   FitnessLevelValue value() {
     return _value;
   }
+
+  @override 
+  String toString() {
+    return _value.name;
+  }
 } 

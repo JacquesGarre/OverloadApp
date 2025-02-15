@@ -1,6 +1,6 @@
 enum TrainingTypeValue {
   weightlifting,
-  bodyweigth,
+  bodyweight,
   cardio,
   hiit,
   yoga,
@@ -10,7 +10,6 @@ enum TrainingTypeValue {
 }
 
 class TrainingTypes {
-
   final List<TrainingTypeValue> _value;
 
   TrainingTypes({required List<TrainingTypeValue> value}) : _value = value;
@@ -19,4 +18,7 @@ class TrainingTypes {
     return _value;
   }
 
+  List<String> toStringList() {
+    return _value.map((e) => e.name).toList();
+  }
 }

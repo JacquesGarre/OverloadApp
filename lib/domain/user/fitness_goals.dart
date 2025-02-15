@@ -1,5 +1,5 @@
 enum FitnessGoalValue {
-  loseWeight, 
+  loseWeight,
   buildMuscle,
   improveEndurance,
   increaseStrength,
@@ -8,12 +8,15 @@ enum FitnessGoalValue {
 }
 
 class FitnessGoals {
-
-  final List<FitnessGoalValue>  _value;
+  final List<FitnessGoalValue> _value;
 
   FitnessGoals({required List<FitnessGoalValue> value}) : _value = value;
 
   List<FitnessGoalValue> value() {
     return _value;
+  }
+
+  List<String> toStringList() {
+    return _value.map((e) => e.name).toList();
   }
 }

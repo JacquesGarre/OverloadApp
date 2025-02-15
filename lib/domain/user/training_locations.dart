@@ -6,13 +6,16 @@ enum TrainingLocationValue {
 }
 
 class TrainingLocations {
-
   final List<TrainingLocationValue> _value;
 
-  TrainingLocations({required List<TrainingLocationValue> value}) : _value = value;
+  TrainingLocations({required List<TrainingLocationValue> value})
+      : _value = value;
 
   List<TrainingLocationValue> value() {
     return _value;
   }
 
+  List<String> toStringList() {
+    return _value.map((e) => e.name).toList();
+  }
 }

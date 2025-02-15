@@ -1,0 +1,1 @@
+class InvalidUserIdException implements Exception {}
