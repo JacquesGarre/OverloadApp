@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:overload/domain/session/domain_events/session_deleted_domain_event.dart';
+import 'package:overload/domain/session/domain_events/session_exercise_added_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_started_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_exercise_updated_domain_event.dart';
 import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/session/session_exercises.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
+import 'package:overload/domain/user/weight.dart';
 import 'package:overload/domain/workout/workout.dart';
 
 class Session {
@@ -114,8 +116,37 @@ class Session {
 
   Session updateSessionExercise(SessionExercise exercise) {
     SessionExercises exercises = _exercises.update(exercise);
-    Session updatedSession = Session._(domainEvents: DomainEventsCollection(), id: id(), workout: workout(), startDate: startDate(), exercises: exercises);
-    updatedSession.domainEvents().publish(SessionExerciseUpdatedDomainEvent.fromSessionAndSessionExercise(updatedSession, exercise));
+    Session updatedSession = Session._(
+      domainEvents: DomainEventsCollection(),
+      id: id(),
+      workout: workout(),
+      startDate: startDate(),
+      exercises: exercises,
+    );
+    updatedSession.domainEvents().publish(
+      SessionExerciseUpdatedDomainEvent.fromSessionAndSessionExercise(
+        updatedSession,
+        exercise,
+      ),
+    );
+    return updatedSession;
+  }
+
+  Session addSessionExercise(SessionExercise exercise) {
+    SessionExercises exercises = _exercises.add(exercise);
+    Session updatedSession = Session._(
+      domainEvents: DomainEventsCollection(),
+      id: id(),
+      workout: workout(),
+      startDate: startDate(),
+      exercises: exercises,
+    );
+    updatedSession.domainEvents().publish(
+      SessionExerciseAddedDomainEvent.fromSessionAndSessionExercise(
+        updatedSession,
+        exercise,
+      ),
+    );
     return updatedSession;
   }
 
@@ -123,7 +154,11 @@ class Session {
     return _exercises.finishedSetsCount();
   }
 
-  num finishedVolume() {
-    return _exercises.finishedVolume();
+  num finishedVolume(Weight userWeight) {
+    return _exercises.finishedVolume(userWeight);
+  }
+
+  num finishedRepsCount() {
+    return _exercises.finishedRepsCount();
   }
 }

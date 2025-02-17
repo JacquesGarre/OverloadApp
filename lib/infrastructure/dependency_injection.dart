@@ -4,6 +4,7 @@ import 'package:overload/application/exercise/add_exercise_command/add_exercise_
 import 'package:overload/application/exercise/delete_exercise_command/delete_exercise_command_handler.dart';
 import 'package:overload/application/exercise/get_exercises_query/get_exercises_query_handler.dart';
 import 'package:overload/application/exercise/update_exercise_command/update_exercise_command_handler.dart';
+import 'package:overload/application/session/add_session_exercise_command/add_session_exercise_command_handler.dart';
 import 'package:overload/application/session/delete_session_command/delete_session_command_handler.dart';
 import 'package:overload/application/session/get_current_session_query/get_current_session_query_handler.dart';
 import 'package:overload/application/session/get_session_query/get_session_query_handler.dart';
@@ -159,6 +160,12 @@ Future<void> registerHandlers() async {
       domainEventBus: container<DomainEventBusInterface>(),
     ),
   );
+  container.registerFactory<AddSessionExerciseCommandHandler>(
+    () => AddSessionExerciseCommandHandler(
+      repository: container<SessionRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
   container.registerFactory<GetSessionQueryHandler>(
     () => GetSessionQueryHandler(
       repository: container<SessionRepositoryInterface>(),
@@ -215,6 +222,8 @@ Future<void> registerProviders() async {
       updateSessionExerciseCommandHandler:
           container<UpdateSessionExerciseCommandHandler>(),
       getSessionQueryHandler: container<GetSessionQueryHandler>(),
+      addSessionExerciseCommandHandler:
+          container<AddSessionExerciseCommandHandler>(),
     ),
   );
   container.registerSingleton<UserProvider>(UserProvider(

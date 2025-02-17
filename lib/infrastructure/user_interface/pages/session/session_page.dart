@@ -1,13 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
+import 'package:overload/domain/session/session_exercise/session_exercise_index.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
+import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/add_session_exercise_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/chrono_timer_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -60,8 +67,45 @@ class SessionPageState extends State<SessionPage> {
     }
   }
 
+  void _navigateToAddSessionExercisePage() async {
+    SessionExerciseIndex index = session!.sessionExercises().last() != null
+        ? session!.sessionExercises().last()!.index().next()
+        : SessionExerciseIndex(value: 1);
+    SessionExercise? newExercise = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddSessionExercisePage(
+          workoutId: session!.workout().id(),
+          sessionId: session!.id(),
+          index: index,
+        ),
+      ),
+    );
+    if (newExercise != null) {
+      try {
+        if (!mounted) return;
+        final sessionProvider = Provider.of<SessionProvider>(
+          context,
+          listen: false,
+        );
+        Session updatedSession = await sessionProvider.addSessionExercise(
+          session!.id(),
+          newExercise,
+        );
+        setState(() {
+          session = updatedSession;
+        });
+      } catch (e) {
+        if (!mounted) return;
+        ExceptionHandler().handleException(context, e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
     if (session == null) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -142,6 +186,14 @@ class SessionPageState extends State<SessionPage> {
                                   ),
                                 ),
                                 Text(
+                                  "Reps",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onLightBackground,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
                                   "Volume",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -153,6 +205,9 @@ class SessionPageState extends State<SessionPage> {
                             ),
                             const TableRow(
                               children: [
+                                SizedBox(
+                                  height: 4.0,
+                                ),
                                 SizedBox(
                                   height: 4.0,
                                 ),
@@ -178,7 +233,15 @@ class SessionPageState extends State<SessionPage> {
                                   ),
                                 ),
                                 Text(
-                                  "${session!.finishedVolume()} kgs",
+                                  "${session!.finishedRepsCount()}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColorScheme.onPrimary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  "${session!.finishedVolume(userProvider.user!.weight())} kgs",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: AppColorScheme.onPrimary,
@@ -228,6 +291,19 @@ class SessionPageState extends State<SessionPage> {
                     onSessionExerciseUpdated: _updateSessionExercise,
                   );
                 },
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: FloatingCenteredButtonWidget(
+                  onPressed: () {
+                    _navigateToAddSessionExercisePage();
+                  },
+                  text: 'Add exercise',
+                ),
+              ),
+              const SizedBox(
+                height: 100,
               )
             ],
           ),

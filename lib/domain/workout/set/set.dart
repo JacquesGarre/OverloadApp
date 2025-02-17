@@ -1,5 +1,7 @@
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/domain/exercise/is_body_weight_exercise.dart';
 import 'package:overload/domain/exercise/unit.dart';
+import 'package:overload/domain/user/weight.dart';
 import 'package:overload/domain/workout/set/metric.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/set/metrics.dart';
@@ -43,7 +45,7 @@ class Set {
     }
     Metric metric = metrics().value()[cellIndex - 1];
     num? updatedValue = value != "" ? num.tryParse(value) : null;
-    Metric updatedMetric = Metric(unit: metric.unit(), value: updatedValue); 
+    Metric updatedMetric = Metric(unit: metric.unit(), value: updatedValue);
     Metrics updatedMetrics = metrics().updateMetric(updatedMetric);
     return Set(index: index(), metrics: updatedMetrics, isDone: isDone());
   }
@@ -68,18 +70,31 @@ class Set {
     );
   }
 
-  num finishedVolume() {
+  num finishedVolume(
+      IsBodyWeightExercise isBodyWeightExercise, Weight userWeight) {
     if (!_isDone) {
       return 0;
     }
+    num totalWeight = isBodyWeightExercise.value() ? userWeight.value() : 0;
     Metric? kgsMetric = _metrics.findByUnit(Unit.kgs);
-    if (kgsMetric == null || kgsMetric.value() == null) {
+    if (kgsMetric != null && kgsMetric.value() != null) {
+      totalWeight += kgsMetric.value()!;
+    }
+    Metric? repsMetric = _metrics.findByUnit(Unit.reps);
+    if (repsMetric == null || repsMetric.value() == null) {
+      return 0;
+    }
+    return repsMetric.value()! * totalWeight;
+  }
+
+  num finishedRepsCount() {
+    if (!_isDone) {
       return 0;
     }
     Metric? repsMetric = _metrics.findByUnit(Unit.reps);
     if (repsMetric == null || repsMetric.value() == null) {
       return 0;
     }
-    return repsMetric.value()! * kgsMetric.value()!;
+    return repsMetric.value()!;
   }
 }

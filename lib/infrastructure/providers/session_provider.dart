@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:overload/application/session/add_session_exercise_command/add_session_exercise_command.dart';
+import 'package:overload/application/session/add_session_exercise_command/add_session_exercise_command_handler.dart';
 import 'package:overload/application/session/delete_session_command/delete_session_command.dart';
 import 'package:overload/application/session/delete_session_command/delete_session_command_handler.dart';
 import 'package:overload/application/session/get_current_session_query/get_current_session_query.dart';
@@ -23,6 +25,7 @@ class SessionProvider with ChangeNotifier {
   final GetCurrentSessionQueryHandler getCurrentSessionQueryHandler;
   final DeleteSessionCommandHandler deleteSessionCommandHandler;
   final UpdateSessionExerciseCommandHandler updateSessionExerciseCommandHandler;
+  final AddSessionExerciseCommandHandler addSessionExerciseCommandHandler;
 
   SessionProvider({
     required this.startSessionCommandHandler,
@@ -31,6 +34,7 @@ class SessionProvider with ChangeNotifier {
     required this.deleteSessionCommandHandler,
     required this.updateSessionExerciseCommandHandler,
     required this.getSessionQueryHandler,
+    required this.addSessionExerciseCommandHandler,
   });
 
   Session? _currentSession;
@@ -93,7 +97,24 @@ class SessionProvider with ChangeNotifier {
         id: id,
         exercise: exercise,
       );
-      Session updatedSession = await updateSessionExerciseCommandHandler.invoke(command);
+      Session updatedSession =
+          await updateSessionExerciseCommandHandler.invoke(command);
+      await loadCurrentSession();
+      await loadSessions();
+      return updatedSession;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Session> addSessionExercise(Id id, SessionExercise exercise) async {
+    try {
+      AddSessionExerciseCommand command = AddSessionExerciseCommand(
+        id: id,
+        exercise: exercise,
+      );
+      Session updatedSession =
+          await addSessionExerciseCommandHandler.invoke(command);
       await loadCurrentSession();
       await loadSessions();
       return updatedSession;

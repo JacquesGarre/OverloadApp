@@ -1,4 +1,5 @@
 import 'package:overload/domain/session/session_exercise/session_exercise_index.dart';
+import 'package:overload/domain/user/weight.dart';
 import 'package:overload/domain/workout/notes.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/set/set.dart';
@@ -95,13 +96,23 @@ class SessionExercise {
     return count;
   }
 
-  num finishedVolume() {
+  num finishedVolume(Weight userWeight) {
     num volume = 0;
     for(Set set in _sets.value()) {
       if (set.isDone()) {
-        volume += set.finishedVolume();
+        volume += set.finishedVolume(_workoutExercise.exercise().isBodyWeightExercise(), userWeight);
       }
     }
     return volume;
+  }
+
+  num finishedRepsCount() {
+    num reps = 0;
+    for(Set set in _sets.value()) {
+      if (set.isDone()) {
+        reps += set.finishedRepsCount();
+      }
+    }
+    return reps;
   }
 }
