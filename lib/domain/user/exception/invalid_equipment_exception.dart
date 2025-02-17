@@ -1,0 +1,1 @@
+class InvalidEquipmentException implements Exception{}

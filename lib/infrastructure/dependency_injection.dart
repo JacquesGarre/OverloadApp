@@ -12,6 +12,7 @@ import 'package:overload/application/session/start_session_command/start_session
 import 'package:overload/application/session/update_session_exercise_command/update_session_exercise_command_handler.dart';
 import 'package:overload/application/user/create_user_command/create_user_command_handler.dart';
 import 'package:overload/application/user/delete_user_command/delete_user_command_handler.dart';
+import 'package:overload/application/user/get_user_query/get_user_query_handler.dart';
 import 'package:overload/application/user/update_user_command/update_user_command_handler.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
 import 'package:overload/application/workout/delete_workout_command/delete_workout_command_handler.dart';
@@ -181,6 +182,11 @@ Future<void> registerHandlers() async {
       domainEventBus: container<DomainEventBusInterface>(),
     ),
   );
+  container.registerFactory<GetUserQueryHandler>(
+    () => GetUserQueryHandler(
+      repository: container<UserRepositoryInterface>(),
+    ),
+  );
 }
 
 Future<void> registerProviders() async {
@@ -215,5 +221,6 @@ Future<void> registerProviders() async {
     createUserCommandHandler: container<CreateUserCommandHandler>(),
     deleteUserCommandHandler: container<DeleteUserCommandHandler>(),
     updateUserCommandHandler: container<UpdateUserCommandHandler>(),
+    getUserQueryHandler: container<GetUserQueryHandler>(),
   ));
 }

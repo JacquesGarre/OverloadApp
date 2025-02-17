@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:logger/logger.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/user/age.dart';
 import 'package:overload/domain/user/domain_events/user_created_domain_event.dart';
@@ -11,7 +10,6 @@ import 'package:overload/domain/user/fitness_goals.dart';
 import 'package:overload/domain/user/fitness_level.dart';
 import 'package:overload/domain/user/gender.dart';
 import 'package:overload/domain/user/id.dart';
-import 'package:overload/domain/user/motivation_preference.dart';
 import 'package:overload/domain/user/training_locations.dart';
 import 'package:overload/domain/user/training_types.dart';
 import 'package:overload/domain/user/username.dart';
@@ -29,7 +27,6 @@ class User {
   final TrainingTypes? _trainingTypes;
   final WorkoutDurationPreference? _workoutDurationPreference;
   final TrainingLocations? _trainingLocations;
-  final MotivationPreference? _motivationPreference;
   final FitnessLevel? _fitnessLevel;
   final FitnessGoals? _fitnessGoals;
   final Equipment? _equipment;
@@ -45,7 +42,6 @@ class User {
     TrainingTypes? trainingTypes,
     WorkoutDurationPreference? workoutDurationPreference,
     TrainingLocations? trainingLocations,
-    MotivationPreference? motivationPreference,
     FitnessLevel? fitnessLevel,
     FitnessGoals? fitnessGoals,
     Equipment? equipment,
@@ -59,7 +55,6 @@ class User {
         _trainingTypes = trainingTypes,
         _workoutDurationPreference = workoutDurationPreference,
         _trainingLocations = trainingLocations,
-        _motivationPreference = motivationPreference,
         _fitnessLevel = fitnessLevel,
         _fitnessGoals = fitnessGoals,
         _equipment = equipment,
@@ -99,10 +94,6 @@ class User {
 
   TrainingLocations? trainingLocations() {
     return _trainingLocations;
-  }
-
-  MotivationPreference? motivationPreference() {
-    return _motivationPreference;
   }
 
   FitnessLevel? fitnessLevel() {
@@ -145,18 +136,27 @@ class User {
     WorkoutDurationPreference? newWorkoutDurationPreference,
     FitnessGoals? newFitnessGoals,
     WorkoutWeeklyDays? newWorkoutWeeklyDays,
+    FitnessLevel? newFitnessLevel,
+    TrainingTypes? newTrainingTypes,
+    TrainingLocations? newTrainingLocations,
+    Equipment? newEquipment,
   }) {
     User user = User._(
-        domainEvents: domainEvents(),
-        id: id(),
-        username: username(),
-        age: age(),
-        weight: weight(),
-        gender: gender(),
-        workoutDurationPreference:
-            newWorkoutDurationPreference ?? workoutDurationPreference(),
-        fitnessGoals: newFitnessGoals ?? fitnessGoals(),
-        workoutWeeklyDays: newWorkoutWeeklyDays ?? workoutWeeklyDays());
+      domainEvents: domainEvents(),
+      id: id(),
+      username: username(),
+      age: age(),
+      weight: weight(),
+      gender: gender(),
+      workoutDurationPreference:
+          newWorkoutDurationPreference ?? workoutDurationPreference(),
+      fitnessGoals: newFitnessGoals ?? fitnessGoals(),
+      workoutWeeklyDays: newWorkoutWeeklyDays ?? workoutWeeklyDays(),
+      fitnessLevel: newFitnessLevel ?? fitnessLevel(),
+      trainingTypes: newTrainingTypes ?? trainingTypes(),
+      trainingLocations: newTrainingLocations ?? trainingLocations(),
+      equipment: newEquipment ?? equipment(),
+    );
     user.domainEvents().publish(UserUpdatedDomainEvent.fromUser(user));
     return user;
   }
@@ -167,27 +167,25 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': _id.toString(), // OK in form
-      'username': _username.value(), // OK in form
-      'age': _age.value(), // OK in form
-      'weight': _weight.value(), // OK in form
-      'gender': _gender.value(), // OK in form
+      'id': _id.toString(),
+      'username': _username.value(),
+      'age': _age.value(),
+      'weight': _weight.value(),
+      'gender': _gender.value(),
       'training_types': _trainingTypes != null
           ? jsonEncode(_trainingTypes.toStringList())
           : null,
-      'workout_duration_preference':
-          _workoutDurationPreference?.value(), // OK in form
+      'workout_duration_preference': _workoutDurationPreference?.value(),
       'training_locations': _trainingLocations != null
           ? jsonEncode(_trainingLocations.toStringList())
           : null,
-      'motivation_preferences': _motivationPreference?.toString(),
       'fitness_level': _fitnessLevel?.toString(),
       'fitness_goals': _fitnessGoals != null
           ? jsonEncode(_fitnessGoals.toStringList())
-          : null, // OK in form
+          : null,
       'equipment':
           _equipment != null ? jsonEncode(_equipment.toStringList()) : null,
-      'workout_weekly_days': _workoutWeeklyDays?.value() // OK in form
+      'workout_weekly_days': _workoutWeeklyDays?.value()
     };
   }
 
@@ -216,12 +214,28 @@ class User {
         List<String>.from(jsonDecode(json['fitness_goals'] as String)),
       );
     }
-    // TODO: Other properties
-    //training_types
-    //training_locations
-    //motivation_preferences
-    //fitness_level
-    //equipment
+    TrainingTypes? trainingTypes;
+    if (json['training_types'] != null) {
+      trainingTypes = TrainingTypes.fromStringList(
+        List<String>.from(jsonDecode(json['training_types'] as String)),
+      );
+    }
+    TrainingLocations? trainingLocations;
+    if (json['training_locations'] != null) {
+      trainingLocations = TrainingLocations.fromStringList(
+        List<String>.from(jsonDecode(json['training_locations'] as String)),
+      );
+    }
+    Equipment? equipment;
+    if (json['equipment'] != null) {
+      equipment = Equipment.fromStringList(
+        List<String>.from(jsonDecode(json['equipment'] as String)),
+      );
+    }
+    FitnessLevel? fitnessLevel;
+    if (json['fitness_level'] != null) {
+      fitnessLevel = FitnessLevel.fromString(json['fitness_level'] as String);
+    }
     return User._(
       domainEvents: domainEvents,
       id: id,
@@ -232,6 +246,20 @@ class User {
       workoutDurationPreference: workoutDurationPreference,
       workoutWeeklyDays: workoutWeeklyDays,
       fitnessGoals: fitnessGoals,
+      trainingTypes: trainingTypes,
+      trainingLocations: trainingLocations,
+      equipment: equipment,
+      fitnessLevel: fitnessLevel,
     );
+  }
+
+  bool isProfileCompleted() {
+    return _trainingTypes != null &&
+        _workoutDurationPreference != null &&
+        _trainingLocations != null &&
+        _fitnessLevel != null &&
+        _fitnessGoals != null &&
+        _equipment != null &&
+        _workoutWeeklyDays != null;
   }
 }

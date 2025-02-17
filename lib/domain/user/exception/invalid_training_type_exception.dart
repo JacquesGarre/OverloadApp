@@ -1,0 +1,1 @@
+class InvalidTrainingTypeException implements Exception {}

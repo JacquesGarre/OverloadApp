@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:overload/application/user/create_user_command/create_user_command.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
 import 'package:overload/domain/user/age.dart';

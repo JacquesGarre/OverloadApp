@@ -1,0 +1,1 @@
+class InvalidTrainingLocationException implements Exception {}

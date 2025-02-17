@@ -1,0 +1,1 @@
+class InvalidFitnessLevelException implements Exception{}

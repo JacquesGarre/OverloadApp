@@ -4,6 +4,7 @@ import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/user/user_fitness_experience_form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/user/user_fitness_goals_form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/user/user_profile_form_widget.dart';
 import 'package:provider/provider.dart';
@@ -14,13 +15,14 @@ class OnboardingPages {
     GlobalKey<IntroductionScreenState> onboardUserPageKey,
   ) {
     return [
-      page1(onboardUserPageKey),
-      page2(context, onboardUserPageKey),
-      page3(context, onboardUserPageKey),
+      introductionScreen(onboardUserPageKey),
+      profileScreen(context, onboardUserPageKey),
+      fitnessGoalsScreen(context, onboardUserPageKey),
+      experienceScreen(context, onboardUserPageKey),
     ];
   }
 
-  static PageViewModel page1(
+  static PageViewModel introductionScreen(
     GlobalKey<IntroductionScreenState> onboardUserPageKey,
   ) {
     return PageViewModel(
@@ -91,7 +93,7 @@ class OnboardingPages {
     );
   }
 
-  static PageViewModel page2(
+  static PageViewModel profileScreen(
     BuildContext context,
     GlobalKey<IntroductionScreenState> onboardUserPageKey,
   ) {
@@ -137,22 +139,6 @@ class OnboardingPages {
                   }
                 },
               ),
-              ElevatedButton(
-                // TODO : To remove, only for tests
-                onPressed: () async {
-                  final userProvider = Provider.of<UserProvider>(
-                    context,
-                    listen: false,
-                  );
-                  try {
-                    await userProvider.deleteCurrentUser();
-                    if (!context.mounted) return;
-                  } catch (e) {
-                    ExceptionHandler().handleException(context, e);
-                  }
-                },
-                child: Text("Delete user"),
-              ),
             ],
           ),
         ),
@@ -160,7 +146,7 @@ class OnboardingPages {
     );
   }
 
-  static PageViewModel page3(
+  static PageViewModel fitnessGoalsScreen(
     BuildContext context,
     GlobalKey<IntroductionScreenState> onboardUserPageKey,
   ) {
@@ -199,6 +185,59 @@ class OnboardingPages {
                   );
                   try {
                     await userProvider.updateUserFitnessGoals(formData);
+                    if (!context.mounted) return;
+                    onboardUserPageKey.currentState?.next();
+                  } catch (e) {
+                    ExceptionHandler().handleException(context, e);
+                  }
+                },
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static PageViewModel experienceScreen(
+    BuildContext context,
+    GlobalKey<IntroductionScreenState> onboardUserPageKey,
+  ) {
+    return PageViewModel(
+      title: "",
+      bodyWidget: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Experience & Training Level',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "To create workouts that match your abilities, we need to know your current experience. Whether you're a beginner, an experienced athlete, or somewhere in between, Overload will tailor your training to challenge you at the right level. Let's find the best starting point for you!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColorScheme.onLightBackground,
+                ),
+              ),
+              const SizedBox(height: 26),
+              UserFitnessExperienceFormWidget(
+                onSubmit: (Map<String, dynamic> formData) async {
+                  final userProvider = Provider.of<UserProvider>(
+                    context,
+                    listen: false,
+                  );
+                  try {
+                    await userProvider.updateUserFitnessExperience(formData);
                     if (!context.mounted) return;
                     onboardUserPageKey.currentState?.next();
                   } catch (e) {

@@ -35,7 +35,7 @@ class BadgeSelectorWidgetState extends State<BadgeSelectorWidget> {
               padding: const EdgeInsets.all(0.0),
               label: Text(
                 item,
-                style: TextStyle(fontSize: 13.0),
+                style: const TextStyle(fontSize: 13.0),
               ),
               selected: isSelected,
               onSelected: (_) {

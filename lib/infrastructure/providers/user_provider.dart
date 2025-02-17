@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/application/user/create_user_command/create_user_command.dart';
 import 'package:overload/application/user/create_user_command/create_user_command_handler.dart';
 import 'package:overload/application/user/delete_user_command/delete_user_command.dart';
 import 'package:overload/application/user/delete_user_command/delete_user_command_handler.dart';
+import 'package:overload/application/user/get_user_query/get_user_query.dart';
+import 'package:overload/application/user/get_user_query/get_user_query_handler.dart';
 import 'package:overload/application/user/update_user_command/update_user_command.dart';
 import 'package:overload/application/user/update_user_command/update_user_command_handler.dart';
 import 'package:overload/domain/user/user.dart';
@@ -12,18 +13,20 @@ class UserProvider with ChangeNotifier {
   final CreateUserCommandHandler createUserCommandHandler;
   final DeleteUserCommandHandler deleteUserCommandHandler;
   final UpdateUserCommandHandler updateUserCommandHandler;
+  final GetUserQueryHandler getUserQueryHandler;
 
   UserProvider({
     required this.createUserCommandHandler,
     required this.deleteUserCommandHandler,
     required this.updateUserCommandHandler,
+    required this.getUserQueryHandler,
   });
 
   User? _user;
   User? get user => _user;
 
   Future<void> loadUser() async {
-    // TODO: Query
+    _user = await getUserQueryHandler.invoke(GetUserQuery());
     notifyListeners();
   }
 
@@ -36,6 +39,7 @@ class UserProvider with ChangeNotifier {
         gender: formData["gender"],
       );
       await createUserCommandHandler.invoke(command);
+      await loadUser();
     } catch (e) {
       rethrow;
     }
@@ -49,6 +53,24 @@ class UserProvider with ChangeNotifier {
         workoutWeeklyDays: formData["workout_weekly_days"],
       );
       await updateUserCommandHandler.invoke(command);
+      await loadUser();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateUserFitnessExperience(
+    Map<String, dynamic> formData,
+  ) async {
+    try {
+      UpdateUserCommand command = UpdateUserCommand(
+        fitnessLevel: formData["fitness_level"],
+        trainingTypes: formData["training_types"],
+        trainingLocations: formData["training_locations"],
+        equipment: formData["equipment"],
+      );
+      await updateUserCommandHandler.invoke(command);
+      await loadUser();
     } catch (e) {
       rethrow;
     }
@@ -58,6 +80,7 @@ class UserProvider with ChangeNotifier {
     try {
       DeleteUserCommand command = DeleteUserCommand();
       await deleteUserCommandHandler.invoke(command);
+      await loadUser();
     } catch (e) {
       rethrow;
     }

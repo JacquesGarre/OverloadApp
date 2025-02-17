@@ -59,7 +59,7 @@ class _UserFitnessGoalsFormWidgetState
         _goalError = 'Please select at least one fitness goal';
       });
     }
-    if (isFormValid) {
+    if (isFormValid && isGoalsValid) {
       widget.onSubmit({
         'fitness_goals': _selectedGoals,
         'workout_weekly_days': _workoutWeeklyDays,
@@ -105,36 +105,40 @@ class _UserFitnessGoalsFormWidgetState
             },
           ),
         ),
-        const Text("What is your ideal workout duration in minutes?"),
-        Center(
-          child: NumberSelector.plain(
-            step: 15,
-            width: double.infinity,
-            height: 40,
-            iconColor: AppColorScheme.primary,
-            borderRadius: 5.0,
-            backgroundColor: AppColorScheme.lightBackground,
-            borderColor: Colors.transparent,
-            showMinMax: false,
-            showSuffix: false,
-            hasDividers: false,
-            hasBorder: true,
-            current: _workoutDurationPreference,
-            min: 15,
-            max: 240,
-            onUpdate: (int value) {
-              setState(() {
-                _workoutDurationPreference = value;
-              });
-            },
-          ),
+        const SizedBox(
+          height: 6.0,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Your ideal workout duration: $_workoutDurationPreference minutes',
+            ),
+            Slider(
+              value: _workoutDurationPreference.toDouble(),
+              min: 15,
+              max: 120,
+              divisions: 7,
+              label: _workoutDurationPreference.toString(),
+              onChanged: (double value) {
+                setState(() {
+                  _workoutDurationPreference = value.round();
+                });
+              },
+              activeColor: Colors.blue,
+              inactiveColor: Colors.grey.shade300,
+            ),
+          ],
         ),
         const SizedBox(
           height: 6.0,
         ),
       ],
       onSubmit: _submitForm,
-      submitButtonLabel: widget.user != null ? "Update my fitness goals" : "Save my fitness goals",
+      submitButtonLabel: widget.user != null
+          ? "Update my fitness goals"
+          : "Save my fitness goals",
     );
   }
 }

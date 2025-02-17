@@ -61,7 +61,7 @@ class _AppLayoutState extends State<AppLayout> {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
-    return userProvider.user != null ? Scaffold(
+    return userProvider.user != null && userProvider.user!.isProfileCompleted() ? Scaffold(
       appBar: AppBarWidget(title: _currentPage.title),
       body: _currentPage.page,
       bottomNavigationBar: BottomBarWidget(
