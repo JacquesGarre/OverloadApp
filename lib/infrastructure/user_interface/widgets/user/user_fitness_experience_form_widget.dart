@@ -169,7 +169,7 @@ class _UserFitnessExperienceFormWidgetState
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             BadgeSelectorWidget(
               label: "What type of training do you prefer?",
               items: _availableTrainingTypes,
@@ -177,7 +177,7 @@ class _UserFitnessExperienceFormWidgetState
               errorMessage: _trainingTypeError,
             ),
             const SizedBox(
-              height: 10.0,
+              height: 32.0,
             ),
             BadgeSelectorWidget(
               label: "Where do you plan to work out?",
@@ -186,7 +186,7 @@ class _UserFitnessExperienceFormWidgetState
               errorMessage: _trainingLocationError,
             ),
             const SizedBox(
-              height: 10.0,
+              height: 32.0,
             ),
             BadgeSelectorWidget(
               label: "What equipment do you have access to?",
@@ -195,7 +195,7 @@ class _UserFitnessExperienceFormWidgetState
               errorMessage: _equipmentError,
             ),
             const SizedBox(
-              height: 10.0,
+              height: 32.0,
             ),
           ],
         )
