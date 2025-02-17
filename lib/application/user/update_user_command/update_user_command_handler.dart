@@ -1,13 +1,17 @@
 import 'package:overload/application/user/update_user_command/update_user_command.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
+import 'package:overload/domain/user/age.dart';
 import 'package:overload/domain/user/equipment.dart';
 import 'package:overload/domain/user/exception/user_not_found_exception.dart';
 import 'package:overload/domain/user/fitness_goals.dart';
 import 'package:overload/domain/user/fitness_level.dart';
+import 'package:overload/domain/user/gender.dart';
 import 'package:overload/domain/user/training_locations.dart';
 import 'package:overload/domain/user/training_types.dart';
 import 'package:overload/domain/user/user.dart';
 import 'package:overload/domain/user/user_repository_interface.dart';
+import 'package:overload/domain/user/username.dart';
+import 'package:overload/domain/user/weight.dart';
 import 'package:overload/domain/user/workout_duration_preference.dart';
 import 'package:overload/domain/user/workout_weekly_days.dart';
 
@@ -24,6 +28,22 @@ class UpdateUserCommandHandler {
     User? user = await repository.findCurrentUser();
     if (user == null) {
       throw UserNotFoundException();
+    }
+    Username? username;
+    if (command.username != null) {
+      username = Username.fromString(command.username!);
+    }
+    Age? age;
+    if (command.age != null) {
+      age = Age.fromInt(command.age!);
+    }
+    Weight? weight;
+    if (command.weight != null) {
+      weight = Weight.fromNum(command.weight!);
+    }
+    Gender? gender;
+    if (command.gender != null) {
+      gender = Gender.fromString(command.gender!);
     }
     FitnessGoals? fitnessGoals;
     if (command.fitnessGoals != null) {
@@ -48,13 +68,18 @@ class UpdateUserCommandHandler {
     }
     TrainingLocations? trainingLocations;
     if (command.trainingLocations != null) {
-      trainingLocations = TrainingLocations.fromStringList(command.trainingLocations!);
+      trainingLocations =
+          TrainingLocations.fromStringList(command.trainingLocations!);
     }
     Equipment? equipment;
     if (command.equipment != null) {
       equipment = Equipment.fromStringList(command.equipment!);
     }
     User updatedUser = user.update(
+      newUsername: username,
+      newAge: age,
+      newWeight: weight,
+      newGender: gender,
       newWorkoutDurationPreference: workoutDurationPreference,
       newFitnessGoals: fitnessGoals,
       newWorkoutWeeklyDays: workoutWeeklyDays,

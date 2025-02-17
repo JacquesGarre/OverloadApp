@@ -45,6 +45,21 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  Future<void> updateProfile(Map<String, dynamic> formData) async {
+    try {
+      UpdateUserCommand command = UpdateUserCommand(
+        username: formData["username"],
+        age: formData["age"],
+        weight: formData["weight"],
+        gender: formData["gender"],
+      );
+      await updateUserCommandHandler.invoke(command);
+      await loadUser();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> updateUserFitnessGoals(Map<String, dynamic> formData) async {
     try {
       UpdateUserCommand command = UpdateUserCommand(

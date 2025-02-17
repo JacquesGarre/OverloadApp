@@ -133,6 +133,10 @@ class User {
   }
 
   User update({
+    Username? newUsername,
+    Age? newAge,
+    Weight? newWeight,
+    Gender? newGender,
     WorkoutDurationPreference? newWorkoutDurationPreference,
     FitnessGoals? newFitnessGoals,
     WorkoutWeeklyDays? newWorkoutWeeklyDays,
@@ -144,10 +148,10 @@ class User {
     User user = User._(
       domainEvents: domainEvents(),
       id: id(),
-      username: username(),
-      age: age(),
-      weight: weight(),
-      gender: gender(),
+      username: newUsername ?? username(),
+      age: newAge ?? age(),
+      weight: newWeight ?? weight(),
+      gender: newGender ?? gender(),
       workoutDurationPreference:
           newWorkoutDurationPreference ?? workoutDurationPreference(),
       fitnessGoals: newFitnessGoals ?? fitnessGoals(),

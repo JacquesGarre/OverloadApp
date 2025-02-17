@@ -1,4 +1,8 @@
 class UpdateUserCommand {
+  final String? username;
+  final int? age;
+  final num? weight;
+  final String? gender;
   final int? workoutDurationPreference;
   final List<String>? fitnessGoals;
   final int? workoutWeeklyDays;
@@ -8,6 +12,10 @@ class UpdateUserCommand {
   final List<String>? equipment;
 
   UpdateUserCommand({
+    this.username,
+    this.age,
+    this.weight,
+    this.gender,
     this.workoutDurationPreference,
     this.fitnessGoals,
     this.workoutWeeklyDays,
