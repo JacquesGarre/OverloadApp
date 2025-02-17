@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class NewSessionPage extends StatefulWidget {
   const NewSessionPage({super.key});
 
-  static const String title = 'Start session';
+  static const String title = 'Select your workout';
 
   @override
   State<NewSessionPage> createState() => _NewSessionPageState();

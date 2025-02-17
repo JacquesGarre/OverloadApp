@@ -53,6 +53,7 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(
@@ -90,8 +91,8 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                                 .value(),
                             style: TextStyle(
                               color: AppColorScheme.onLightBackground,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         )
