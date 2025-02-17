@@ -12,10 +12,10 @@ class SessionExercise {
   final Notes? _notes;
 
   SessionExercise({
-    required index,
-    required workoutExercise,
-    required sets,
-    notes,
+    required SessionExerciseIndex index,
+    required WorkoutExercise workoutExercise,
+    required Sets sets,
+    Notes? notes,
   })  : _index = index,
         _workoutExercise = workoutExercise,
         _sets = sets,

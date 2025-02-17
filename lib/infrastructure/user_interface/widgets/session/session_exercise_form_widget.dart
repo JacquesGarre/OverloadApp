@@ -160,6 +160,7 @@ class _SessionExerciseFormWidgetState extends State<SessionExerciseFormWidget> {
                       index: widget.index,
                       workoutExercise: workoutExercise,
                       sets: sets,
+                      notes: notes,
                     );
                     Navigator.pop(context, sessionExercise);
                   },

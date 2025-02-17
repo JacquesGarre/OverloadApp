@@ -95,6 +95,26 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
+                        ),
+                      if (widget.sessionExercise.notes() !=
+                          null)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            6.0,
+                            0.0,
+                            6.0,
+                            0.0,
+                          ),
+                          child: Text(
+                            widget.sessionExercise
+                                .notes()!
+                                .value(),
+                            style: TextStyle(
+                              color: AppColorScheme.onLightBackground,
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         )
                     ],
                   ),
