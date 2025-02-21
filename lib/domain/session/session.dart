@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:overload/domain/session/domain_events/session_deleted_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_exercise_added_domain_event.dart';
+import 'package:overload/domain/session/domain_events/session_finished_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_started_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_exercise_updated_domain_event.dart';
 import 'package:overload/domain/session/id.dart';
@@ -148,6 +149,21 @@ class Session {
       ),
     );
     return updatedSession;
+  }
+
+  Session finish() {
+    Session finishedSession = Session._(
+      domainEvents: DomainEventsCollection(),
+      id: id(),
+      workout: workout(),
+      startDate: startDate(),
+      exercises: sessionExercises(),
+      endDate: DateTime.now(),
+    );
+    finishedSession.domainEvents().publish(
+      SessionFinishedDomainEvent.fromSession(finishedSession),
+    );
+    return finishedSession;
   }
 
   int finishedSetsCount() {

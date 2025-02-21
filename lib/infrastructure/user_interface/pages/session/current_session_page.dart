@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
@@ -11,6 +8,7 @@ import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/add_session_exercise_page.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/finished_session_summary_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/chrono_timer_widget.dart';
@@ -18,18 +16,18 @@ import 'package:overload/infrastructure/user_interface/widgets/shared/floating_c
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:provider/provider.dart';
 
-class SessionPage extends StatefulWidget {
+class CurrentSessionPage extends StatefulWidget {
   final Id sessionId;
 
   static const String title = 'Current session';
 
-  const SessionPage({super.key, required this.sessionId});
+  const CurrentSessionPage({super.key, required this.sessionId});
 
   @override
-  SessionPageState createState() => SessionPageState();
+  CurrentSessionPageState createState() => CurrentSessionPageState();
 }
 
-class SessionPageState extends State<SessionPage> {
+class CurrentSessionPageState extends State<CurrentSessionPage> {
   Session? session;
 
   @override
@@ -124,7 +122,7 @@ class SessionPageState extends State<SessionPage> {
         );
       },
       child: PageWidget(
-        title: SessionPage.title,
+        title: CurrentSessionPage.title,
         bottomSheet: DraggableScrollableSheet(
           initialChildSize: 0.12,
           minChildSize: 0.12,
@@ -256,8 +254,29 @@ class SessionPageState extends State<SessionPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: ElevatedButton(
-                            onPressed: () {
-                              // Handle finish session
+                            onPressed: () async {
+                              try {
+                                if (!mounted) return;
+                                final sessionProvider =
+                                    Provider.of<SessionProvider>(
+                                  context,
+                                  listen: false,
+                                );
+                                await sessionProvider.finishCurrentSession();
+                                if (!context.mounted) return;
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        FinishedSessionSummaryPage(
+                                      sessionId: session!.id(),
+                                    ),
+                                  ),
+                                );
+                              } catch (e) {
+                                if (!context.mounted) return;
+                                ExceptionHandler().handleException(context, e);
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               foregroundColor: AppColorScheme.onPrimary,

@@ -3,6 +3,8 @@ import 'package:overload/application/session/add_session_exercise_command/add_se
 import 'package:overload/application/session/add_session_exercise_command/add_session_exercise_command_handler.dart';
 import 'package:overload/application/session/delete_session_command/delete_session_command.dart';
 import 'package:overload/application/session/delete_session_command/delete_session_command_handler.dart';
+import 'package:overload/application/session/finish_session_command/finish_session_command.dart';
+import 'package:overload/application/session/finish_session_command/finish_session_command_handler.dart';
 import 'package:overload/application/session/get_current_session_query/get_current_session_query.dart';
 import 'package:overload/application/session/get_current_session_query/get_current_session_query_handler.dart';
 import 'package:overload/application/session/get_session_query/get_session_query.dart';
@@ -26,6 +28,7 @@ class SessionProvider with ChangeNotifier {
   final DeleteSessionCommandHandler deleteSessionCommandHandler;
   final UpdateSessionExerciseCommandHandler updateSessionExerciseCommandHandler;
   final AddSessionExerciseCommandHandler addSessionExerciseCommandHandler;
+  final FinishSessionCommandHandler finishSessionCommandHandler;
 
   SessionProvider({
     required this.startSessionCommandHandler,
@@ -35,6 +38,7 @@ class SessionProvider with ChangeNotifier {
     required this.updateSessionExerciseCommandHandler,
     required this.getSessionQueryHandler,
     required this.addSessionExerciseCommandHandler,
+    required this.finishSessionCommandHandler,
   });
 
   Session? _currentSession;
@@ -118,6 +122,22 @@ class SessionProvider with ChangeNotifier {
       await loadCurrentSession();
       await loadSessions();
       return updatedSession;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> finishCurrentSession() async {
+    if (_currentSession == null) {
+      return;
+    }
+    try {
+      FinishSessionCommand command = FinishSessionCommand(
+        id: _currentSession!.id().toString(),
+      );
+      await finishSessionCommandHandler.invoke(command);
+      await loadCurrentSession();
+      await loadSessions();
     } catch (e) {
       rethrow;
     }
