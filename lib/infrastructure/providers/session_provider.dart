@@ -56,7 +56,6 @@ class SessionProvider with ChangeNotifier {
     GetCurrentSessionQuery query = GetCurrentSessionQuery();
     _currentSession = await getCurrentSessionQueryHandler.invoke(query);
     notifyListeners();
-    Logger().e("Listeners notified with exercises: ${_currentSession?.sessionExercises().count()}");
   }
 
   Future<void> loadSessions() async {
@@ -71,6 +70,7 @@ class SessionProvider with ChangeNotifier {
         workoutId: id.toString(),
       );
       Session session = await startSessionCommandHandler.invoke(command);
+      await loadCurrentSession();
       await loadSessions();
       return session;
     } catch (e) {

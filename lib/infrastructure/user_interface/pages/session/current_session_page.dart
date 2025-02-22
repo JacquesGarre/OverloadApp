@@ -8,6 +8,7 @@ import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/add_session_exercise_page.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/finished_session_summary_page.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/sessions_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
@@ -102,8 +103,8 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
   @override
   Widget build(BuildContext context) {
     final sessionProvider = context.watch<SessionProvider>();
-    final session = sessionProvider.currentSession;
-    if (session == null) {
+    final currentSession = sessionProvider.currentSession;
+    if (currentSession == null) {
       return const Center(child: CircularProgressIndicator());
     }
     return PopScope(
@@ -150,7 +151,7 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                     child: ListView(
                       controller: scrollController,
                       children: [
-                        SessionStatsTableWidget(session: session!),
+                        SessionStatsTableWidget(session: currentSession),
                       ],
                     ),
                   ),
@@ -162,11 +163,11 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ...session!.sessionExercises().value().map(
+              ...currentSession.sessionExercises().value().map(
                 (sessionExercise) {
                   return SessionExerciseCardWidget(
                     sessionExercise: sessionExercise,
-                    session: session!,
+                    session: currentSession,
                     onSessionExerciseUpdated: _updateSessionExercise,
                   );
                 },
@@ -201,7 +202,7 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => FinishedSessionSummaryPage(
-                            sessionId: session!.id(),
+                            sessionId: currentSession.id(),
                           ),
                         ),
                       );
@@ -211,6 +212,34 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                     }
                   },
                   text: 'Finish Session',
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: FloatingCenteredButtonWidget(
+                  backgroundColor: AppColorScheme.error,
+                  onPressed: () async {
+                    try {
+                      if (!mounted) return;
+                      final sessionProvider = Provider.of<SessionProvider>(
+                        context,
+                        listen: false,
+                      );
+                      await sessionProvider.deleteCurrentSession();
+                      if (!context.mounted) return;
+                      Navigator.pop(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SessionsPage(),
+                        ),
+                      );
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ExceptionHandler().handleException(context, e);
+                    }
+                  },
+                  text: 'Cancel session',
                 ),
               ),
               const SizedBox(
