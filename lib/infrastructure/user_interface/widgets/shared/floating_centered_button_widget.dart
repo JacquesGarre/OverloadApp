@@ -5,6 +5,7 @@ class FloatingCenteredButtonWidget extends StatelessWidget {
   final String text;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final String? heroTag;
 
   const FloatingCenteredButtonWidget({
     super.key,
@@ -12,6 +13,7 @@ class FloatingCenteredButtonWidget extends StatelessWidget {
     required this.text,
     this.backgroundColor,
     this.foregroundColor,
+    this.heroTag,
   });
 
   @override
@@ -20,6 +22,7 @@ class FloatingCenteredButtonWidget extends StatelessWidget {
       height: 40.0,
       width: double.infinity,
       child: FloatingActionButton.extended(
+        heroTag: heroTag,
         onPressed: onPressed,
         label: Text(text),
         backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,

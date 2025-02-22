@@ -177,6 +177,7 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                 child: FloatingCenteredButtonWidget(
                   backgroundColor: AppColorScheme.lightBackground,
                   foregroundColor: AppColorScheme.onPrimary,
+                  heroTag: "Add exercise to session",
                   onPressed: () {
                     _navigateToAddSessionExercisePage();
                   },
