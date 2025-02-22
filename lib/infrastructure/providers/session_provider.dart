@@ -136,7 +136,7 @@ class SessionProvider with ChangeNotifier {
         id: _currentSession!.id().toString(),
       );
       await finishSessionCommandHandler.invoke(command);
-      await loadCurrentSession();
+      _currentSession = null;
       await loadSessions();
     } catch (e) {
       rethrow;

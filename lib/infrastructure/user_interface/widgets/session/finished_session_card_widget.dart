@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/finished_session_summary_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
@@ -16,7 +17,18 @@ class FinishedSessionCardWidget extends StatelessWidget {
       title: session.workout().name().value(),
       subtitle: "Finished ${timeago.format(session.endDate()!)}",
       menuChildren: [
-        MenuItemButton(onPressed: () {}, child: const Text("Show summary")),
+        MenuItemButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FinishedSessionSummaryPage(
+                    sessionId: session.id(),
+                  ),
+                ),
+              );
+            },
+            child: const Text("Show summary")),
         MenuItemButton(onPressed: () {}, child: const Text("Edit session")),
         MenuItemButton(onPressed: () {}, child: const Text("Delete session")),
       ],

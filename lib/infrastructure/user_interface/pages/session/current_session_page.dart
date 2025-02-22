@@ -5,7 +5,6 @@ import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise_index.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
-import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/user_interface/layout/app_layout.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/add_session_exercise_page.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/finished_session_summary_page.dart';
@@ -102,8 +101,6 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
 
   @override
   Widget build(BuildContext context) {
-    UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: false);
     if (session == null) {
       return const Center(child: CircularProgressIndicator());
     }
