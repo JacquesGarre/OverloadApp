@@ -6,7 +6,8 @@ import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_w
 
 class SessionExerciseCardWidget extends StatefulWidget {
   final SessionExercise sessionExercise;
-  final void Function(SessionExercise updatedSessionExercise) onSessionExerciseUpdated;
+  final void Function(SessionExercise updatedSessionExercise)
+      onSessionExerciseUpdated;
 
   const SessionExerciseCardWidget({
     super.key,
@@ -22,7 +23,7 @@ class SessionExerciseCardWidget extends StatefulWidget {
 class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
   late SessionExercise sessionExercise;
 
-  @override  
+  @override
   void initState() {
     super.initState();
     sessionExercise = widget.sessionExercise;
@@ -30,7 +31,7 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
 
   void _updateSets(Sets updatedSets) {
     sessionExercise = sessionExercise.updateSets(updatedSets);
-    widget.onSessionExerciseUpdated(sessionExercise);    
+    widget.onSessionExerciseUpdated(sessionExercise);
   }
 
   @override
@@ -62,17 +63,29 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                           6.0,
                           0.0,
                         ),
-                        child: Text(
-                          widget.sessionExercise
-                              .workoutExercise()
-                              .exercise()
-                              .name()
-                              .value(),
-                          style: TextStyle(
-                            color: AppColorScheme.primary,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        child: Row(
+                          children: [
+                            if (widget.sessionExercise.isDone()) 
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5.0),
+                                child: Icon(
+                                  Icons.check,
+                                  color: AppColorScheme.primary,
+                                ),
+                              ),
+                            Text(
+                              widget.sessionExercise
+                                  .workoutExercise()
+                                  .exercise()
+                                  .name()
+                                  .value(),
+                              style: TextStyle(
+                                color: AppColorScheme.primary,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       if (widget.sessionExercise.workoutExercise().notes() !=
@@ -96,8 +109,7 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                             ),
                           ),
                         ),
-                      if (widget.sessionExercise.notes() !=
-                          null)
+                      if (widget.sessionExercise.notes() != null)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(
                             6.0,
@@ -106,9 +118,7 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                             0.0,
                           ),
                           child: Text(
-                            widget.sessionExercise
-                                .notes()!
-                                .value(),
+                            widget.sessionExercise.notes()!.value(),
                             style: TextStyle(
                               color: AppColorScheme.onLightBackground,
                               fontSize: 13.0,

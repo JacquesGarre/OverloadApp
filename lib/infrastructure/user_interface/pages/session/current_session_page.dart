@@ -11,7 +11,7 @@ import 'package:overload/infrastructure/user_interface/pages/session/add_session
 import 'package:overload/infrastructure/user_interface/pages/session/finished_session_summary_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
-import 'package:overload/infrastructure/user_interface/widgets/shared/chrono_timer_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:provider/provider.dart';
@@ -141,157 +141,17 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                     offset: const Offset(0, -3),
                   ),
                 ],
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
               ),
               padding: const EdgeInsets.symmetric(
-                vertical: 10,
+                vertical: 15,
               ),
               child: Column(
                 children: [
-                  Container(
-                    width: 40,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[500],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.only(bottom: 10),
-                  ),
                   Expanded(
                     child: ListView(
                       controller: scrollController,
                       children: [
-                        Table(
-                          children: [
-                            TableRow(
-                              children: [
-                                Text(
-                                  "Time",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onLightBackground,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  "Sets",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onLightBackground,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  "Reps",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onLightBackground,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  "Volume",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onLightBackground,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const TableRow(
-                              children: [
-                                SizedBox(
-                                  height: 4.0,
-                                ),
-                                SizedBox(
-                                  height: 4.0,
-                                ),
-                                SizedBox(
-                                  height: 4.0,
-                                ),
-                                SizedBox(
-                                  height: 4.0,
-                                ),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                ChronoTimerWidget(
-                                  startDate: session!.startDate(),
-                                ),
-                                Text(
-                                  "${session!.finishedSetsCount()}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onPrimary,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  "${session!.finishedRepsCount()}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onPrimary,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                Text(
-                                  "${session!.finishedVolume(userProvider.user!.weight())} kgs",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColorScheme.onPrimary,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              try {
-                                if (!mounted) return;
-                                final sessionProvider =
-                                    Provider.of<SessionProvider>(
-                                  context,
-                                  listen: false,
-                                );
-                                await sessionProvider.finishCurrentSession();
-                                if (!context.mounted) return;
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        FinishedSessionSummaryPage(
-                                      sessionId: session!.id(),
-                                    ),
-                                  ),
-                                );
-                              } catch (e) {
-                                if (!context.mounted) return;
-                                ExceptionHandler().handleException(context, e);
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: AppColorScheme.onPrimary,
-                              backgroundColor: AppColorScheme.primary,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            child: const Text(
-                              'Finish Session',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                        ),
+                        SessionStatsTableWidget(session: session!),
                       ],
                     ),
                   ),
@@ -315,10 +175,41 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: FloatingCenteredButtonWidget(
+                  backgroundColor: AppColorScheme.lightBackground,
+                  foregroundColor: AppColorScheme.onPrimary,
                   onPressed: () {
                     _navigateToAddSessionExercisePage();
                   },
                   text: 'Add exercise',
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: FloatingCenteredButtonWidget(
+                  onPressed: () async {
+                    try {
+                      if (!mounted) return;
+                      final sessionProvider = Provider.of<SessionProvider>(
+                        context,
+                        listen: false,
+                      );
+                      await sessionProvider.finishCurrentSession();
+                      if (!context.mounted) return;
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FinishedSessionSummaryPage(
+                            sessionId: session!.id(),
+                          ),
+                        ),
+                      );
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ExceptionHandler().handleException(context, e);
+                    }
+                  },
+                  text: 'Finish Session',
                 ),
               ),
               const SizedBox(

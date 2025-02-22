@@ -86,6 +86,14 @@ class SessionExercise {
     );
   }
 
+  bool hasOneSetDone() {
+    return finishedSetsCount() > 0;
+  }
+
+  bool isDone() {
+    return finishedSetsCount() == _sets.count();
+  }
+
   int finishedSetsCount() {
     int count = 0;
     for(Set set in _sets.value()) {

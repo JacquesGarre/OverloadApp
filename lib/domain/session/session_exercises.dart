@@ -90,6 +90,16 @@ class SessionExercises {
     return SessionExercises(value: value);
   }
 
+  SessionExercises withAtLeastOneSetDone() {
+    List<SessionExercise> value = [];
+    for (SessionExercise exercise in _value) {
+      if (exercise.hasOneSetDone()) {
+        value.add(exercise);
+      }
+    }
+    return SessionExercises(value: value);
+  }
+
   int finishedSetsCount() {
     int count = 0;
     for(SessionExercise exercise in _value) {

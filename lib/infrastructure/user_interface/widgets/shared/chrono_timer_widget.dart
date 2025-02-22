@@ -4,21 +4,32 @@ import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.da
 
 class ChronoTimerWidget extends StatefulWidget {
   final DateTime startDate;
+  final DateTime? endDate;
 
-  const ChronoTimerWidget({super.key, required this.startDate});
+  const ChronoTimerWidget({super.key, required this.startDate, this.endDate});
 
   @override
   ChronoTimerWidgetState createState() => ChronoTimerWidgetState();
 }
 
 class ChronoTimerWidgetState extends State<ChronoTimerWidget> {
-  late Timer _timer;
+  Timer? _timer;
   Duration _elapsed = Duration.zero;
 
   @override
   void initState() {
     super.initState();
-    _startChrono();
+    if (widget.endDate == null) {
+      _startChrono();
+    } else {
+      _calculateChrono();
+    }
+  }
+
+  void _calculateChrono() {
+    setState(() {
+      _elapsed = widget.endDate!.difference(widget.startDate);
+    });
   }
 
   void _startChrono() {
@@ -32,7 +43,9 @@ class ChronoTimerWidgetState extends State<ChronoTimerWidget> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    if (_timer != null) {
+      _timer!.cancel();
+    }
     super.dispose();
   }
 
@@ -47,7 +60,7 @@ class ChronoTimerWidgetState extends State<ChronoTimerWidget> {
         ? ""
         : "${minutes}min${duration.inMinutes > 1 ? "s " : " "}";
     final seconds = twoDigits(duration.inSeconds.remainder(60));
-    final secondsString = duration.inSeconds == 0 ? "" : "${seconds}s";
+    final secondsString = duration.inHours != 0 || duration.inSeconds == 0 ? "" : "${seconds}s";
     return "$hoursString$minutesString$secondsString";
   }
 

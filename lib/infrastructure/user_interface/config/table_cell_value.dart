@@ -25,6 +25,10 @@ class TableCellValue {
     );
   }
 
+  bool isChecked() {
+    return type == TableCellType.checkbox && value == "true";
+  }
+
   @override 
   String toString() {
     return "value: $value, placeholder: $placeholder";

@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:overload/domain/session/session.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+class FinishedSessionCardWidget extends StatelessWidget {
+  final Session session;
+
+  const FinishedSessionCardWidget({super.key, required this.session});
+
+  @override
+  Widget build(BuildContext context) {
+    return CardWidget(
+      title: session.workout().name().value(),
+      subtitle: "Finished ${timeago.format(session.endDate()!)}",
+      // TODO: onEdit if finished -> possible to edit past session
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SessionStatsTableWidget(session: session),
+            const SizedBox(
+              height: 5.0,
+            ),
+            Divider(
+              color: AppColorScheme.onLightBackground,
+            ),
+            ...session.sessionExercises().withAtLeastOneSetDone().value().map(
+              (sessionExercise) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 3.0),
+                  child: Text(
+                    '${sessionExercise.finishedSetsCount()} set${sessionExercise.finishedSetsCount() > 1 ? 's' : ''} ${sessionExercise.workoutExercise().exercise().name().value()}',
+                    style: TextStyle(
+                      color: AppColorScheme.onPrimary,
+                      fontSize: 13.0,
+                    ),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      ],
+    );
+  }
+}

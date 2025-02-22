@@ -8,9 +8,11 @@ import 'package:overload/infrastructure/user_interface/config/table_cell_type.da
 import 'package:overload/infrastructure/user_interface/config/table_cell_value.dart';
 
 class TableRow {
-  final List<TableCellValue> cells;
 
-  TableRow({required this.cells});
+  final List<TableCellValue> cells;
+  final bool checkable;
+
+  TableRow({required this.cells, required this.checkable});
 
   static List<TableRow> fromSets(Sets sets, bool checkable) {
     List<TableRow> rows = [];
@@ -18,6 +20,18 @@ class TableRow {
       rows.add(fromSet(set, checkable));
     }
     return rows;
+  }
+
+  bool isChecked() {
+    if (!checkable) {
+      return false;
+    }
+    for(TableCellValue cell in cells) {
+      if (cell.isChecked()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   static TableRow fromSet(Set set, bool checkable) {
@@ -34,7 +48,7 @@ class TableRow {
     if (checkable) {
       cells.add(TableCellValue.checkbox(set.isDone()));
     }
-    return TableRow(cells: cells);
+    return TableRow(cells: cells, checkable: checkable);
   }
 
   static TableRow fromSetIndexAndExercise(
@@ -51,7 +65,7 @@ class TableRow {
     if (checkable) {
       cells.add(TableCellValue.checkbox(false));
     }
-    return TableRow(cells: cells);
+    return TableRow(cells: cells, checkable: checkable);
   }
 
   @override

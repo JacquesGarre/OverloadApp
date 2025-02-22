@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 class FloatingCenteredButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
 
   const FloatingCenteredButtonWidget({
     super.key,
     required this.onPressed,
     required this.text,
+    this.backgroundColor,
+    this.foregroundColor,
   });
 
   @override
@@ -18,8 +22,8 @@ class FloatingCenteredButtonWidget extends StatelessWidget {
       child: FloatingActionButton.extended(
         onPressed: onPressed,
         label: Text(text),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
+        backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
+        foregroundColor: foregroundColor ?? Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),

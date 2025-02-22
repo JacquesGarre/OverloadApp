@@ -4,7 +4,6 @@ import 'package:overload/domain/session/id.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SessionRepository implements SessionRepositoryInterface {
-
   final Database db;
 
   static const String table = 'sessions';
@@ -28,8 +27,11 @@ class SessionRepository implements SessionRepositoryInterface {
   @override
   Future<List<Session>> findAll() async {
     List<Session> sessions = [];
-    List<Map<String, dynamic>> sessionsJsons = await db.query(table); // TODO: Order by endDate DESC (NULL FIRST if possible)
-    for(Map<String, dynamic> sessionJson in sessionsJsons) {
+    List<Map<String, dynamic>> sessionsJsons = await db.query(
+      table,
+      orderBy: 'end_date IS NULL DESC, end_date DESC', // TODO: Should be in the application query, not here, and in a method findByCriteria()
+    );
+    for (Map<String, dynamic> sessionJson in sessionsJsons) {
       sessions.add(Session.fromJson(sessionJson));
     }
     return sessions;
@@ -51,12 +53,12 @@ class SessionRepository implements SessionRepositoryInterface {
       table,
       where: 'id = ?',
       whereArgs: [id.toString()],
-    );    
-    if(sessionsJsons.isEmpty){
+    );
+    if (sessionsJsons.isEmpty) {
       return null;
     }
     List<Session> sessions = [];
-    for(Map<String, Object?> sessionJson in sessionsJsons) {
+    for (Map<String, Object?> sessionJson in sessionsJsons) {
       sessions.add(Session.fromJson(sessionJson));
     }
     return sessions.first;
@@ -67,12 +69,12 @@ class SessionRepository implements SessionRepositoryInterface {
     List<Map<String, Object?>> sessionsJsons = await db.query(
       table,
       where: 'end_date IS NULL',
-    );    
-    if(sessionsJsons.isEmpty){
+    );
+    if (sessionsJsons.isEmpty) {
       return null;
     }
     List<Session> sessions = [];
-    for(Map<String, Object?> sessionJson in sessionsJsons) {
+    for (Map<String, Object?> sessionJson in sessionsJsons) {
       sessions.add(Session.fromJson(sessionJson));
     }
     return sessions.first;

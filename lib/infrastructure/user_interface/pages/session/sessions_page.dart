@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:overload/domain/session/session.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/new_session_page.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/current_session_modal_widget.dart';
-import 'package:overload/infrastructure/user_interface/widgets/session/session_card_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/current_session_card_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/finished_session_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/list_page_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +39,10 @@ class _SessionsPageState extends State<SessionsPage> {
       list: ListView.separated(
         itemCount: sessionProvider.sessions.length,
         itemBuilder: (context, index) {
-          return SessionCardWidget(session: sessionProvider.sessions[index]);
+          Session session = sessionProvider.sessions[index];
+          return session.inProgress()
+              ? CurrentSessionCardWidget(session: session)
+              : FinishedSessionCardWidget(session: session);
         },
         separatorBuilder: (context, index) => const SizedBox(height: 8),
       ),

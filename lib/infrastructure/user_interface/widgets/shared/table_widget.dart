@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_config.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_cell_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_column_widget.dart';
 import 'package:overload/infrastructure/user_interface/config/table_row.dart'
@@ -50,7 +51,9 @@ class TableWidget extends StatelessWidget {
         ...rows.asMap().entries.map((entry) {
           int rowIndex = entry.key;
           config.TableRow row = entry.value;
-          return TableRow(children: <Widget>[
+          return TableRow(
+            decoration: row.isChecked() ? BoxDecoration(color: AppColorScheme.primary) : null,
+            children: <Widget>[
             ...row.cells.asMap().entries.map((entry) {
               int cellIndex = entry.key;
               String? value = entry.value.value;
