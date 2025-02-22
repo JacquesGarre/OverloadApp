@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/workout/sets.dart';
+import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/delete_session_exercise_confirmation_modal_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_widget.dart';
+import 'package:provider/provider.dart';
 
 class SessionExerciseCardWidget extends StatefulWidget {
   final SessionExercise sessionExercise;
+  final Session session;
   final void Function(SessionExercise updatedSessionExercise)
       onSessionExerciseUpdated;
 
   const SessionExerciseCardWidget({
     super.key,
     required this.sessionExercise,
+    required this.session,
     required this.onSessionExerciseUpdated,
   });
 
@@ -65,7 +71,7 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                         ),
                         child: Row(
                           children: [
-                            if (widget.sessionExercise.isDone()) 
+                            if (widget.sessionExercise.isDone())
                               Padding(
                                 padding: const EdgeInsets.only(right: 5.0),
                                 child: Icon(
@@ -130,7 +136,17 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                   ),
                   IconButton(
                     onPressed: () {
-                      //widget.onRemove(widget.index);
+                      SessionProvider sessionProvider =
+                          Provider.of<SessionProvider>(
+                        context,
+                        listen: false,
+                      );
+                      showDeleteSessionExerciseConfirmationModal(
+                        context: context,
+                        sessionProvider: sessionProvider,
+                        session: widget.session,
+                        sessionExercise: widget.sessionExercise,
+                      );
                     },
                     icon: Icon(
                       Icons.close,

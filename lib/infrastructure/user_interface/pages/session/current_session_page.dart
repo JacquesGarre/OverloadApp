@@ -101,6 +101,8 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final sessionProvider = context.watch<SessionProvider>();
+    final session = sessionProvider.currentSession;
     if (session == null) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -164,6 +166,7 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                 (sessionExercise) {
                   return SessionExerciseCardWidget(
                     sessionExercise: sessionExercise,
+                    session: session!,
                     onSessionExerciseUpdated: _updateSessionExercise,
                   );
                 },
