@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/user_interface/pages/exercise/edit_exercise_page.dart';
 import 'package:overload/infrastructure/providers/exercise_provider.dart';
+import 'package:overload/infrastructure/user_interface/widgets/exercise/delete_exercise_confirmation_modal_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/units/units_badges_widget.dart';
 import 'package:provider/provider.dart';
@@ -25,16 +25,15 @@ class ExerciseCardWidget extends StatelessWidget {
         );
       },
       onDelete: () async {
-        try {
-          ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(
-            context,
-            listen: false,
-          );
-          await exerciseProvider.deleteExercice(exercise);
-        } catch (e) {
-          if (!context.mounted) return;
-          ExceptionHandler().handleException(context, e);
-        }
+        ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(
+          context,
+          listen: false,
+        );
+        showDeleteExerciseConfirmationModal(
+          context: context,
+          exerciseProvider: exerciseProvider,
+          exercise: exercise,
+        );
       },
       headerChild: UnitsBadgesWidget(units: exercise.units()),
     );

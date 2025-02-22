@@ -5,6 +5,7 @@ import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/edit_workout_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/workout/delete_workout_confirmation_modal_widget.dart';
 import 'package:provider/provider.dart';
 
 class WorkoutCardWidget extends StatelessWidget {
@@ -26,16 +27,15 @@ class WorkoutCardWidget extends StatelessWidget {
         );
       },
       onDelete: () async {
-        try {
-          WorkoutProvider workoutProvider = Provider.of<WorkoutProvider>(
-            context,
-            listen: false,
-          );
-          await workoutProvider.deleteWorkout(workout);
-        } catch (e) {
-          if (!context.mounted) return;
-          ExceptionHandler().handleException(context, e);
-        }
+        WorkoutProvider workoutProvider = Provider.of<WorkoutProvider>(
+          context,
+          listen: false,
+        );
+        showDeleteWorkoutConfirmationModal(
+          context: context,
+          workoutProvider: workoutProvider,
+          workout: workout,
+        );
       },
       headerChild: Text(
         '${workout.exercisesCount()} exercise${workout.exercisesCount() > 1 ? 's' : ''}',

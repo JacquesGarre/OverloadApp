@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
+import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/finished_session_summary_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/delete_session_confirmation_modal_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FinishedSessionCardWidget extends StatelessWidget {
@@ -30,7 +33,19 @@ class FinishedSessionCardWidget extends StatelessWidget {
             },
             child: const Text("Show summary")),
         MenuItemButton(onPressed: () {}, child: const Text("Edit session")),
-        MenuItemButton(onPressed: () {}, child: const Text("Delete session")),
+        MenuItemButton(
+            onPressed: () {
+              SessionProvider sessionProvider = Provider.of<SessionProvider>(
+                context,
+                listen: false,
+              );
+              showDeleteSessionConfirmationModal(
+                context: context,
+                sessionProvider: sessionProvider,
+                session: session,
+              );
+            },
+            child: const Text("Delete session")),
       ],
       children: [
         Column(

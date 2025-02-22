@@ -95,6 +95,19 @@ class SessionProvider with ChangeNotifier {
     }
   }
 
+  Future<void> deleteSession(Session session) async {
+    try {
+      DeleteSessionCommand command = DeleteSessionCommand(
+        id: session.id().toString(),
+      );
+      await deleteSessionCommandHandler.invoke(command);
+      await loadCurrentSession();
+      await loadSessions();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<Session> updateSessionExercise(Id id, SessionExercise exercise) async {
     try {
       UpdateSessionExerciseCommand command = UpdateSessionExerciseCommand(
