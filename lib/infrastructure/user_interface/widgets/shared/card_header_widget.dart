@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_subtitle_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_title_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/delete_button_widget.dart';
@@ -12,6 +13,7 @@ class CardHeaderWidget extends StatelessWidget {
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
   final VoidCallback? onStart;
+  final List<Widget>? menuChildren;
 
   const CardHeaderWidget({
     super.key,
@@ -21,6 +23,7 @@ class CardHeaderWidget extends StatelessWidget {
     this.onStart,
     this.subtitle,
     this.child,
+    this.menuChildren,
   });
 
   @override
@@ -46,6 +49,28 @@ class CardHeaderWidget extends StatelessWidget {
             if (onEdit != null) EditButtonWidget(onPressed: onEdit!),
             if (onDelete != null) DeleteButtonWidget(onPressed: onDelete!),
             if (onStart != null) StartButtonWidget(onPressed: onStart!),
+            if (menuChildren != null)
+              MenuAnchor(
+                builder: (
+                  BuildContext context,
+                  MenuController controller,
+                  Widget? child,
+                ) {
+                  return IconButton(
+                    color: AppColorScheme.primary,
+                    onPressed: () {
+                      if (controller.isOpen) {
+                        controller.close();
+                      } else {
+                        controller.open();
+                      }
+                    },
+                    icon: const Icon(Icons.more_horiz),
+                    tooltip: 'Show menu',
+                  );
+                },
+                menuChildren: menuChildren!,
+              ),
           ],
         ),
       ],

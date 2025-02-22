@@ -10,6 +10,7 @@ class CardWidget extends StatelessWidget {
   final VoidCallback? onDelete;
   final VoidCallback? onStart;
   final List<Widget>? children;
+  final List<Widget>? menuChildren;
 
   const CardWidget({
     super.key,
@@ -20,6 +21,7 @@ class CardWidget extends StatelessWidget {
     this.subtitle,
     this.headerChild,
     this.children,
+    this.menuChildren,
   });
 
   @override
@@ -38,6 +40,7 @@ class CardWidget extends StatelessWidget {
               onEdit: onEdit,
               onDelete: onDelete,
               onStart: onStart,
+              menuChildren: menuChildren,
               child: headerChild,
             ),
             if (children != null)

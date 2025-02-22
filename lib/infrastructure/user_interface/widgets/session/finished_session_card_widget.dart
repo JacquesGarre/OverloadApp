@@ -15,7 +15,11 @@ class FinishedSessionCardWidget extends StatelessWidget {
     return CardWidget(
       title: session.workout().name().value(),
       subtitle: "Finished ${timeago.format(session.endDate()!)}",
-      // TODO: onEdit if finished -> possible to edit past session
+      menuChildren: [
+        MenuItemButton(onPressed: () {}, child: const Text("Show summary")), // TODO: Show summary
+        MenuItemButton(onPressed: () {}, child: const Text("Edit session")), // TODO: Edit finished session
+        MenuItemButton(onPressed: () {}, child: const Text("Delete session")), // TODO: Delete finished session
+      ],
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
