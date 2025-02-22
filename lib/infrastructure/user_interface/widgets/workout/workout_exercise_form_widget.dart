@@ -28,7 +28,6 @@ class WorkoutExerciseFormWidget extends StatefulWidget {
       _WorkoutExerciseFormWidgetState();
 }
 
-// TODO: Add minuteur de repos
 class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
   final _formKey = GlobalKey<FormState>();
   final _notesController = TextEditingController();
