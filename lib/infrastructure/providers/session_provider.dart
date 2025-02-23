@@ -186,7 +186,7 @@ class SessionProvider with ChangeNotifier {
     try {
       UpdateSessionCommand command = UpdateSessionCommand(
         id: sessionId.toString(),
-        notes: notes?.value(),
+        notes: notes != null ? notes.value() : "",
       );
       Session session = await updateSessionCommandHandler.invoke(command);
       await loadCurrentSession();

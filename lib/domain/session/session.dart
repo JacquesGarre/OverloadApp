@@ -268,7 +268,7 @@ class Session {
       startDate: startDate(),
       exercises: sessionExercises(),
       endDate: endDate(),
-      notes: newNotes ?? notes(),
+      notes: newNotes,
       previousSession: previousSession(),
     );
     updatedSession.domainEvents().publish(

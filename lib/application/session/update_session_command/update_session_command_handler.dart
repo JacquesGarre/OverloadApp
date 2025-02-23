@@ -21,10 +21,7 @@ class UpdateSessionCommandHandler {
     if (session == null) {
       throw SessionNotFoundException();
     }
-    Notes? notes;
-    if (command.notes != null) {
-      notes = Notes.fromString(command.notes);
-    }
+    Notes? notes = Notes.fromString(command.notes);
     Session updatedSession = session.update(notes);
     await repository.update(updatedSession);
     domainEventBus.publish(updatedSession.domainEvents());
