@@ -20,12 +20,14 @@ import 'package:overload/application/user/get_user_query/get_user_query_handler.
 import 'package:overload/application/user/update_user_command/update_user_command_handler.dart';
 import 'package:overload/application/workout/add_workout_command/add_workout_command_handler.dart';
 import 'package:overload/application/workout/delete_workout_command/delete_workout_command_handler.dart';
+import 'package:overload/application/workout/generate_workouts_command/generate_workouts_command_handler.dart';
 import 'package:overload/application/workout/get_workouts_query/get_workouts_query_handler.dart';
 import 'package:overload/application/workout/update_workout_command/update_workout_command_handler.dart';
 import 'package:overload/domain/exercise/exercise_repository_interface.dart';
 import 'package:overload/domain/session/session_repository_interface.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
 import 'package:overload/domain/user/user_repository_interface.dart';
+import 'package:overload/domain/workout/workout_generator_interface.dart';
 import 'package:overload/domain/workout/workout_repository_interface.dart';
 import 'package:overload/infrastructure/bus/domain_event_bus.dart';
 import 'package:overload/infrastructure/persistence/database.dart';
@@ -37,12 +39,14 @@ import 'package:overload/infrastructure/providers/exercise_provider.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
+import 'package:overload/infrastructure/services/openai_workout_generator.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 GetIt container = GetIt.instance;
 
 Future<void> setupContainer() async {
   await registerDatabases();
+  await registerServices();
   await registerRepositories();
   await registerBuses();
   await registerHandlers();
@@ -52,6 +56,12 @@ Future<void> setupContainer() async {
 Future<void> registerDatabases() async {
   sqflite.Database database = await Database.getDatabase();
   container.registerSingleton<sqflite.Database>(database);
+}
+
+Future<void> registerServices() async {
+  container.registerFactory<WorkoutGeneratorInterface>(
+    () => OpenaiWorkoutGenerator(),
+  );
 }
 
 Future<void> registerRepositories() async {
@@ -132,6 +142,15 @@ Future<void> registerHandlers() async {
     () => UpdateWorkoutCommandHandler(
       repository: container<WorkoutRepositoryInterface>(),
       domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
+  container.registerFactory<GenerateWorkoutsCommandHandler>(
+    () => GenerateWorkoutsCommandHandler(
+      userRepository: container<UserRepositoryInterface>(),
+      workoutGenerator: container<WorkoutGeneratorInterface>(),
+      exerciseRepository: container<ExerciseRepositoryInterface>(),
+      workoutRepository: container<WorkoutRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>()
     ),
   );
   container.registerFactory<StartSessionCommandHandler>(
@@ -232,6 +251,7 @@ Future<void> registerProviders() async {
       getWorkoutsQueryHandler: container<GetWorkoutsQueryHandler>(),
       deleteWorkoutCommandHandler: container<DeleteWorkoutCommandHandler>(),
       updateWorkoutCommandHandler: container<UpdateWorkoutCommandHandler>(),
+      generateWorkoutsCommandHandler: container<GenerateWorkoutsCommandHandler>(),
     ),
   );
   container.registerSingleton<SessionProvider>(

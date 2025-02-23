@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:logger/logger.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/workout/domain_events/workout_created_domain_event.dart';
 import 'package:overload/domain/workout/domain_events/workout_deleted_domain_event.dart';
@@ -79,14 +80,27 @@ class Workout {
     };
   }
 
+  static Workout generateFromJson(Map<String, dynamic> json) {
+    Workout workout = Workout.fromJson(json);
+    workout.domainEvents().publish(WorkoutCreatedDomainEvent.fromWorkout(workout));
+    return workout;
+  }
+
   static Workout fromJson(Map<String, dynamic> json) {
     Id id = Id.fromString(json["id"]);
     Name name = Name.fromString(json["name"]);
-    WorkoutExercises workoutExercises = WorkoutExercises.fromJson(
-      (jsonDecode(json["workout_exercises"]) as List)
+    List<Map<String, dynamic>> workoutExercisesJson = [];
+    if (json["workout_exercises"] is String) {
+      workoutExercisesJson = (jsonDecode(json["workout_exercises"]) as List)
           .map((item) => item as Map<String, dynamic>)
-          .toList(),
-    );
+          .toList();
+    } else if (json["workout_exercises"] is List<dynamic>) {
+      workoutExercisesJson = (json["workout_exercises"] as List)
+          .map((item) => item as Map<String, dynamic>)
+          .toList();
+    }
+    WorkoutExercises workoutExercises =
+        WorkoutExercises.fromJson(workoutExercisesJson);
     Notes? notes = Notes.fromString(json["notes"]);
     return Workout(
       domainEvents: DomainEventsCollection(),
@@ -109,7 +123,9 @@ class Workout {
       exercises: workoutExercises,
       notes: notes,
     );
-    workout.domainEvents().publish(WorkoutUpdatedDomainEvent.fromWorkout(workout));
+    workout
+        .domainEvents()
+        .publish(WorkoutUpdatedDomainEvent.fromWorkout(workout));
     return workout;
   }
 }

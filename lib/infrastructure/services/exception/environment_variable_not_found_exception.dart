@@ -1,0 +1,1 @@
+class EnvironmentVariableNotFoundException implements Exception {}

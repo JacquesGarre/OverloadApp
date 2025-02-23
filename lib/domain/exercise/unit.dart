@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exception/invalid_exercise_unit_exception.dart';
 import 'package:overload/domain/exercise/unit_type.dart';
 
@@ -58,10 +59,11 @@ class Unit {
 
   static Unit fromString(String name) {
     for (Unit availableUnit in all()) {
-      if (availableUnit.name() == name) {
+      if (availableUnit.name().toLowerCase() == name.toLowerCase()) {
         return availableUnit;
       }
     }
+    Logger().e("[InvalidExerciseUnitException] $name");
     throw InvalidExerciseUnitException();
   }
 
