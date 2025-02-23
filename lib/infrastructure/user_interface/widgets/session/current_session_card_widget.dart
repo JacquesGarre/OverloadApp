@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
-import 'package:overload/infrastructure/user_interface/pages/session/current_session_page.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/session_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ class CurrentSessionCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardWidget(
-      title: session.workout().name().value(),
+      title: session.fullTitle(),
       subtitle: "Started ${timeago.format(session.startDate())}",
       onStart: () async {
         SessionProvider sessionProvider = Provider.of<SessionProvider>(
@@ -27,7 +27,7 @@ class CurrentSessionCardWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CurrentSessionPage(
+            builder: (context) => SessionPage(
               sessionId: session.id(),
             ),
           ),

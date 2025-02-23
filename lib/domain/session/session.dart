@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:overload/domain/session/domain_events/session_deleted_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_exercise_added_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_exercise_removed_domain_event.dart';
@@ -259,15 +260,15 @@ class Session {
     return _exercises.finishedRepsCount();
   }
 
-  Session update(Notes? newNotes) {
+  Session update(Notes? newNotes, DateTime? newStartDate, DateTime? newEndDate) {
     Session updatedSession = Session._(
       domainEvents: DomainEventsCollection(),
       id: id(),
       workoutId: workoutId(),
       workout: workout(),
-      startDate: startDate(),
+      startDate: newStartDate ?? startDate(),
       exercises: sessionExercises(),
-      endDate: endDate(),
+      endDate: newEndDate ?? endDate(),
       notes: newNotes,
       previousSession: previousSession(),
     );
@@ -279,5 +280,9 @@ class Session {
 
   SessionExercise? findSessionExercise(WorkoutExercise workoutExercise) {
     return _exercises.findSessionExercise(workoutExercise);
+  }
+
+  String fullTitle() {
+    return '${workout().name().value()} - ${DateFormat('MMM d, h:mm a').format(startDate())}';
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/config/modal_action_button_config.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/new_session_page.dart';
-import 'package:overload/infrastructure/user_interface/pages/session/current_session_page.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/session_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/modal_widget.dart';
 
@@ -24,7 +24,7 @@ void showCurrentSessionModal({
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CurrentSessionPage(
+              builder: (context) => SessionPage(
                 sessionId: sessionProvider.currentSession!.id(),
               ),
             ),

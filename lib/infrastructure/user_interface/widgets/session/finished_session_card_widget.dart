@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/finished_session_summary_page.dart';
+import 'package:overload/infrastructure/user_interface/pages/session/session_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/delete_session_confirmation_modal_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
@@ -17,9 +18,10 @@ class FinishedSessionCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardWidget(
-      title: session.workout().name().value(),
+      title: session.fullTitle(),
       subtitle: "Finished ${timeago.format(session.endDate()!)}",
-      headerChild: session.notes() != null ? Text(session.notes()!.value()) : null,
+      headerChild:
+          session.notes() != null ? Text(session.notes()!.value()) : null,
       menuChildren: [
         MenuItemButton(
             onPressed: () {
@@ -33,7 +35,18 @@ class FinishedSessionCardWidget extends StatelessWidget {
               );
             },
             child: const Text("Show summary")),
-        MenuItemButton(onPressed: () {}, child: const Text("Edit session")),
+        MenuItemButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SessionPage(
+                    sessionId: session.id(),
+                  ),
+                ),
+              );
+            },
+            child: const Text("Edit session")),
         MenuItemButton(
             onPressed: () {
               SessionProvider sessionProvider = Provider.of<SessionProvider>(

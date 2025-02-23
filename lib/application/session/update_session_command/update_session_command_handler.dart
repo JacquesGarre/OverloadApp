@@ -22,10 +22,17 @@ class UpdateSessionCommandHandler {
       throw SessionNotFoundException();
     }
     Notes? notes = Notes.fromString(command.notes);
-    Session updatedSession = session.update(notes);
+    DateTime? startDate;
+    if (command.startDate != null) {
+      startDate = command.startDate;
+    }
+    DateTime? endDate;
+    if (command.endDate != null) {
+      endDate = command.endDate;
+    }
+    Session updatedSession = session.update(notes, startDate, endDate);
     await repository.update(updatedSession);
     domainEventBus.publish(updatedSession.domainEvents());
     return updatedSession;
   }
-
 }

@@ -28,6 +28,7 @@ dependencies:
   timeago: ^3.7.0
   introduction_screen: ^3.1.16
   confetti: ^0.8.0
+  flutter_datetime_picker_plus: ^2.2.0
 
 dev_dependencies:
   flutter_test:

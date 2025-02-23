@@ -182,11 +182,18 @@ class SessionProvider with ChangeNotifier {
     }
   }
 
-  Future<Session> updateSession(Id sessionId, Notes? notes) async {
+  Future<Session> updateSession(
+    Id sessionId,
+    Notes? notes,
+    DateTime? startDate,
+    DateTime? endDate,
+  ) async {
     try {
       UpdateSessionCommand command = UpdateSessionCommand(
         id: sessionId.toString(),
         notes: notes != null ? notes.value() : "",
+        startDate: startDate,
+        endDate: endDate,
       );
       Session session = await updateSessionCommandHandler.invoke(command);
       await loadCurrentSession();

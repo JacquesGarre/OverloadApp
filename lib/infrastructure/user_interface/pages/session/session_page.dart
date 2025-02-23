@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
@@ -11,23 +12,26 @@ import 'package:overload/infrastructure/user_interface/pages/session/finished_se
 import 'package:overload/infrastructure/user_interface/pages/session/sessions_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/session_notes_form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/page_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
+    as picker;
 
-class CurrentSessionPage extends StatefulWidget {
+class SessionPage extends StatefulWidget {
   final Id sessionId;
 
   static const String title = 'Current session';
 
-  const CurrentSessionPage({super.key, required this.sessionId});
+  const SessionPage({super.key, required this.sessionId});
 
   @override
-  CurrentSessionPageState createState() => CurrentSessionPageState();
+  SessionPageState createState() => SessionPageState();
 }
 
-class CurrentSessionPageState extends State<CurrentSessionPage> {
+class SessionPageState extends State<SessionPage> {
   Session? session;
 
   @override
@@ -102,9 +106,8 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final sessionProvider = context.watch<SessionProvider>();
-    final currentSession = sessionProvider.currentSession;
-    if (currentSession == null) {
+    context.watch<SessionProvider>();
+    if (session == null) {
       return const Center(child: CircularProgressIndicator());
     }
     return PopScope(
@@ -122,13 +125,14 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
         );
       },
       child: PageWidget(
-        title: CurrentSessionPage.title,
+        title: session!.inProgress() ? SessionPage.title : session!.fullTitle(),
         bottomSheet: DraggableScrollableSheet(
           initialChildSize: 0.12,
           minChildSize: 0.12,
           maxChildSize: 0.5,
           expand: false,
           builder: (context, scrollController) {
+            context.watch<SessionProvider>();
             return Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -151,7 +155,7 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                     child: ListView(
                       controller: scrollController,
                       children: [
-                        SessionStatsTableWidget(session: currentSession),
+                        SessionStatsTableWidget(session: session!),
                       ],
                     ),
                   ),
@@ -163,11 +167,118 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ...currentSession.sessionExercises().value().map(
+              if (!session!.inProgress())
+                TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(
+                        AppColorScheme.lightBackground,
+                      ),
+                    ),
+                    onPressed: () {
+                      picker.DatePicker.showDateTimePicker(
+                        context,
+                        showTitleActions: true,
+                        maxTime: session!.endDate(),
+                        theme: picker.DatePickerTheme(
+                          headerColor: AppColorScheme.lightBackground,
+                          backgroundColor: AppColorScheme.lightBackground,
+                          itemStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                          ),
+                          doneStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onConfirm: (startDate) async {
+                          SessionProvider sessionProvider =
+                              Provider.of<SessionProvider>(
+                            context,
+                            listen: false,
+                          );
+                          Session updatedSession =
+                              await sessionProvider.updateSession(
+                            session!.id(),
+                            session!.notes(),
+                            startDate,
+                            session!.endDate(),
+                          );
+                          setState(() {
+                            session = updatedSession;
+                          });
+                        },
+                        currentTime: session!.startDate(),
+                        locale: picker.LocaleType.en,
+                      );
+                    },
+                    child: Text(
+                      'Started on ${DateFormat('EEEE, MMM d \'at\' h:mm a').format(session!.startDate())}',
+                      style: TextStyle(color: AppColorScheme.primary),
+                    )),
+              if (!session!.inProgress())
+                TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(
+                        AppColorScheme.lightBackground,
+                      ),
+                    ),
+                    onPressed: () {
+                      picker.DatePicker.showDateTimePicker(
+                        context,
+                        showTitleActions: true,
+                        minTime: session!.startDate(),
+                        maxTime: DateTime.now(),
+                        theme: picker.DatePickerTheme(
+                          headerColor: AppColorScheme.lightBackground,
+                          backgroundColor: AppColorScheme.lightBackground,
+                          itemStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                          ),
+                          doneStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onConfirm: (endDate) async {
+                          SessionProvider sessionProvider =
+                              Provider.of<SessionProvider>(
+                            context,
+                            listen: false,
+                          );
+                          Session updatedSession =
+                              await sessionProvider.updateSession(
+                            session!.id(),
+                            session!.notes(),
+                            session!.startDate(),
+                            endDate,
+                          );
+                          setState(() {
+                            session = updatedSession;
+                          });
+                        },
+                        currentTime: session!.endDate(),
+                        locale: picker.LocaleType.en,
+                      );
+                    },
+                    child: Text(
+                      'Finished on ${DateFormat('EEEE, MMM d \'at\' h:mm a').format(session!.endDate() as DateTime)}',
+                      style: TextStyle(color: AppColorScheme.primary),
+                    )),
+              if (!session!.inProgress())
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  child: SessionNotesFormWidget(session: session!),
+                ),
+              ...session!.sessionExercises().value().map(
                 (sessionExercise) {
                   return SessionExerciseCardWidget(
                     sessionExercise: sessionExercise,
-                    session: currentSession,
+                    session: session!,
                     onSessionExerciseUpdated: _updateSessionExercise,
                   );
                 },
@@ -185,35 +296,36 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                   text: 'Add exercise',
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: FloatingCenteredButtonWidget(
-                  onPressed: () async {
-                    try {
-                      if (!mounted) return;
-                      final sessionProvider = Provider.of<SessionProvider>(
-                        context,
-                        listen: false,
-                      );
-                      await sessionProvider.finishCurrentSession();
-                      if (!context.mounted) return;
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FinishedSessionSummaryPage(
-                            sessionId: currentSession.id(),
+              if (session!.inProgress())
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: FloatingCenteredButtonWidget(
+                    onPressed: () async {
+                      try {
+                        if (!mounted) return;
+                        final sessionProvider = Provider.of<SessionProvider>(
+                          context,
+                          listen: false,
+                        );
+                        await sessionProvider.finishCurrentSession();
+                        if (!context.mounted) return;
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FinishedSessionSummaryPage(
+                              sessionId: session!.id(),
+                            ),
                           ),
-                        ),
-                      );
-                    } catch (e) {
-                      if (!context.mounted) return;
-                      ExceptionHandler().handleException(context, e);
-                    }
-                  },
-                  text: 'Finish Session',
+                        );
+                      } catch (e) {
+                        if (!context.mounted) return;
+                        ExceptionHandler().handleException(context, e);
+                      }
+                    },
+                    text: 'Finish Session',
+                  ),
                 ),
-              ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -239,7 +351,7 @@ class CurrentSessionPageState extends State<CurrentSessionPage> {
                       ExceptionHandler().handleException(context, e);
                     }
                   },
-                  text: 'Cancel session',
+                  text: 'Delete session',
                 ),
               ),
               const SizedBox(
