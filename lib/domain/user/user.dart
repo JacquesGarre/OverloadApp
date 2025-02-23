@@ -258,8 +258,6 @@ class User {
   }
 
   bool isProfileCompleted() {
-    return false; // TODO: Change this with a flag for workouts generated?!
-
     return _trainingTypes != null &&
         _workoutDurationPreference != null &&
         _trainingLocations != null &&
