@@ -19,6 +19,7 @@ class FinishedSessionCardWidget extends StatelessWidget {
     return CardWidget(
       title: session.workout().name().value(),
       subtitle: "Finished ${timeago.format(session.endDate()!)}",
+      headerChild: session.notes() != null ? Text(session.notes()!.value()) : null,
       menuChildren: [
         MenuItemButton(
             onPressed: () {

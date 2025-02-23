@@ -4,7 +4,7 @@ import 'package:overload/domain/exercise/id.dart';
 import 'package:overload/domain/exercise/is_body_weight_exercise.dart';
 import 'package:overload/domain/workout/id.dart' as workout_id;
 import 'package:overload/domain/workout/name.dart' as workout_name;
-import 'package:overload/domain/workout/notes.dart';
+import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/workout/workout_exercise/id.dart'
     as workout_exercise_id;
 import 'package:overload/domain/exercise/name.dart';
@@ -31,7 +31,7 @@ class Database {
     if (!exists) {
       return await sqflite.openDatabase(
         path,
-        version: 4,
+        version: 5,
         onCreate: (db, version) async {
           await createDatabase(db);
           await seedDatabase(db);
@@ -64,7 +64,8 @@ class Database {
         workout TEXT NULL,
         start_date TEXT NULL,
         end_date TEXT NULL,
-        exercises TEXT NULL
+        exercises TEXT NULL,
+        notes TEXT NULL
       )
     ''');
     await db.execute('''

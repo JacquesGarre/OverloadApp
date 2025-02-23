@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/workout/workout.dart';
-import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/edit_workout_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';

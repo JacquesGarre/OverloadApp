@@ -12,7 +12,7 @@ import 'package:overload/domain/user/exception/invalid_weight_exception.dart';
 import 'package:overload/domain/user/exception/user_already_exists_exception.dart';
 import 'package:overload/domain/user/exception/username_cannot_be_empty_exception.dart';
 import 'package:overload/domain/user/exception/username_too_long_exception.dart';
-import 'package:overload/domain/workout/exception/notes_too_long_exception.dart';
+import 'package:overload/domain/shared/exception/notes_too_long_exception.dart';
 import 'package:overload/domain/workout/exception/workout_already_exists_exception.dart';
 import 'package:overload/domain/workout/exception/workout_exercise_required_exception.dart';
 import 'package:overload/domain/workout/exception/workout_name_too_long_exception.dart';

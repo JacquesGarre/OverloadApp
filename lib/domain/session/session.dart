@@ -6,10 +6,12 @@ import 'package:overload/domain/session/domain_events/session_exercise_removed_d
 import 'package:overload/domain/session/domain_events/session_finished_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_started_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_exercise_updated_domain_event.dart';
+import 'package:overload/domain/session/domain_events/session_updated_domain_event.dart';
 import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/session/session_exercises.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
+import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/user/weight.dart';
 import 'package:overload/domain/workout/workout.dart';
 
@@ -20,6 +22,7 @@ class Session {
   final DateTime _startDate;
   final DateTime? _endDate;
   final SessionExercises _exercises;
+  final Notes? _notes;
 
   Session._({
     required DomainEventsCollection domainEvents,
@@ -28,12 +31,14 @@ class Session {
     required DateTime startDate,
     required SessionExercises exercises,
     DateTime? endDate,
+    Notes? notes,
   })  : _domainEvents = domainEvents,
         _id = id,
         _workout = workout,
         _startDate = startDate,
         _endDate = endDate,
-        _exercises = exercises;
+        _exercises = exercises,
+        _notes = notes;
 
   DomainEventsCollection domainEvents() {
     return _domainEvents;
@@ -59,13 +64,18 @@ class Session {
     return _exercises;
   }
 
+  Notes? notes() {
+    return _notes;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       "id": _id.toString(),
       "workout": jsonEncode(_workout.toJson()),
       "start_date": _startDate.toString(),
       "end_date": _endDate?.toString(),
-      "exercises": jsonEncode(_exercises.toJson())
+      "exercises": jsonEncode(_exercises.toJson()),
+      "notes": _notes?.value().toString()
     };
   }
 
@@ -84,14 +94,15 @@ class Session {
           .map((item) => item as Map<String, dynamic>)
           .toList(),
     );
+    Notes? notes = Notes.fromString(json["notes"]);
     return Session._(
-      domainEvents: DomainEventsCollection(),
-      id: id,
-      workout: workout,
-      startDate: startDate,
-      endDate: endDate,
-      exercises: exercises,
-    );
+        domainEvents: DomainEventsCollection(),
+        id: id,
+        workout: workout,
+        startDate: startDate,
+        endDate: endDate,
+        exercises: exercises,
+        notes: notes);
   }
 
   static Session startFromWorkout(Workout workout) {
@@ -124,13 +135,14 @@ class Session {
       workout: workout(),
       startDate: startDate(),
       exercises: exercises,
+      notes: notes(),
     );
     updatedSession.domainEvents().publish(
-      SessionExerciseUpdatedDomainEvent.fromSessionAndSessionExercise(
-        updatedSession,
-        exercise,
-      ),
-    );
+          SessionExerciseUpdatedDomainEvent.fromSessionAndSessionExercise(
+            updatedSession,
+            exercise,
+          ),
+        );
     return updatedSession;
   }
 
@@ -142,13 +154,14 @@ class Session {
       workout: workout(),
       startDate: startDate(),
       exercises: exercises,
+      notes: notes(),
     );
     updatedSession.domainEvents().publish(
-      SessionExerciseAddedDomainEvent.fromSessionAndSessionExercise(
-        updatedSession,
-        exercise,
-      ),
-    );
+          SessionExerciseAddedDomainEvent.fromSessionAndSessionExercise(
+            updatedSession,
+            exercise,
+          ),
+        );
     return updatedSession;
   }
 
@@ -160,13 +173,14 @@ class Session {
       workout: workout(),
       startDate: startDate(),
       exercises: exercises,
+      notes: notes(),
     );
     updatedSession.domainEvents().publish(
-      SessionExerciseRemovedDomainEvent.fromSessionAndSessionExercise(
-        updatedSession,
-        exercise,
-      ),
-    );
+          SessionExerciseRemovedDomainEvent.fromSessionAndSessionExercise(
+            updatedSession,
+            exercise,
+          ),
+        );
     return updatedSession;
   }
 
@@ -178,10 +192,11 @@ class Session {
       startDate: startDate(),
       exercises: sessionExercises(),
       endDate: DateTime.now(),
+      notes: notes(),
     );
     finishedSession.domainEvents().publish(
-      SessionFinishedDomainEvent.fromSession(finishedSession),
-    );
+          SessionFinishedDomainEvent.fromSession(finishedSession),
+        );
     return finishedSession;
   }
 
@@ -195,5 +210,21 @@ class Session {
 
   num finishedRepsCount() {
     return _exercises.finishedRepsCount();
+  }
+
+  Session update(Notes? newNotes) {
+    Session updatedSession = Session._(
+      domainEvents: DomainEventsCollection(),
+      id: id(),
+      workout: workout(),
+      startDate: startDate(),
+      exercises: sessionExercises(),
+      endDate: endDate(),
+      notes: newNotes ?? notes(),
+    );
+    updatedSession.domainEvents().publish(
+      SessionUpdatedDomainEvent.fromSession(updatedSession),
+    );
+    return updatedSession;
   }
 }

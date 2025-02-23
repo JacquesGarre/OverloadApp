@@ -6,7 +6,7 @@ import 'package:overload/domain/workout/exception/workout_not_found_exception.da
 import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/workout/workout_repository_interface.dart';
 import 'package:overload/domain/workout/name.dart';
-import 'package:overload/domain/workout/notes.dart';
+import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/workout/workout.dart';
 import 'package:overload/domain/workout/workout_exercises.dart';
 

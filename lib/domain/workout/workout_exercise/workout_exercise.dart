@@ -1,6 +1,6 @@
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/goals.dart';
-import 'package:overload/domain/workout/notes.dart';
+import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/workout/workout_exercise/id.dart';
 import 'package:overload/domain/workout/id.dart' as workout;
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';

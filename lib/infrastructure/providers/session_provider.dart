@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/application/session/add_session_exercise_command/add_session_exercise_command.dart';
 import 'package:overload/application/session/add_session_exercise_command/add_session_exercise_command_handler.dart';
 import 'package:overload/application/session/delete_session_command/delete_session_command.dart';
@@ -16,11 +15,14 @@ import 'package:overload/application/session/remove_session_exercise_command/rem
 import 'package:overload/application/session/remove_session_exercise_command/remove_session_exercise_command_handler.dart';
 import 'package:overload/application/session/start_session_command/start_session_command.dart';
 import 'package:overload/application/session/start_session_command/start_session_command_handler.dart';
+import 'package:overload/application/session/update_session_command/update_session_command.dart';
+import 'package:overload/application/session/update_session_command/update_session_command_handler.dart';
 import 'package:overload/application/session/update_session_exercise_command/update_session_exercise_command.dart';
 import 'package:overload/application/session/update_session_exercise_command/update_session_exercise_command_handler.dart';
 import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
+import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/workout/id.dart' as workout;
 
 class SessionProvider with ChangeNotifier {
@@ -33,6 +35,7 @@ class SessionProvider with ChangeNotifier {
   final RemoveSessionExerciseCommandHandler removeSessionExerciseCommandHandler;
   final AddSessionExerciseCommandHandler addSessionExerciseCommandHandler;
   final FinishSessionCommandHandler finishSessionCommandHandler;
+  final UpdateSessionCommandHandler updateSessionCommandHandler;
 
   SessionProvider({
     required this.startSessionCommandHandler,
@@ -44,6 +47,7 @@ class SessionProvider with ChangeNotifier {
     required this.getSessionQueryHandler,
     required this.addSessionExerciseCommandHandler,
     required this.finishSessionCommandHandler,
+    required this.updateSessionCommandHandler,
   });
 
   Session? _currentSession;
@@ -152,7 +156,8 @@ class SessionProvider with ChangeNotifier {
         id: id,
         exercise: exercise,
       );
-      Session updatedSession = await removeSessionExerciseCommandHandler.invoke(command);
+      Session updatedSession =
+          await removeSessionExerciseCommandHandler.invoke(command);
       await loadCurrentSession();
       await loadSessions();
       return updatedSession;
@@ -172,6 +177,21 @@ class SessionProvider with ChangeNotifier {
       await finishSessionCommandHandler.invoke(command);
       _currentSession = null;
       await loadSessions();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Session> updateSession(Id sessionId, Notes? notes) async {
+    try {
+      UpdateSessionCommand command = UpdateSessionCommand(
+        id: sessionId.toString(),
+        notes: notes?.value(),
+      );
+      Session session = await updateSessionCommandHandler.invoke(command);
+      await loadCurrentSession();
+      await loadSessions();
+      return session;
     } catch (e) {
       rethrow;
     }

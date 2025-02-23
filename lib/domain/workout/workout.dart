@@ -6,7 +6,7 @@ import 'package:overload/domain/workout/domain_events/workout_deleted_domain_eve
 import 'package:overload/domain/workout/domain_events/workout_updated_domain_event.dart';
 import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/workout/name.dart';
-import 'package:overload/domain/workout/notes.dart';
+import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/workout/workout_exercises.dart';
 
 class Workout {

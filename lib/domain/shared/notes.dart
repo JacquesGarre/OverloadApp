@@ -1,4 +1,4 @@
-import 'package:overload/domain/workout/exception/notes_too_long_exception.dart';
+import 'package:overload/domain/shared/exception/notes_too_long_exception.dart';
 
 class Notes {
 
