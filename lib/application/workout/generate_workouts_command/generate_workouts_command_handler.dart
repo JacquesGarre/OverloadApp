@@ -43,14 +43,12 @@ class GenerateWorkoutsCommandHandler {
         if (existingExercise != null) {
           continue;
         }
-        Logger().i("EXERCISE GENERATED : ${jsonEncode(exercise.toJson())}"); // TODO: Remove
         await exerciseRepository.add(exercise);
       }
       Workout? existingWorkout = await workoutRepository.ofId(workout.id());
       if (existingWorkout != null) {
         continue;
       }
-      Logger().i("WORKOUT GENERATED : ${jsonEncode(workout.toJson())}"); // TODO: Remove
       await workoutRepository.add(workout);
       domainEventBus.publish(workout.domainEvents());
     }

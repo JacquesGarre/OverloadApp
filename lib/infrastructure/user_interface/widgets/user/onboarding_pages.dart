@@ -126,21 +126,6 @@ class OnboardingPages {
                 ),
               ),
               const SizedBox(height: 26),
-              TextButton( // TODO: REMOVE!
-                onPressed: () async {
-                  final userProvider = Provider.of<UserProvider>(
-                    context,
-                    listen: false,
-                  );
-                  try {
-                    await userProvider.deleteCurrentUser();
-                    if (!context.mounted) return;
-                  } catch (e) {
-                    ExceptionHandler().handleException(context, e);
-                  }
-                },
-                child: Text("DELETE CURRENT USER"),
-              ),
               UserProfileFormWidget(
                 onSubmit: (Map<String, dynamic> formData) async {
                   final userProvider = Provider.of<UserProvider>(

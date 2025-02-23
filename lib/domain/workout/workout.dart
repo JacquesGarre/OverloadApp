@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:logger/logger.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/workout/domain_events/workout_created_domain_event.dart';
 import 'package:overload/domain/workout/domain_events/workout_deleted_domain_event.dart';
