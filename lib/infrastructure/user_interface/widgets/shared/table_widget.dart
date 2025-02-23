@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_config.dart';
-import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_cell_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/table_column_widget.dart';
 import 'package:overload/infrastructure/user_interface/config/table_row.dart'
