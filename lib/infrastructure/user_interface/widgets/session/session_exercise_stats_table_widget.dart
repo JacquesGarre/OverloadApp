@@ -1,25 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:overload/domain/session/session.dart';
+import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/progress_icon_widget.dart';
-import 'package:overload/infrastructure/user_interface/widgets/shared/chrono_timer_widget.dart';
 import 'package:provider/provider.dart';
 
-class SessionStatsTableWidget extends StatefulWidget {
+class SessionExerciseStatsTableWidget extends StatefulWidget {
   final Session session;
+  final SessionExercise sessionExercise;
 
-  const SessionStatsTableWidget({
+  const SessionExerciseStatsTableWidget({
     super.key,
     required this.session,
+    required this.sessionExercise
   });
 
   @override
-  State<SessionStatsTableWidget> createState() =>
-      _SessionStatsTableWidgetState();
+  State<SessionExerciseStatsTableWidget> createState() =>
+      _SessionExerciseStatsTableWidgetState();
 }
 
-class _SessionStatsTableWidgetState extends State<SessionStatsTableWidget> {
+class _SessionExerciseStatsTableWidgetState extends State<SessionExerciseStatsTableWidget> {
+
+  SessionExercise? previousExercise;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.session.previousSession() != null) {
+      setState(() {
+        previousExercise = widget.session.previousSession()!.findSessionExercise(widget.sessionExercise.workoutExercise());
+      });
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
@@ -27,14 +44,6 @@ class _SessionStatsTableWidgetState extends State<SessionStatsTableWidget> {
       children: [
         TableRow(
           children: [
-            Text(
-              "Duration",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColorScheme.onLightBackground,
-                fontSize: 12,
-              ),
-            ),
             Text(
               "Sets",
               textAlign: TextAlign.center,
@@ -72,33 +81,25 @@ class _SessionStatsTableWidgetState extends State<SessionStatsTableWidget> {
             SizedBox(
               height: 4.0,
             ),
-            SizedBox(
-              height: 4.0,
-            ),
           ],
         ),
         TableRow(
           children: [
-            ChronoTimerWidget(
-              startDate: widget.session.startDate(),
-              endDate: widget.session.endDate(),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "${widget.session.finishedSetsCount()}",
+                  "${widget.sessionExercise.finishedSetsCount()}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColorScheme.onPrimary,
                     fontSize: 12,
                   ),
                 ),
-                if (widget.session.previousSession() != null)
+                if (previousExercise != null)
                   ProgressIconWidget(
-                    currentValue: widget.session.finishedSetsCount(),
-                    previousValue:
-                        widget.session.previousSession()!.finishedSetsCount(),
+                    currentValue: widget.sessionExercise.finishedSetsCount(),
+                    previousValue: previousExercise!.finishedSetsCount(),
                   )
               ],
             ),
@@ -106,18 +107,17 @@ class _SessionStatsTableWidgetState extends State<SessionStatsTableWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "${widget.session.finishedRepsCount()}",
+                  "${widget.sessionExercise.finishedRepsCount()}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColorScheme.onPrimary,
                     fontSize: 12,
                   ),
                 ),
-                if (widget.session.previousSession() != null)
+                if (previousExercise != null)
                   ProgressIconWidget(
-                    currentValue: widget.session.finishedRepsCount(),
-                    previousValue:
-                        widget.session.previousSession()!.finishedRepsCount(),
+                    currentValue: widget.sessionExercise.finishedRepsCount(),
+                    previousValue: previousExercise!.finishedRepsCount(),
                   ),
               ],
             ),
@@ -125,20 +125,17 @@ class _SessionStatsTableWidgetState extends State<SessionStatsTableWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "${widget.session.finishedVolume(userProvider.user!.weight())} kgs",
+                  "${widget.sessionExercise.finishedVolume(userProvider.user!.weight())} kgs",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColorScheme.onPrimary,
                     fontSize: 12,
                   ),
                 ),
-                if (widget.session.previousSession() != null)
+                if (previousExercise != null)
                   ProgressIconWidget(
-                    currentValue: widget.session
-                        .finishedVolume(userProvider.user!.weight()),
-                    previousValue: widget.session
-                        .previousSession()!
-                        .finishedVolume(userProvider.user!.weight()),
+                    currentValue: widget.sessionExercise.finishedVolume(userProvider.user!.weight()),
+                    previousValue: previousExercise!.finishedVolume(userProvider.user!.weight()),
                   ),
               ],
             ),

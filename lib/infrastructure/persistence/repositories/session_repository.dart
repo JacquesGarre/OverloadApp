@@ -29,10 +29,16 @@ class SessionRepository implements SessionRepositoryInterface {
     List<Session> sessions = [];
     List<Map<String, dynamic>> sessionsJsons = await db.query(
       table,
-      orderBy: 'end_date IS NULL DESC, end_date DESC', // TODO: Should be in the application query, not here, and in a method findByCriteria()
+      orderBy:
+          'end_date IS NULL DESC, end_date DESC',
     );
     for (Map<String, dynamic> sessionJson in sessionsJsons) {
-      sessions.add(Session.fromJson(sessionJson));
+      Session session = Session.fromJson(sessionJson);
+      Session? previousSession = await findPreviousSession(session);
+      if (previousSession != null) {
+        session = session.setPreviousSession(previousSession);
+      }
+      sessions.add(session);
     }
     return sessions;
   }
@@ -49,10 +55,29 @@ class SessionRepository implements SessionRepositoryInterface {
 
   @override
   Future<Session?> ofId(Id id) async {
+    List<Map<String, Object?>> sessionsJsons = await db.query(table,
+        where: 'id = ?', whereArgs: [id.toString()], limit: 1);
+    if (sessionsJsons.isEmpty) {
+      return null;
+    }
+    List<Session> sessions = [];
+    for (Map<String, Object?> sessionJson in sessionsJsons) {
+      sessions.add(Session.fromJson(sessionJson));
+    }
+    Session session = sessions.first;
+    Session? previousSession = await findPreviousSession(session);
+    if (previousSession != null) {
+      session = session.setPreviousSession(previousSession);
+    }
+    return session;
+  }
+
+  @override
+  Future<Session?> findCurrentSession() async {
     List<Map<String, Object?>> sessionsJsons = await db.query(
       table,
-      where: 'id = ?',
-      whereArgs: [id.toString()],
+      where: 'end_date IS NULL',
+      limit: 1,
     );
     if (sessionsJsons.isEmpty) {
       return null;
@@ -61,15 +86,24 @@ class SessionRepository implements SessionRepositoryInterface {
     for (Map<String, Object?> sessionJson in sessionsJsons) {
       sessions.add(Session.fromJson(sessionJson));
     }
-    return sessions.first;
+    Session session = sessions.first;
+    Session? previousSession = await findPreviousSession(session);
+    if (previousSession != null) {
+      session = session.setPreviousSession(previousSession);
+    }
+    return session;
   }
 
   @override
-  Future<Session?> findCurrentSession() async {
-    List<Map<String, Object?>> sessionsJsons = await db.query(
-      table,
-      where: 'end_date IS NULL',
-    );
+  Future<Session?> findPreviousSession(Session session) async {
+    List<Map<String, Object?>> sessionsJsons = await db.query(table,
+        where: 'workout_id = ? AND start_date < ?',
+        whereArgs: [
+          session.workoutId().toString(),
+          session.startDate().toString()
+        ],
+        orderBy: 'start_date DESC',
+        limit: 1);
     if (sessionsJsons.isEmpty) {
       return null;
     }

@@ -11,6 +11,7 @@ class AppColorScheme {
   static Color secondary = const Color(0xFF778DA9);
   static Color onSecondary = Colors.white;
   static Color error = Colors.red;
+  static Color success = Colors.green;
   static Color onError = Colors.white;
 
   static ColorScheme get colorScheme {
@@ -23,6 +24,7 @@ class AppColorScheme {
       surface: background,
       onSurface: onBackground, 
       error: error,
+      tertiary: success,
       onError: onError,
     );
   }

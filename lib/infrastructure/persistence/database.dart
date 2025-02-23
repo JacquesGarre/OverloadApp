@@ -61,6 +61,7 @@ class Database {
     await db.execute('''
       CREATE TABLE ${SessionRepository.table} (
         id TEXT PRIMARY KEY,
+        workout_id TEXT NULL,
         workout TEXT NULL,
         start_date TEXT NULL,
         end_date TEXT NULL,

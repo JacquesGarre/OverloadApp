@@ -82,9 +82,10 @@ class SessionExercises {
     return SessionExercises(value: value);
   }
 
-  static SessionExercises fromWorkoutExercises(WorkoutExercises workoutExercises) {
+  static SessionExercises fromWorkoutExercises(
+      WorkoutExercises workoutExercises) {
     List<SessionExercise> value = [];
-    for(WorkoutExercise workoutExercise in workoutExercises.value()) {
+    for (WorkoutExercise workoutExercise in workoutExercises.value()) {
       value.add(SessionExercise.fromWorkoutExercise(workoutExercise));
     }
     return SessionExercises(value: value);
@@ -102,7 +103,7 @@ class SessionExercises {
 
   int finishedSetsCount() {
     int count = 0;
-    for(SessionExercise exercise in _value) {
+    for (SessionExercise exercise in _value) {
       count += exercise.finishedSetsCount();
     }
     return count;
@@ -110,7 +111,7 @@ class SessionExercises {
 
   num finishedVolume(Weight userWeight) {
     num volume = 0;
-    for(SessionExercise exercise in _value) {
+    for (SessionExercise exercise in _value) {
       volume += exercise.finishedVolume(userWeight);
     }
     return volume;
@@ -118,9 +119,18 @@ class SessionExercises {
 
   num finishedRepsCount() {
     num count = 0;
-    for(SessionExercise exercise in _value) {
+    for (SessionExercise exercise in _value) {
       count += exercise.finishedRepsCount();
     }
     return count;
+  }
+
+  SessionExercise? findSessionExercise(WorkoutExercise workoutExercise) {
+    for (SessionExercise exercise in _value) {
+      if (exercise.workoutExercise().id().equals(workoutExercise.id())) {
+        return exercise;
+      }
+    }
+    return null;
   }
 }

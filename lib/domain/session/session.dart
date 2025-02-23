@@ -8,37 +8,45 @@ import 'package:overload/domain/session/domain_events/session_started_domain_eve
 import 'package:overload/domain/session/domain_events/session_exercise_updated_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_updated_domain_event.dart';
 import 'package:overload/domain/session/id.dart';
+import 'package:overload/domain/workout/id.dart' as workout_id;
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/session/session_exercises.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/user/weight.dart';
 import 'package:overload/domain/workout/workout.dart';
+import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 
 class Session {
   final DomainEventsCollection _domainEvents;
   final Id _id;
+  final workout_id.Id _workoutId;
   final Workout _workout;
   final DateTime _startDate;
   final DateTime? _endDate;
   final SessionExercises _exercises;
   final Notes? _notes;
+  final Session? _previousSession;
 
   Session._({
     required DomainEventsCollection domainEvents,
     required Id id,
+    required workout_id.Id workoutId,
     required Workout workout,
     required DateTime startDate,
     required SessionExercises exercises,
     DateTime? endDate,
     Notes? notes,
+    Session? previousSession,
   })  : _domainEvents = domainEvents,
         _id = id,
+        _workoutId = workoutId,
         _workout = workout,
         _startDate = startDate,
         _endDate = endDate,
         _exercises = exercises,
-        _notes = notes;
+        _notes = notes,
+        _previousSession = previousSession;
 
   DomainEventsCollection domainEvents() {
     return _domainEvents;
@@ -46,6 +54,10 @@ class Session {
 
   Id id() {
     return _id;
+  }
+
+  workout_id.Id workoutId() {
+    return _workoutId;
   }
 
   Workout workout() {
@@ -68,9 +80,29 @@ class Session {
     return _notes;
   }
 
+  Session setPreviousSession(Session previousSession) {
+    Session updatedSession = Session._(
+      domainEvents: DomainEventsCollection(),
+      id: id(),
+      workoutId: workoutId(),
+      workout: workout(),
+      startDate: startDate(),
+      endDate: endDate(),
+      exercises: sessionExercises(),
+      notes: notes(),
+      previousSession: previousSession,
+    );
+    return updatedSession;
+  }
+
+  Session? previousSession() {
+    return _previousSession;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       "id": _id.toString(),
+      "workout_id": _workoutId.toString(),
       "workout": jsonEncode(_workout.toJson()),
       "start_date": _startDate.toString(),
       "end_date": _endDate?.toString(),
@@ -81,6 +113,7 @@ class Session {
 
   static Session fromJson(Map<String, dynamic> json) {
     Id id = Id.fromString(json["id"]);
+    workout_id.Id workoutId = workout_id.Id.fromString(json["workout_id"]);
     Workout workout = Workout.fromJson(
       jsonDecode(json["workout"]),
     );
@@ -96,19 +129,22 @@ class Session {
     );
     Notes? notes = Notes.fromString(json["notes"]);
     return Session._(
-        domainEvents: DomainEventsCollection(),
-        id: id,
-        workout: workout,
-        startDate: startDate,
-        endDate: endDate,
-        exercises: exercises,
-        notes: notes);
+      domainEvents: DomainEventsCollection(),
+      id: id,
+      workoutId: workoutId,
+      workout: workout,
+      startDate: startDate,
+      endDate: endDate,
+      exercises: exercises,
+      notes: notes,
+    );
   }
 
   static Session startFromWorkout(Workout workout) {
     Session session = Session._(
       domainEvents: DomainEventsCollection(),
       id: Id.create(),
+      workoutId: workout.id(),
       workout: workout,
       startDate: DateTime.now(),
       exercises: SessionExercises.fromWorkoutExercises(workout.exercises()),
@@ -132,10 +168,13 @@ class Session {
     Session updatedSession = Session._(
       domainEvents: DomainEventsCollection(),
       id: id(),
+      workoutId: workoutId(),
       workout: workout(),
       startDate: startDate(),
+      endDate: endDate(),
       exercises: exercises,
       notes: notes(),
+      previousSession: previousSession(),
     );
     updatedSession.domainEvents().publish(
           SessionExerciseUpdatedDomainEvent.fromSessionAndSessionExercise(
@@ -151,10 +190,13 @@ class Session {
     Session updatedSession = Session._(
       domainEvents: DomainEventsCollection(),
       id: id(),
+      workoutId: workoutId(),
       workout: workout(),
       startDate: startDate(),
+      endDate: endDate(),
       exercises: exercises,
       notes: notes(),
+      previousSession: previousSession(),
     );
     updatedSession.domainEvents().publish(
           SessionExerciseAddedDomainEvent.fromSessionAndSessionExercise(
@@ -170,10 +212,13 @@ class Session {
     Session updatedSession = Session._(
       domainEvents: DomainEventsCollection(),
       id: id(),
+      workoutId: workoutId(),
       workout: workout(),
       startDate: startDate(),
+      endDate: endDate(),
       exercises: exercises,
       notes: notes(),
+      previousSession: previousSession(),
     );
     updatedSession.domainEvents().publish(
           SessionExerciseRemovedDomainEvent.fromSessionAndSessionExercise(
@@ -188,11 +233,13 @@ class Session {
     Session finishedSession = Session._(
       domainEvents: DomainEventsCollection(),
       id: id(),
+      workoutId: workoutId(),
       workout: workout(),
       startDate: startDate(),
       exercises: sessionExercises(),
       endDate: DateTime.now(),
       notes: notes(),
+      previousSession: previousSession(),
     );
     finishedSession.domainEvents().publish(
           SessionFinishedDomainEvent.fromSession(finishedSession),
@@ -216,15 +263,21 @@ class Session {
     Session updatedSession = Session._(
       domainEvents: DomainEventsCollection(),
       id: id(),
+      workoutId: workoutId(),
       workout: workout(),
       startDate: startDate(),
       exercises: sessionExercises(),
       endDate: endDate(),
       notes: newNotes ?? notes(),
+      previousSession: previousSession(),
     );
     updatedSession.domainEvents().publish(
-      SessionUpdatedDomainEvent.fromSession(updatedSession),
-    );
+          SessionUpdatedDomainEvent.fromSession(updatedSession),
+        );
     return updatedSession;
+  }
+
+  SessionExercise? findSessionExercise(WorkoutExercise workoutExercise) {
+    return _exercises.findSessionExercise(workoutExercise);
   }
 }
