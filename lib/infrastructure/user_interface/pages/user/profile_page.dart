@@ -45,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
               tabs: const [
                 Tab(icon: Icon(Icons.person), text: "Profile"),
                 Tab(icon: Icon(Icons.fitness_center), text: "My goals"),
-                Tab(icon: Icon(Icons.graphic_eq), text: "My level"),
+                Tab(icon: Icon(Icons.graphic_eq), text: "My experience"),
               ],
             ),
             Expanded(
@@ -64,6 +64,18 @@ class _ProfilePageState extends State<ProfilePage> {
                         try {
                           await userProvider.updateProfile(formData);
                           if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Profile updated!",
+                                style: TextStyle(
+                                  color: AppColorScheme.onPrimary,
+                                ),
+                              ),
+                              backgroundColor: AppColorScheme.primary,
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
                         } catch (e) {
                           ExceptionHandler().handleException(context, e);
                         }
@@ -84,6 +96,18 @@ class _ProfilePageState extends State<ProfilePage> {
                         try {
                           await userProvider.updateUserFitnessGoals(formData);
                           if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Goals updated!",
+                                style: TextStyle(
+                                  color: AppColorScheme.onPrimary,
+                                ),
+                              ),
+                              backgroundColor: AppColorScheme.primary,
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
                         } catch (e) {
                           ExceptionHandler().handleException(context, e);
                         }
@@ -105,6 +129,18 @@ class _ProfilePageState extends State<ProfilePage> {
                           await userProvider
                               .updateUserFitnessExperience(formData);
                           if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Experience updated!",
+                                style: TextStyle(
+                                  color: AppColorScheme.onPrimary,
+                                ),
+                              ),
+                              backgroundColor: AppColorScheme.primary,
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
                         } catch (e) {
                           ExceptionHandler().handleException(context, e);
                         }
