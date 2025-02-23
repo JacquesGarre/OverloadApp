@@ -19,7 +19,7 @@ void showDeleteExerciseConfirmationModal({
         "Are you sure you want to delete this exercise? This action cannot be undone.",
     actionButtons: [
       ModalActionButtonConfig(
-        text: "Delete it",
+        text: "Delete",
         backgroundColor: AppColorScheme.lightBackground,
         textColor: AppColorScheme.error,
         onPressed: () async {

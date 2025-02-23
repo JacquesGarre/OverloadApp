@@ -8,6 +8,7 @@ import 'package:overload/infrastructure/user_interface/pages/workout/add_workout
 import 'package:overload/infrastructure/user_interface/widgets/shared/form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/secondary_button_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/text_field_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/workout/delete_workout_exercise_confirmation_modal_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/workout/workout_exercise_card_widget.dart';
 
 class WorkoutFormWidget extends StatefulWidget {
@@ -40,7 +41,9 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
   void initState() {
     super.initState();
     workoutId = widget.workout != null ? widget.workout!.id() : Id.create();
-    workoutExercises = widget.workout != null ? widget.workout!.exercises() : WorkoutExercises.empty();
+    workoutExercises = widget.workout != null
+        ? widget.workout!.exercises()
+        : WorkoutExercises.empty();
     _nameController.text =
         widget.workout != null ? widget.workout!.name().value() : '';
     _notesController.text =
@@ -96,7 +99,11 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
     }
   }
 
-  void _removeWorkoutExercise(WorkoutExercise workoutExercise) {
+  void _removeWorkoutExercise(WorkoutExercise workoutExercise) async {
+    bool confirmed = await showDeleteWorkoutExerciseConfirmationModal(context: context);
+    if (!confirmed) {
+      return;
+    }
     setState(() {
       workoutExercises = workoutExercises.remove(workoutExercise);
       _workoutExercisesError = null;
@@ -136,7 +143,8 @@ class _WorkoutFormWidgetState extends State<WorkoutFormWidget> {
           return Column(
             children: [
               WorkoutExerciseCardWidget(
-                workoutId: widget.workout != null ? widget.workout!.id() : workoutId,
+                workoutId:
+                    widget.workout != null ? widget.workout!.id() : workoutId,
                 key: ValueKey(workoutExercise.id().value()),
                 workoutExercise: workoutExercise,
                 checkable: false,

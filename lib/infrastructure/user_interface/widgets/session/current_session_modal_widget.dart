@@ -32,7 +32,7 @@ void showCurrentSessionModal({
         },
       ),
       ModalActionButtonConfig(
-        text: "Delete it and start a new session",
+        text: "Delete and start a new session",
         backgroundColor: AppColorScheme.lightBackground,
         textColor: AppColorScheme.error,
         onPressed: () async {
