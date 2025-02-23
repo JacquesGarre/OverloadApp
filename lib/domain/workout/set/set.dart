@@ -36,7 +36,6 @@ class Set {
     return Set(index: index, metrics: metrics, isDone: false);
   }
 
-  // TODO: Refactor this, so ugly...
   Set update(int cellIndex, String value) {
     bool setDone = false;
     if (cellIndex > metrics().count()) {

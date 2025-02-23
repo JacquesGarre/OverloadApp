@@ -121,7 +121,6 @@ class FinishedSessionSummaryPageState
               // TODO: Add calendar of the current month and how many times have trained in current month
               // TODO: Add session number
               // TODO: Add sessions over the last 7 days
-              // TODO: add progress indicators and highlights
               const SizedBox(
                 height: 20.0,
               ),
