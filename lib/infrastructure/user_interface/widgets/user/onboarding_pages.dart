@@ -293,23 +293,38 @@ class OnboardingPages {
                       context,
                       listen: false,
                     );
+                    UserProvider userProvider =
+                        Provider.of<UserProvider>(
+                      context,
+                      listen: false,
+                    );
                     await workoutProvider.generateWorkouts();
+                    await userProvider.completeProfile();
                     if (!context.mounted) return;
-                    //onboardUserPageKey.currentState?.next(); TODO
                   } catch (e) {
                     ExceptionHandler().handleException(context, e);
                   }
                 },
-                text: "Create my workouts",
+                text: "Generate workouts based on my preferences",
               ),
               const SizedBox(height: 26),
               FloatingCenteredButtonWidget(
                 backgroundColor: AppColorScheme.lightBackground,
                 heroTag: "skipBtn",
-                onPressed: () {
-                  // TODO: update user with workouts generated flag?
+                onPressed: () async {
+                  try {
+                    UserProvider userProvider =
+                        Provider.of<UserProvider>(
+                      context,
+                      listen: false,
+                    );
+                    await userProvider.completeProfile();
+                    if (!context.mounted) return;
+                  } catch (e) {
+                    ExceptionHandler().handleException(context, e);
+                  }
                 },
-                text: "Skip for now",
+                text: "Skip",
               )
             ],
           ),

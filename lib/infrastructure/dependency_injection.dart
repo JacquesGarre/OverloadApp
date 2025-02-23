@@ -14,6 +14,7 @@ import 'package:overload/application/session/remove_session_exercise_command/rem
 import 'package:overload/application/session/start_session_command/start_session_command_handler.dart';
 import 'package:overload/application/session/update_session_command/update_session_command_handler.dart';
 import 'package:overload/application/session/update_session_exercise_command/update_session_exercise_command_handler.dart';
+import 'package:overload/application/user/complete_profile_command/complete_profile_command_handler.dart';
 import 'package:overload/application/user/create_user_command/create_user_command_handler.dart';
 import 'package:overload/application/user/delete_user_command/delete_user_command_handler.dart';
 import 'package:overload/application/user/get_user_query/get_user_query_handler.dart';
@@ -146,12 +147,11 @@ Future<void> registerHandlers() async {
   );
   container.registerFactory<GenerateWorkoutsCommandHandler>(
     () => GenerateWorkoutsCommandHandler(
-      userRepository: container<UserRepositoryInterface>(),
-      workoutGenerator: container<WorkoutGeneratorInterface>(),
-      exerciseRepository: container<ExerciseRepositoryInterface>(),
-      workoutRepository: container<WorkoutRepositoryInterface>(),
-      domainEventBus: container<DomainEventBusInterface>()
-    ),
+        userRepository: container<UserRepositoryInterface>(),
+        workoutGenerator: container<WorkoutGeneratorInterface>(),
+        exerciseRepository: container<ExerciseRepositoryInterface>(),
+        workoutRepository: container<WorkoutRepositoryInterface>(),
+        domainEventBus: container<DomainEventBusInterface>()),
   );
   container.registerFactory<StartSessionCommandHandler>(
     () => StartSessionCommandHandler(
@@ -223,6 +223,12 @@ Future<void> registerHandlers() async {
       domainEventBus: container<DomainEventBusInterface>(),
     ),
   );
+  container.registerFactory<CompleteProfileCommandHandler>(
+    () => CompleteProfileCommandHandler(
+      repository: container<UserRepositoryInterface>(),
+      domainEventBus: container<DomainEventBusInterface>(),
+    ),
+  );
   container.registerFactory<UpdateUserCommandHandler>(
     () => UpdateUserCommandHandler(
       repository: container<UserRepositoryInterface>(),
@@ -251,7 +257,8 @@ Future<void> registerProviders() async {
       getWorkoutsQueryHandler: container<GetWorkoutsQueryHandler>(),
       deleteWorkoutCommandHandler: container<DeleteWorkoutCommandHandler>(),
       updateWorkoutCommandHandler: container<UpdateWorkoutCommandHandler>(),
-      generateWorkoutsCommandHandler: container<GenerateWorkoutsCommandHandler>(),
+      generateWorkoutsCommandHandler:
+          container<GenerateWorkoutsCommandHandler>(),
     ),
   );
   container.registerSingleton<SessionProvider>(
@@ -276,5 +283,6 @@ Future<void> registerProviders() async {
     deleteUserCommandHandler: container<DeleteUserCommandHandler>(),
     updateUserCommandHandler: container<UpdateUserCommandHandler>(),
     getUserQueryHandler: container<GetUserQueryHandler>(),
+    completeProfileCommandHandler: container<CompleteProfileCommandHandler>(),
   ));
 }

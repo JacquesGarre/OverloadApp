@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:overload/domain/shared/domain_event_collection.dart';
 import 'package:overload/domain/user/age.dart';
+import 'package:overload/domain/user/completed_profile.dart';
+import 'package:overload/domain/user/domain_events/user_completed_profile_domain_event.dart';
 import 'package:overload/domain/user/domain_events/user_created_domain_event.dart';
 import 'package:overload/domain/user/domain_events/user_deleted_domain_event.dart';
 import 'package:overload/domain/user/domain_events/user_updated_domain_event.dart';
@@ -24,6 +26,7 @@ class User {
   final Age _age;
   final Gender _gender;
   final Weight _weight;
+  final CompletedProfile _completedProfile;
   final TrainingTypes? _trainingTypes;
   final WorkoutDurationPreference? _workoutDurationPreference;
   final TrainingLocations? _trainingLocations;
@@ -39,6 +42,7 @@ class User {
     required Age age,
     required Gender gender,
     required Weight weight,
+    required CompletedProfile completedProfile,
     TrainingTypes? trainingTypes,
     WorkoutDurationPreference? workoutDurationPreference,
     TrainingLocations? trainingLocations,
@@ -52,6 +56,7 @@ class User {
         _age = age,
         _gender = gender,
         _weight = weight,
+        _completedProfile = completedProfile,
         _trainingTypes = trainingTypes,
         _workoutDurationPreference = workoutDurationPreference,
         _trainingLocations = trainingLocations,
@@ -82,6 +87,10 @@ class User {
 
   Weight weight() {
     return _weight;
+  }
+
+  CompletedProfile completedProfile() {
+    return _completedProfile;
   }
 
   TrainingTypes? trainingTypes() {
@@ -126,6 +135,7 @@ class User {
       username: username,
       age: age,
       weight: weight,
+      completedProfile: CompletedProfile(value: false),
       gender: gender,
     );
     user.domainEvents().publish(UserCreatedDomainEvent.fromUser(user));
@@ -151,6 +161,7 @@ class User {
       username: newUsername ?? username(),
       age: newAge ?? age(),
       weight: newWeight ?? weight(),
+      completedProfile: completedProfile(),
       gender: newGender ?? gender(),
       workoutDurationPreference:
           newWorkoutDurationPreference ?? workoutDurationPreference(),
@@ -176,6 +187,7 @@ class User {
       'age': _age.value(),
       'weight': _weight.value(),
       'gender': _gender.value(),
+      'completed_profile': _completedProfile.value().toString(),
       'training_types': _trainingTypes != null
           ? jsonEncode(_trainingTypes.toStringList())
           : null,
@@ -199,6 +211,7 @@ class User {
     Username username = Username.fromString(json['username'] as String);
     Age age = Age.fromString(json['age'] as String);
     Weight weight = Weight.fromString(json['weight'] as String);
+    CompletedProfile completedProfile = CompletedProfile.fromString(json['completed_profile'] as String);
     Gender gender = Gender.fromString(json['gender'] as String);
     WorkoutDurationPreference? workoutDurationPreference;
     if (json['workout_duration_preference'] != null) {
@@ -247,6 +260,7 @@ class User {
       age: age,
       gender: gender,
       weight: weight,
+      completedProfile: completedProfile,
       workoutDurationPreference: workoutDurationPreference,
       workoutWeeklyDays: workoutWeeklyDays,
       fitnessGoals: fitnessGoals,
@@ -257,13 +271,28 @@ class User {
     );
   }
 
+  User completeProfile() {
+    User user = User._(
+      domainEvents: domainEvents(),
+      id: id(),
+      username: username(),
+      age: age(),
+      gender: gender(),
+      weight: weight(),
+      completedProfile: CompletedProfile(value: true),
+      workoutDurationPreference: workoutDurationPreference(),
+      workoutWeeklyDays: workoutWeeklyDays(),
+      fitnessGoals: fitnessGoals(),
+      trainingTypes: trainingTypes(),
+      trainingLocations: trainingLocations(),
+      equipment: equipment(),
+      fitnessLevel: fitnessLevel(),
+    );
+    user.domainEvents().publish(UserCompletedProfileDomainEvent.fromUser(user));
+    return user;
+  }
+
   bool isProfileCompleted() {
-    return _trainingTypes != null &&
-        _workoutDurationPreference != null &&
-        _trainingLocations != null &&
-        _fitnessLevel != null &&
-        _fitnessGoals != null &&
-        _equipment != null &&
-        _workoutWeeklyDays != null;
+    return _completedProfile.value();
   }
 }

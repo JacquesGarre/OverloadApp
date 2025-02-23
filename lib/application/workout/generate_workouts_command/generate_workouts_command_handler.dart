@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:logger/logger.dart';
 import 'package:overload/application/workout/generate_workouts_command/generate_workouts_command.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/exercise/exercise_repository_interface.dart';
@@ -52,5 +49,8 @@ class GenerateWorkoutsCommandHandler {
       await workoutRepository.add(workout);
       domainEventBus.publish(workout.domainEvents());
     }
+    User updatedUser = user.completeProfile();
+    await userRepository.update(updatedUser);
+    domainEventBus.publish(updatedUser.domainEvents());
   }
 }

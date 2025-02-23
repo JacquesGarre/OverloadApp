@@ -75,6 +75,7 @@ class Database {
         username TEXT NULL,
         age TEXT NULL,
         weight TEXT NULL,
+        completed_profile TEXT NULL,
         gender TEXT NULL,
         training_types TEXT NULL,
         workout_duration_preference TEXT NULL,
