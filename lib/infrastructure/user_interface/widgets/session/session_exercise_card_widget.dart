@@ -5,6 +5,7 @@ import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/infrastructure/providers/session_provider.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/delete_session_exercise_confirmation_modal_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_completed_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/sets/sets_table_widget.dart';
 import 'package:provider/provider.dart';
@@ -89,7 +90,7 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                                 padding: const EdgeInsets.only(left: 5.0),
                                 child: Icon(
                                   Icons.check,
-                                  color: AppColorScheme.success,
+                                  color: AppColorScheme.primary,
                                 ),
                               ),
                           ],
@@ -166,14 +167,20 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
               Divider(
                 color: AppColorScheme.onLightBackground,
               ),
-              SetsTableWidget(
-                exercise: sessionExercise.workoutExercise().exercise(),
-                sets: sessionExercise.sets(),
-                checkable: true,
-                setsNumberSelector: true,
-                readonly: false,
-                onSetsUpdated: _updateSets,
-              ),
+              Stack(
+                children: [
+                  SetsTableWidget(
+                    exercise: sessionExercise.workoutExercise().exercise(),
+                    sets: sessionExercise.sets(),
+                    checkable: true,
+                    setsNumberSelector: true,
+                    readonly: false,
+                    onSetsUpdated: _updateSets,
+                  ),
+                  if (widget.sessionExercise.isDone() && widget.session.inProgress())
+                    SessionExerciseCompletedWidget(sessionExercise: sessionExercise,),
+                ],
+              )
             ],
           ),
         ),

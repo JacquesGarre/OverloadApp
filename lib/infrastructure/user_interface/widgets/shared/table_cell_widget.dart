@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/user_interface/config/table_cell_type.dart';
 import 'package:overload/infrastructure/user_interface/config/table_column_format.dart';
 import 'package:overload/infrastructure/user_interface/config/table_row.dart'
@@ -116,6 +117,7 @@ class TableCellWidgetState extends State<TableCellWidget> {
                       ),
                     );
                     widget.row.cells[widget.cellIndex].value = formattedValue;
+                    widget.onChanged(formattedValue);
                   },
                 )
               : Checkbox(
