@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
@@ -8,6 +9,7 @@ import 'package:overload/infrastructure/user_interface/widgets/shared/floating_c
 import 'package:overload/infrastructure/user_interface/widgets/user/user_fitness_experience_form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/user/user_fitness_goals_form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/user/user_profile_form_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/workout/workout_generation_loader_widget.dart';
 import 'package:provider/provider.dart';
 
 class OnboardingPages {
@@ -258,77 +260,86 @@ class OnboardingPages {
     BuildContext context,
     GlobalKey<IntroductionScreenState> onboardUserPageKey,
   ) {
+    bool isLoading = false;
     return PageViewModel(
       title: "",
-      bodyWidget: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                'Creating your routine',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "Based on your goals, experience, and preferences, Overload can craft workouts just for you. Get ready to train smarter, push your limits, and see real progress. Let’s get started on your fitness journey!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColorScheme.onLightBackground,
-                ),
-              ),
-              const SizedBox(height: 26),
-              FloatingCenteredButtonWidget(
-                onPressed: () async {
-                  try {
-                    WorkoutProvider workoutProvider =
-                        Provider.of<WorkoutProvider>(
-                      context,
-                      listen: false,
-                    );
-                    UserProvider userProvider =
-                        Provider.of<UserProvider>(
-                      context,
-                      listen: false,
-                    );
-                    await workoutProvider.generateWorkouts();
-                    await userProvider.completeProfile();
-                    if (!context.mounted) return;
-                  } catch (e) {
-                    ExceptionHandler().handleException(context, e);
-                  }
-                },
-                text: "Generate workouts based on my preferences",
-              ),
-              const SizedBox(height: 26),
-              FloatingCenteredButtonWidget(
-                backgroundColor: AppColorScheme.lightBackground,
-                heroTag: "skipBtn",
-                onPressed: () async {
-                  try {
-                    UserProvider userProvider =
-                        Provider.of<UserProvider>(
-                      context,
-                      listen: false,
-                    );
-                    await userProvider.completeProfile();
-                    if (!context.mounted) return;
-                  } catch (e) {
-                    ExceptionHandler().handleException(context, e);
-                  }
-                },
-                text: "Skip",
-              )
-            ],
-          ),
-        ),
+      bodyWidget: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return isLoading
+              ? const WorkoutGenerationLoaderWidget() 
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Creating your routine',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          "Based on your goals, experience, and preferences, Overload can craft workouts just for you. Get ready to train smarter, push your limits, and see real progress. Let’s get started on your fitness journey!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppColorScheme.onLightBackground,
+                          ),
+                        ),
+                        const SizedBox(height: 26),
+                        FloatingCenteredButtonWidget(
+                          onPressed: () async {
+                            setState(() => isLoading = true);
+                            try {
+                              WorkoutProvider workoutProvider =
+                                  Provider.of<WorkoutProvider>(
+                                context,
+                                listen: false,
+                              );
+                              UserProvider userProvider =
+                                  Provider.of<UserProvider>(
+                                context,
+                                listen: false,
+                              );
+                              await workoutProvider.generateWorkouts();
+                              await userProvider.completeProfile();
+                              if (!context.mounted) return;
+                            } catch (e) {
+                              ExceptionHandler().handleException(context, e);
+                            }
+                            setState(() => isLoading = false);
+                          },
+                          text: "Generate workouts based on my preferences",
+                        ),
+                        const SizedBox(height: 26),
+                        FloatingCenteredButtonWidget(
+                          backgroundColor: AppColorScheme.lightBackground,
+                          heroTag: "skipBtn",
+                          onPressed: () async {
+                            try {
+                              UserProvider userProvider =
+                                  Provider.of<UserProvider>(
+                                context,
+                                listen: false,
+                              );
+                              await userProvider.completeProfile();
+                              if (!context.mounted) return;
+                            } catch (e) {
+                              ExceptionHandler().handleException(context, e);
+                            }
+                          },
+                          text: "Skip",
+                        )
+                      ],
+                    ),
+                  ),
+                );
+        },
       ),
     );
   }

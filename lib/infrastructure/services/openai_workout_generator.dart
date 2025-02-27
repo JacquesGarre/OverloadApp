@@ -18,10 +18,13 @@ class OpenaiWorkoutGenerator implements WorkoutGeneratorInterface {
     userJson.remove("username");
     Logger().i("[OpenaiWorkoutGenerator] Generating workouts for user preferences : ${jsonEncode(userJson)}");
     String response = await getAssistantResponse(jsonEncode(userJson));
-    Map<String, dynamic> jsonResponse = jsonDecode(response);
+    Logger().i("[OpenaiWorkoutGenerator] Response received from assistant...");
+    List<dynamic> jsonResponse = jsonDecode(response);
+    Logger().i("[OpenaiWorkoutGenerator] Response decoded, generating workouts...");
     List<Workout> workouts = [];
-    for(Map<String, dynamic> jsonWorkout in jsonResponse["workouts"]) {
-      Logger().e(jsonWorkout);
+    for(Map<String, dynamic> jsonWorkout in jsonResponse) {
+      Logger().i("[OpenaiWorkoutGenerator] Workout:");
+      Logger().i(jsonWorkout);
       Workout workout = Workout.generateFromJson(jsonWorkout);
       workouts.add(workout);
     }
@@ -125,6 +128,7 @@ class OpenaiWorkoutGenerator implements WorkoutGeneratorInterface {
       }
       final messages = jsonDecode(messagesResponse.body);
       final assistantMessage = messages["data"].first["content"].first["text"]["value"];
+      Logger().i("[OpenaiWorkoutGenerator] Assistant message : $assistantMessage");
       return assistantMessage;
     } catch (e) {
       rethrow;

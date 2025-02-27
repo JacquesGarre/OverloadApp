@@ -99,7 +99,8 @@ class UserProvider with ChangeNotifier {
     try {
       DeleteUserCommand command = DeleteUserCommand();
       await deleteUserCommandHandler.invoke(command);
-      await loadUser();
+      _user = null;
+      notifyListeners();
     } catch (e) {
       rethrow;
     }
