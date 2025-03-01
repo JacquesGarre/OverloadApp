@@ -6,7 +6,6 @@ import 'package:overload/infrastructure/user_interface/pages/session/session_pag
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/delete_session_confirmation_modal_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_inline_stats_widget.dart';
-import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
 import 'package:provider/provider.dart';
