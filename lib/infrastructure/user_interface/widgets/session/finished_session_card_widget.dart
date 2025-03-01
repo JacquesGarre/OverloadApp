@@ -5,6 +5,8 @@ import 'package:overload/infrastructure/user_interface/pages/session/finished_se
 import 'package:overload/infrastructure/user_interface/pages/session/session_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/delete_session_confirmation_modal_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_inline_stats_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/card_widget.dart';
 import 'package:provider/provider.dart';
@@ -72,18 +74,57 @@ class FinishedSessionCardWidget extends StatelessWidget {
             Divider(
               color: AppColorScheme.onLightBackground,
             ),
+            const SizedBox(
+              height: 5.0,
+            ),
             ...session.sessionExercises().withAtLeastOneSetDone().value().map(
               (sessionExercise) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 3.0),
-                  child: Text(
-                    '${sessionExercise.finishedSetsCount()} set${sessionExercise.finishedSetsCount() > 1 ? 's' : ''} ${sessionExercise.workoutExercise().exercise().name().value()}',
-                    style: TextStyle(
-                      color: AppColorScheme.onPrimary,
-                      fontSize: 13.0,
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          sessionExercise
+                              .workoutExercise()
+                              .exercise()
+                              .name()
+                              .value(),
+                          style: TextStyle(
+                            color: AppColorScheme.onPrimary,
+                            fontSize: 13.0,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5.0),
+                          child: SessionExerciseInlineStatsWidget(
+                            session: session,
+                            sessionExercise: sessionExercise,
+                          ),
+                        )
+                      ],
                     ),
-                  ),
+                    const SizedBox(
+                      height: 5.0,
+                    )
+                  ],
                 );
+
+                // return Padding(
+                //   padding: const EdgeInsets.only(top: 3.0),
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         sessionExercise.workoutExercise().exercise().name().value(),
+                //         style: TextStyle(
+                //           color: AppColorScheme.onPrimary,
+                //           fontSize: 13.0,
+                //         ),
+                //       ),
+                //       SessionExerciseStatsTableWidget(session: session, sessionExercise: sessionExercise)
+                //     ]
+                //   )
+                //);
               },
             )
           ],

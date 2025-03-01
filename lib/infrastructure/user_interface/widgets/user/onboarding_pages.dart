@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:logger/logger.dart';
 import 'package:overload/infrastructure/exception/exception_handler.dart';
 import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/providers/workout_provider.dart';
