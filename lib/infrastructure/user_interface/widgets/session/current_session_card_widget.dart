@@ -15,7 +15,7 @@ class CurrentSessionCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardWidget(
-      title: session.fullTitle(),
+      title: "Session #${session.sessionNumber().value()} - ${session.workout().name().value()}",
       subtitle: "Started ${timeago.format(session.startDate())}",
       onStart: () async {
         SessionProvider sessionProvider = Provider.of<SessionProvider>(

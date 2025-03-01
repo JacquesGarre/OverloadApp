@@ -8,5 +8,6 @@ abstract class SessionRepositoryInterface {
   Future<Session?> ofId(Id id);
   Future<List<Session>> findAll();
   Future<Session?> findCurrentSession();
+  Future<Session?> findLastFinishedSession();
   Future<Session?> findPreviousSession(Session session);
 }

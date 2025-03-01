@@ -9,6 +9,7 @@ import 'package:overload/domain/session/domain_events/session_started_domain_eve
 import 'package:overload/domain/session/domain_events/session_exercise_updated_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_updated_domain_event.dart';
 import 'package:overload/domain/session/id.dart';
+import 'package:overload/domain/session/session_number.dart';
 import 'package:overload/domain/workout/id.dart' as workout_id;
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/session/session_exercises.dart';
@@ -26,6 +27,7 @@ class Session {
   final DateTime _startDate;
   final DateTime? _endDate;
   final SessionExercises _exercises;
+  final SessionNumber _sessionNumber;
   final Notes? _notes;
   final Session? _previousSession;
 
@@ -36,6 +38,7 @@ class Session {
     required Workout workout,
     required DateTime startDate,
     required SessionExercises exercises,
+    required SessionNumber sessionNumber,
     DateTime? endDate,
     Notes? notes,
     Session? previousSession,
@@ -46,6 +49,7 @@ class Session {
         _startDate = startDate,
         _endDate = endDate,
         _exercises = exercises,
+        _sessionNumber = sessionNumber,
         _notes = notes,
         _previousSession = previousSession;
 
@@ -81,6 +85,14 @@ class Session {
     return _notes;
   }
 
+  SessionNumber sessionNumber() {
+    return _sessionNumber;
+  }
+  
+  Session? previousSession() {
+    return _previousSession;
+  }
+
   Session setPreviousSession(Session previousSession) {
     Session updatedSession = Session._(
       domainEvents: DomainEventsCollection(),
@@ -91,13 +103,10 @@ class Session {
       endDate: endDate(),
       exercises: sessionExercises(),
       notes: notes(),
+      sessionNumber: sessionNumber(),
       previousSession: previousSession,
     );
     return updatedSession;
-  }
-
-  Session? previousSession() {
-    return _previousSession;
   }
 
   Map<String, dynamic> toJson() {
@@ -108,7 +117,8 @@ class Session {
       "start_date": _startDate.toString(),
       "end_date": _endDate?.toString(),
       "exercises": jsonEncode(_exercises.toJson()),
-      "notes": _notes?.value().toString()
+      "notes": _notes?.value().toString(),
+      "session_number": _sessionNumber.value()
     };
   }
 
@@ -129,6 +139,7 @@ class Session {
           .toList(),
     );
     Notes? notes = Notes.fromString(json["notes"]);
+    SessionNumber sessionNumber = SessionNumber(value: int.parse(json["session_number"]));
     return Session._(
       domainEvents: DomainEventsCollection(),
       id: id,
@@ -138,10 +149,11 @@ class Session {
       endDate: endDate,
       exercises: exercises,
       notes: notes,
+      sessionNumber: sessionNumber,
     );
   }
 
-  static Session startFromWorkout(Workout workout) {
+  static Session startFromWorkout(Workout workout, SessionNumber sessionNumber) {
     Session session = Session._(
       domainEvents: DomainEventsCollection(),
       id: Id.create(),
@@ -149,6 +161,7 @@ class Session {
       workout: workout,
       startDate: DateTime.now(),
       exercises: SessionExercises.fromWorkoutExercises(workout.exercises()),
+      sessionNumber: sessionNumber,
     );
     session
         .domainEvents()
@@ -176,6 +189,7 @@ class Session {
       exercises: exercises,
       notes: notes(),
       previousSession: previousSession(),
+      sessionNumber: sessionNumber(),
     );
     updatedSession.domainEvents().publish(
           SessionExerciseUpdatedDomainEvent.fromSessionAndSessionExercise(
@@ -198,6 +212,7 @@ class Session {
       exercises: exercises,
       notes: notes(),
       previousSession: previousSession(),
+      sessionNumber: sessionNumber(),
     );
     updatedSession.domainEvents().publish(
           SessionExerciseAddedDomainEvent.fromSessionAndSessionExercise(
@@ -220,6 +235,7 @@ class Session {
       exercises: exercises,
       notes: notes(),
       previousSession: previousSession(),
+      sessionNumber: sessionNumber(),
     );
     updatedSession.domainEvents().publish(
           SessionExerciseRemovedDomainEvent.fromSessionAndSessionExercise(
@@ -241,6 +257,7 @@ class Session {
       endDate: DateTime.now(),
       notes: notes(),
       previousSession: previousSession(),
+      sessionNumber: sessionNumber(),
     );
     finishedSession.domainEvents().publish(
           SessionFinishedDomainEvent.fromSession(finishedSession),
@@ -271,6 +288,7 @@ class Session {
       endDate: newEndDate ?? endDate(),
       notes: newNotes,
       previousSession: previousSession(),
+      sessionNumber: sessionNumber(),
     );
     updatedSession.domainEvents().publish(
           SessionUpdatedDomainEvent.fromSession(updatedSession),

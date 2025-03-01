@@ -31,7 +31,7 @@ class Database {
     if (!exists) {
       return await sqflite.openDatabase(
         path,
-        version: 5,
+        version: 6,
         onCreate: (db, version) async {
           await createDatabase(db);
           await seedDatabase(db);
@@ -66,7 +66,8 @@ class Database {
         start_date TEXT NULL,
         end_date TEXT NULL,
         exercises TEXT NULL,
-        notes TEXT NULL
+        notes TEXT NULL,
+        session_number TEXT NULL
       )
     ''');
     await db.execute('''

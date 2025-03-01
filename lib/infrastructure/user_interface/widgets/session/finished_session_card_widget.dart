@@ -19,7 +19,7 @@ class FinishedSessionCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardWidget(
-      title: session.fullTitle(),
+      title: "Session #${session.sessionNumber().value()} - ${session.workout().name().value()}",
       subtitle: "Finished ${timeago.format(session.endDate()!)}",
       headerChild:
           session.notes() != null ? Text(session.notes()!.value()) : null,
@@ -83,16 +83,27 @@ class FinishedSessionCardWidget extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          sessionExercise
-                              .workoutExercise()
-                              .exercise()
-                              .name()
-                              .value(),
-                          style: TextStyle(
-                            color: AppColorScheme.onPrimary,
-                            fontSize: 13.0,
-                          ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: Icon(
+                                Icons.check,
+                                color: AppColorScheme.primary,
+                              ),
+                            ),
+                            Text(
+                              sessionExercise
+                                  .workoutExercise()
+                                  .exercise()
+                                  .name()
+                                  .value(),
+                              style: TextStyle(
+                                color: AppColorScheme.onPrimary,
+                                fontSize: 13.0,
+                              ),
+                            ),
+                          ],
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0),

@@ -1,6 +1,7 @@
 import 'package:overload/application/session/start_session_command/start_session_command.dart';
 import 'package:overload/domain/session/exception/session_already_ongoing_exception.dart';
 import 'package:overload/domain/session/session.dart';
+import 'package:overload/domain/session/session_number.dart';
 import 'package:overload/domain/session/session_repository_interface.dart';
 import 'package:overload/domain/shared/domain_event_bus_interface.dart';
 import 'package:overload/domain/workout/exception/workout_not_found_exception.dart';
@@ -31,7 +32,9 @@ class StartSessionCommandHandler {
     if (workout == null) {
       throw WorkoutNotFoundException();
     }
-    Session session = Session.startFromWorkout(workout);
+    Session? lastSession = await sessionRepository.findLastFinishedSession();
+    SessionNumber sessionNumber = SessionNumber.fromPreviousSessionNumber(lastSession?.sessionNumber());
+    Session session = Session.startFromWorkout(workout, sessionNumber);
     await sessionRepository.add(session);
     domainEventBus.publish(session.domainEvents());
     return session;

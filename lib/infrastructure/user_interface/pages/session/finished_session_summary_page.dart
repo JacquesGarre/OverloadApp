@@ -74,6 +74,18 @@ class FinishedSessionSummaryPageState
               ),
               Center(
                 child: Text(
+                  "Session #${session!.sessionNumber().value()}",
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
+              Center(
+                child: Text(
                   session!.workout().name().value(),
                   style: const TextStyle(
                     fontSize: 16.0,
@@ -98,7 +110,8 @@ class FinishedSessionSummaryPageState
                 height: 5.0,
               ),
               Center(
-                child: Text('Finished on ${DateFormat('EEEE, MMM d \'at\' h:mm a').format(session!.endDate() as DateTime)}',
+                child: Text(
+                  'Finished on ${DateFormat('EEEE, MMM d \'at\' h:mm a').format(session!.endDate() as DateTime)}',
                   style: TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w400,
