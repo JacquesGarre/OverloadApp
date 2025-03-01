@@ -14,10 +14,14 @@ class TableRow {
 
   TableRow({required this.cells, required this.checkable});
 
-  static List<TableRow> fromSets(Sets sets, bool checkable) {
+  static List<TableRow> fromSets(Sets sets, bool checkable, Sets? previousSets) {
     List<TableRow> rows = [];
     for (Set set in sets.value()) {
-      rows.add(fromSet(set, checkable));
+      Set? previousSet;
+      if (previousSets != null) {
+        previousSet = previousSets.findByIndex(set.index());
+      }
+      rows.add(fromSet(set, checkable, previousSet));
     }
     return rows;
   }
@@ -34,7 +38,7 @@ class TableRow {
     return false;
   }
 
-  static TableRow fromSet(Set set, bool checkable) {
+  static TableRow fromSet(Set set, bool checkable, Set? previousSet) {
     List<TableCellValue> cells = [];
     cells.add(
       TableCellValue(
@@ -43,7 +47,11 @@ class TableRow {
       ),
     );
     for (Metric metric in set.metrics().value()) {
-      cells.add(TableCellValue.fromMetric(metric));
+      Metric? previousMetric;
+      if (previousSet != null) {
+        previousMetric = previousSet.metrics().findByUnit(metric.unit());
+      }
+      cells.add(TableCellValue.fromMetric(metric, previousMetric));
     }
     if (checkable) {
       cells.add(TableCellValue.checkbox(set.isDone()));
@@ -60,7 +68,7 @@ class TableRow {
     cells.add(TableCellValue(value: lastIndex.value().toString(), type: TableCellType.text));
     Metrics metrics = Metrics.fromExercise(exercise);
     for (Metric metric in metrics.value()) {
-      cells.add(TableCellValue.fromMetric(metric));
+      cells.add(TableCellValue.fromMetric(metric, null));
     }
     if (checkable) {
       cells.add(TableCellValue.checkbox(false));

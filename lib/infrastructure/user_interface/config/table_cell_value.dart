@@ -9,10 +9,14 @@ class TableCellValue {
 
   TableCellValue({this.value, this.placeholder, required this.type});
 
-  static TableCellValue fromMetric(Metric metric) {
+  static TableCellValue fromMetric(Metric metric, Metric? previousMetric) {
+    String placeholder = metric.value() != null ? metric.value().toString() : metric.defaultValue().toString();
+    if (previousMetric != null && previousMetric.value() != null) {
+      placeholder = previousMetric.value().toString();
+    }
     return TableCellValue(
       value: metric.value()?.toString(),
-      placeholder: metric.value() != null ? metric.value().toString() : metric.defaultValue().toString(),
+      placeholder: placeholder,
       type: TableCellType.text
     );
   }

@@ -30,11 +30,17 @@ class SessionExerciseCardWidget extends StatefulWidget {
 
 class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
   late SessionExercise sessionExercise;
+  SessionExercise? previousExercise;
 
   @override
   void initState() {
     super.initState();
     sessionExercise = widget.sessionExercise;
+    if (widget.session.previousSession() != null) {
+      previousExercise = widget.session
+          .previousSession()!
+          .findSessionExercise(widget.sessionExercise.workoutExercise());
+    }
   }
 
   void _updateSets(Sets updatedSets) {
@@ -176,6 +182,7 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                     setsNumberSelector: true,
                     readonly: false,
                     onSetsUpdated: _updateSets,
+                    previousSets: previousExercise?.sets(),
                   ),
                   if (widget.sessionExercise.isDone() && widget.session.inProgress())
                     SessionExerciseCompletedWidget(sessionExercise: sessionExercise,),

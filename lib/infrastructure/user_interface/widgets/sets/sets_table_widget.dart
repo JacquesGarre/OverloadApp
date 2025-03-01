@@ -17,6 +17,7 @@ class SetsTableWidget extends StatefulWidget {
   final bool setsNumberSelector;
   final bool readonly;
   final void Function(Sets updatedSets) onSetsUpdated;
+  final Sets? previousSets;
 
   const SetsTableWidget({
     super.key,
@@ -26,6 +27,7 @@ class SetsTableWidget extends StatefulWidget {
     required this.setsNumberSelector,
     required this.onSetsUpdated,
     required this.readonly,
+    this.previousSets
   });
 
   @override
@@ -41,16 +43,21 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void initState() {
     super.initState();
     sets = widget.sets;
-    rows = config.TableRow.fromSets(sets, widget.checkable);
+    rows = config.TableRow.fromSets(sets, widget.checkable, widget.previousSets);
   }
 
   _updateRowsCount(int value) {
     if (value > rows.length) {
       SetIndex lastIndex = SetIndex.nextFromSetIndex(sets.lastSet()?.index());
       Set newSet = Set.fromSetIndexAndExercise(lastIndex, widget.exercise);
+
+      Set? previousSet;
+      if (widget.previousSets != null) {
+        previousSet = widget.previousSets!.findByIndex(newSet.index());
+      }
       setState(() {
         sets = sets.add(newSet);
-        rows.add(config.TableRow.fromSet(newSet, widget.checkable));
+        rows.add(config.TableRow.fromSet(newSet, widget.checkable, previousSet));
         widget.onSetsUpdated(sets);
       });
     }
