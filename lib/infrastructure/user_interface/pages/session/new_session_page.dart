@@ -41,6 +41,9 @@ class _NewSessionPageState extends State<NewSessionPage> {
     return PageWidget(
       title: NewSessionPage.title,
       child: ListPageWidget(
+        emptyListText:
+            "Looks like your workout list is taking a rest day! Add a new workout to get started.",
+        itemsCount: workoutProvider.workouts.length,
         list: ListView.separated(
           itemCount: workoutProvider.workouts.length,
           itemBuilder: (context, index) {

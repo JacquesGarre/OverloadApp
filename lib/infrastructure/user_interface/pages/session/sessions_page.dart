@@ -35,6 +35,9 @@ class _SessionsPageState extends State<SessionsPage> {
       context,
     );
     return ListPageWidget(
+      itemsCount: sessionProvider.sessions.length,
+      emptyListText:
+          "Looks like your session list is taking a rest day! Tap the start button to get started!",
       floatingActionButtonIcon: Icons.play_arrow,
       list: ListView.separated(
         itemCount: sessionProvider.sessions.length,

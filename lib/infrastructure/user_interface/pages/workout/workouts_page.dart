@@ -31,6 +31,9 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
     final WorkoutProvider workoutProvider =
         Provider.of<WorkoutProvider>(context);
     return ListPageWidget(
+      itemsCount: workoutProvider.workouts.length,
+      emptyListText:
+          "Looks like your workout list is taking a rest day! Add a new workout to get started.",
       list: ListView.separated(
         itemCount: workoutProvider.workouts.length,
         itemBuilder: (context, index) {

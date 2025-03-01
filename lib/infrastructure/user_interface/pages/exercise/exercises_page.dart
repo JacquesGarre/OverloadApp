@@ -32,6 +32,9 @@ class _ExercisesPageState extends State<ExercisesPage> {
       context,
     );
     return ListPageWidget(
+      itemsCount: exerciseProvider.exercises.length,
+      emptyListText:
+          "Looks like your exercises list is taking a rest day! Add a new exercise to get started.",
       list: ListView.separated(
         itemCount: exerciseProvider.exercises.length,
         itemBuilder: (context, index) {

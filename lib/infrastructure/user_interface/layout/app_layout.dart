@@ -26,7 +26,7 @@ class AppLayout extends StatefulWidget {
 
 class _AppLayoutState extends State<AppLayout> {
   late AppPageConfig _currentPage;
-  int _currentPageIndex = 0;
+  int _currentPageIndex = 1;
 
   final List<AppPageConfig> _pages = [
     AppPageConfig(
