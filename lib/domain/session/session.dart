@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/session/domain_events/session_deleted_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_exercise_added_domain_event.dart';
 import 'package:overload/domain/session/domain_events/session_exercise_removed_domain_event.dart';
@@ -303,4 +304,22 @@ class Session {
   String fullTitle() {
     return '${workout().name().value()} - ${DateFormat('MMM d, h:mm a').format(startDate())}';
   }
+
+  bool hasUnit(Unit unit) {
+    for(SessionExercise exercise in _exercises.value()) {
+      if (exercise.hasUnit(unit)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  num averageSpeed() {
+    return _exercises.averageSpeed();
+  }
+
+  num distance() {
+    return _exercises.distance();
+  }
+
 }

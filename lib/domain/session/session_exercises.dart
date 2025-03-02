@@ -133,4 +133,27 @@ class SessionExercises {
     }
     return null;
   }
+
+  num averageSpeed() {
+    num exercises = 0;
+    num speed = 0;
+    for (SessionExercise exercise in _value) {
+      if (exercise.averageSpeed() > 0) {
+        speed += exercise.averageSpeed();
+        exercises += 1;
+      }
+    }
+    if (speed == 0 || exercises == 0) {
+      return 0;
+    }
+    return speed/exercises;
+  }
+
+  num distance() {
+    num distance = 0;
+    for (SessionExercise exercise in _value) {
+        distance += exercise.distance();
+    }
+    return distance;
+  }
 }

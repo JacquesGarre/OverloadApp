@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/infrastructure/providers/user_provider.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
@@ -43,38 +44,68 @@ class _SessionStatsTableWidgetState extends State<SessionStatsTableWidget> {
                 fontSize: 12,
               ),
             ),
-            Text(
-              "Reps",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColorScheme.onLightBackground,
-                fontSize: 12,
+            if (widget.session.hasUnit(Unit.reps))
+              Text(
+                "Reps",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColorScheme.onLightBackground,
+                  fontSize: 12,
+                ),
               ),
-            ),
-            Text(
-              "Volume",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColorScheme.onLightBackground,
-                fontSize: 12,
+            if (widget.session.hasUnit(Unit.kgs))
+              Text(
+                "Volume",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColorScheme.onLightBackground,
+                  fontSize: 12,
+                ),
               ),
-            ),
+            if (widget.session.hasUnit(Unit.kmh))
+              Text(
+                "Average km/h",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColorScheme.onLightBackground,
+                  fontSize: 12,
+                ),
+              ),
+            if (widget.session.hasUnit(Unit.kms))
+              Text(
+                "Kms",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColorScheme.onLightBackground,
+                  fontSize: 12,
+                ),
+              ),
           ],
         ),
-        const TableRow(
+        TableRow(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 4.0,
             ),
-            SizedBox(
+            const SizedBox(
               height: 4.0,
             ),
-            SizedBox(
-              height: 4.0,
-            ),
-            SizedBox(
-              height: 4.0,
-            ),
+            if (widget.session.hasUnit(Unit.reps))
+              const SizedBox(
+                height: 4.0,
+              ),
+            if (widget.session.hasUnit(Unit.kgs))
+              const SizedBox(
+                height: 4.0,
+              ),
+            if (widget.session.hasUnit(Unit.kmh))
+              const SizedBox(
+                height: 4.0,
+              ),
+            if (widget.session.hasUnit(Unit.kms))
+              const SizedBox(
+                height: 4.0,
+              ),
           ],
         ),
         TableRow(
@@ -102,46 +133,88 @@ class _SessionStatsTableWidgetState extends State<SessionStatsTableWidget> {
                   )
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "${widget.session.finishedRepsCount()}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColorScheme.onPrimary,
-                    fontSize: 12,
+            if (widget.session.hasUnit(Unit.reps))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${widget.session.finishedRepsCount()}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColorScheme.onPrimary,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-                if (widget.session.previousSession() != null)
-                  ProgressIconWidget(
-                    currentValue: widget.session.finishedRepsCount(),
-                    previousValue:
-                        widget.session.previousSession()!.finishedRepsCount(),
+                  if (widget.session.previousSession() != null)
+                    ProgressIconWidget(
+                      currentValue: widget.session.finishedRepsCount(),
+                      previousValue:
+                          widget.session.previousSession()!.finishedRepsCount(),
+                    ),
+                ],
+              ),
+            if (widget.session.hasUnit(Unit.kgs))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${widget.session.finishedVolume(userProvider.user!.weight())} kgs",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColorScheme.onPrimary,
+                      fontSize: 12,
+                    ),
                   ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "${widget.session.finishedVolume(userProvider.user!.weight())} kgs",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColorScheme.onPrimary,
-                    fontSize: 12,
+                  if (widget.session.previousSession() != null)
+                    ProgressIconWidget(
+                      currentValue: widget.session
+                          .finishedVolume(userProvider.user!.weight()),
+                      previousValue: widget.session
+                          .previousSession()!
+                          .finishedVolume(userProvider.user!.weight()),
+                    ),
+                ],
+              ),
+            if (widget.session.hasUnit(Unit.kmh))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${widget.session.averageSpeed()} km/h",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColorScheme.onPrimary,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-                if (widget.session.previousSession() != null)
-                  ProgressIconWidget(
-                    currentValue: widget.session
-                        .finishedVolume(userProvider.user!.weight()),
-                    previousValue: widget.session
-                        .previousSession()!
-                        .finishedVolume(userProvider.user!.weight()),
+                  if (widget.session.previousSession() != null)
+                    ProgressIconWidget(
+                      currentValue: widget.session.averageSpeed(),
+                      previousValue:
+                          widget.session.previousSession()!.averageSpeed(),
+                    ),
+                ],
+              ),
+            if (widget.session.hasUnit(Unit.kms))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "${widget.session.distance()} kms",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColorScheme.onPrimary,
+                      fontSize: 12,
+                    ),
                   ),
-              ],
-            ),
+                  if (widget.session.previousSession() != null)
+                    ProgressIconWidget(
+                      currentValue: widget.session.distance(),
+                      previousValue:
+                          widget.session.previousSession()!.distance(),
+                    ),
+                ],
+              ),
           ],
         ),
       ],
