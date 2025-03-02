@@ -16,11 +16,15 @@ class SessionExerciseCardWidget extends StatefulWidget {
   final void Function(SessionExercise updatedSessionExercise)
       onSessionExerciseUpdated;
 
+  final void Function(SessionExercise updatedSessionExercise)
+      onSetDone;
+
   const SessionExerciseCardWidget({
     super.key,
     required this.sessionExercise,
     required this.session,
     required this.onSessionExerciseUpdated,
+    required this.onSetDone
   });
 
   @override
@@ -208,6 +212,8 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                     setsNumberSelector: true,
                     readonly: false,
                     onSetsUpdated: _updateSets,
+                    onSetDone: widget.onSetDone,
+                    sessionExercise: sessionExercise,
                     previousSets: previousExercise?.sets(),
                   ),
                   if (widget.sessionExercise.isDone() &&

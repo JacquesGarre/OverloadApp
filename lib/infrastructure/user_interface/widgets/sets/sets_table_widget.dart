@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/domain/exercise/exercise.dart';
+import 'package:overload/domain/session/session_exercise/session_exercise.dart';
 import 'package:overload/domain/workout/set/set_index.dart';
 import 'package:overload/domain/workout/sets.dart';
 import 'package:overload/domain/workout/set/set.dart';
@@ -17,7 +18,9 @@ class SetsTableWidget extends StatefulWidget {
   final bool setsNumberSelector;
   final bool readonly;
   final void Function(Sets updatedSets) onSetsUpdated;
+  final void Function(SessionExercise updatedSessionExercise)? onSetDone;
   final Sets? previousSets;
+  final SessionExercise? sessionExercise;
 
   const SetsTableWidget({
     super.key,
@@ -27,7 +30,9 @@ class SetsTableWidget extends StatefulWidget {
     required this.setsNumberSelector,
     required this.onSetsUpdated,
     required this.readonly,
-    this.previousSets
+    this.previousSets,
+    this.onSetDone,
+    this.sessionExercise,
   });
 
   @override
@@ -43,7 +48,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
   void initState() {
     super.initState();
     sets = widget.sets;
-    rows = config.TableRow.fromSets(sets, widget.checkable, widget.previousSets);
+    rows =
+        config.TableRow.fromSets(sets, widget.checkable, widget.previousSets);
   }
 
   _updateRowsCount(int value) {
@@ -57,7 +63,8 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
       }
       setState(() {
         sets = sets.add(newSet);
-        rows.add(config.TableRow.fromSet(newSet, widget.checkable, previousSet));
+        rows.add(
+            config.TableRow.fromSet(newSet, widget.checkable, previousSet));
         widget.onSetsUpdated(sets);
       });
     }
@@ -74,8 +81,18 @@ class _SetsTableWidgetState extends State<SetsTableWidget> {
     config.TableRow row = rows[rowIndex];
     int setIndexValue = int.tryParse(row.cells[0].value ?? '') ?? 0;
     setState(() {
+      Set? setBefore = sets.findByIndex(SetIndex(value: setIndexValue));
       sets = sets.update(setIndexValue, cellIndex, value);
       widget.onSetsUpdated(sets);
+      Set? setAfter = sets.findByIndex(SetIndex(value: setIndexValue));
+      if (setBefore != null &&
+          !setBefore.isDone() &&
+          setAfter != null &&
+          setAfter.isDone() &&
+          widget.onSetDone != null &&
+          widget.sessionExercise != null) {
+        widget.onSetDone!(widget.sessionExercise!);
+      }
     });
   }
 

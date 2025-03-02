@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/session/id.dart';
 import 'package:overload/domain/session/session.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise.dart';
@@ -11,6 +12,7 @@ import 'package:overload/infrastructure/user_interface/pages/session/add_session
 import 'package:overload/infrastructure/user_interface/pages/session/finished_session_summary_page.dart';
 import 'package:overload/infrastructure/user_interface/pages/session/sessions_page.dart';
 import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.dart';
+import 'package:overload/infrastructure/user_interface/widgets/session/rest_countdown_sheet_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_exercise_card_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_notes_form_widget.dart';
 import 'package:overload/infrastructure/user_interface/widgets/session/session_stats_table_widget.dart';
@@ -69,6 +71,14 @@ class SessionPageState extends State<SessionPage> {
     }
   }
 
+  Future<void> _onSetDone(SessionExercise sessionExercise) async {
+    Logger().e("Set done!");
+    if (sessionExercise.workoutExercise().timer() == null) {
+      return;
+    }
+    showRestCountdown(context, sessionExercise.workoutExercise().timer()!.duration());
+  }
+
   void _navigateToAddSessionExercisePage() async {
     SessionExerciseIndex index = session!.sessionExercises().last() != null
         ? session!.sessionExercises().last()!.index().next()
@@ -102,6 +112,15 @@ class SessionPageState extends State<SessionPage> {
         ExceptionHandler().handleException(context, e);
       }
     }
+  }
+
+  void showRestCountdown(BuildContext context, Duration initialRestTime) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (context) => RestCountdownSheetWidget(initialRestTime: initialRestTime),
+    );
   }
 
   @override
@@ -280,6 +299,7 @@ class SessionPageState extends State<SessionPage> {
                     sessionExercise: sessionExercise,
                     session: session!,
                     onSessionExerciseUpdated: _updateSessionExercise,
+                    onSetDone: _onSetDone,
                   );
                 },
               ),
