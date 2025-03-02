@@ -99,6 +99,32 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                                   color: AppColorScheme.primary,
                                 ),
                               ),
+                            if (widget.sessionExercise
+                                    .workoutExercise()
+                                    .timer() !=
+                                null)
+                              Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.schedule,
+                                        color: AppColorScheme.primary,
+                                      ),
+                                      const SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Text(
+                                        widget.sessionExercise
+                                            .workoutExercise()
+                                            .timer()!
+                                            .display(),
+                                        style: TextStyle(
+                                          color: AppColorScheme.primary,
+                                        ),
+                                      )
+                                    ],
+                                  )),
                           ],
                         ),
                       ),
@@ -184,8 +210,11 @@ class _SessionExerciseCardWidgetState extends State<SessionExerciseCardWidget> {
                     onSetsUpdated: _updateSets,
                     previousSets: previousExercise?.sets(),
                   ),
-                  if (widget.sessionExercise.isDone() && widget.session.inProgress())
-                    SessionExerciseCompletedWidget(sessionExercise: sessionExercise,),
+                  if (widget.sessionExercise.isDone() &&
+                      widget.session.inProgress())
+                    SessionExerciseCompletedWidget(
+                      sessionExercise: sessionExercise,
+                    ),
                 ],
               )
             ],
