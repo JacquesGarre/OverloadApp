@@ -5,6 +5,7 @@ import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/workout/id.dart' as workout;
 import 'package:overload/domain/workout/workout_exercise/id.dart';
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
+import 'package:overload/domain/workout/workout_exercise/timer.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
@@ -18,6 +19,7 @@ class GoalsPage extends StatefulWidget {
   final SetsCount setsCount;
   final Notes? notes;
   final WorkoutExercise? workoutExercise;
+  final Timer? timer;
 
   const GoalsPage({
     super.key,
@@ -27,6 +29,7 @@ class GoalsPage extends StatefulWidget {
     required this.setsCount,
     this.notes,
     this.workoutExercise,
+    this.timer,
   });
 
   static const String title = 'Set your goals';
@@ -58,6 +61,7 @@ class _GoalsPageState extends State<GoalsPage> {
           goals: widget.workoutExercise != null
               ? widget.workoutExercise!.goals()
               : Goals.empty(),
+          timer: widget.timer,
         );
   }
 

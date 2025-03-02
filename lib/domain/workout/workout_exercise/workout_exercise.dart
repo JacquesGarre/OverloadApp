@@ -18,16 +18,16 @@ class WorkoutExercise {
   final Goals? _goals;
   final Timer? _timer;
 
-  WorkoutExercise(
-      {required Id id,
-      required workout.Id workoutId,
-      required WorkoutExerciseIndex index,
-      required Exercise exercise,
-      required SetsCount setsCount,
-      Notes? notes,
-      Goals? goals,
-      Timer? timer})
-      : _id = id,
+  WorkoutExercise({
+    required Id id,
+    required workout.Id workoutId,
+    required WorkoutExerciseIndex index,
+    required Exercise exercise,
+    required SetsCount setsCount,
+    Notes? notes,
+    Goals? goals,
+    Timer? timer,
+  })  : _id = id,
         _workoutId = workoutId,
         _index = index,
         _exercise = exercise,

@@ -3,6 +3,7 @@ import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
+import 'package:overload/domain/workout/workout_exercise/timer.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 import 'package:overload/infrastructure/user_interface/pages/workout/goals_page.dart';
@@ -10,6 +11,7 @@ import 'package:overload/infrastructure/user_interface/theme/app_color_scheme.da
 import 'package:overload/infrastructure/user_interface/widgets/exercise/exercise_dropdown_widget.dart';
 import 'package:number_selector/number_selector.dart';
 import 'package:overload/infrastructure/user_interface/widgets/shared/floating_centered_button_widget.dart';
+import 'package:overload/infrastructure/user_interface/widgets/shared/rest_time_picker_widget.dart';
 
 class WorkoutExerciseFormWidget extends StatefulWidget {
   final Id workoutId;
@@ -36,6 +38,8 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
   Notes? notes;
   SetsCount setsCount = SetsCount(value: 1);
   int numberOfSets = 1;
+  Duration restTime = const Duration(minutes: 1, seconds: 00);
+  bool _trackRestTime = false;
 
   @override
   void initState() {
@@ -53,6 +57,19 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
         ? widget.workoutExercise!.notes()
         : null;
     exercise = widget.workoutExercise?.exercise();
+    restTime = widget.workoutExercise != null &&
+            widget.workoutExercise!.timer() != null
+        ? Duration(seconds: widget.workoutExercise!.timer()!.value())
+        : const Duration(minutes: 1, seconds: 00);
+  }
+
+  void pickRestTime() async {
+    Duration? pickedTime = await showRestTimePicker(context, restTime);
+    if (pickedTime != null) {
+      setState(() {
+        restTime = pickedTime;
+      });
+    }
   }
 
   @override
@@ -87,6 +104,7 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
           setsCount: setsCount,
           notes: notes,
           workoutExercise: widget.workoutExercise,
+          timer: _trackRestTime ? Timer(value: restTime.inSeconds) : null,
         ),
       ),
     );
@@ -135,6 +153,39 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
                   _onChange(exercise, number);
                 },
               ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Track rest time"),
+                  Switch(
+                    value: _trackRestTime,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _trackRestTime = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              if (_trackRestTime)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Rest time"),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                            AppColorScheme.lightBackground),
+                        foregroundColor:
+                            WidgetStatePropertyAll(AppColorScheme.onPrimary),
+                      ),
+                      onPressed: pickRestTime,
+                      child: Text(
+                          "${restTime.inMinutes > 0 ? "${restTime.inMinutes} min${restTime.inMinutes > 1 ? "s" : ""}" : ""} ${restTime.inSeconds % 60 > 0 ? "${restTime.inSeconds % 60} secs" : ""}"),
+                    ),
+                  ],
+                ),
               const SizedBox(height: 16),
               const Text("Notes"),
               const SizedBox(height: 5.0),
