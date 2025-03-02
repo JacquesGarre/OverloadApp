@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/application/session/add_session_exercise_command/add_session_exercise_command.dart';
 import 'package:overload/application/session/add_session_exercise_command/add_session_exercise_command_handler.dart';
 import 'package:overload/application/session/delete_session_command/delete_session_command.dart';
@@ -53,8 +54,10 @@ class SessionProvider with ChangeNotifier {
   Session? _currentSession;
   Session? get currentSession => _currentSession;
 
-  List _sessions = [];
-  List get sessions => _sessions;
+  List<Session> _sessions = [];
+  List<Session> get sessions => _sessions;
+
+  int limit = 25;
 
   Future<void> loadCurrentSession() async {
     GetCurrentSessionQuery query = GetCurrentSessionQuery();
@@ -63,8 +66,21 @@ class SessionProvider with ChangeNotifier {
   }
 
   Future<void> loadSessions() async {
-    GetSessionsQuery query = GetSessionsQuery();
+    GetSessionsQuery query = GetSessionsQuery(
+      limit: limit,
+      offset: 0,
+    );
     _sessions = await getSessionsQueryHandler.invoke(query);
+    notifyListeners();
+  }
+
+  Future<void> loadMoreSessions(int page) async {
+    GetSessionsQuery query = GetSessionsQuery(
+      limit: limit,
+      offset: limit * page,
+    );
+    List<Session> fetchedSessions = await getSessionsQueryHandler.invoke(query);
+    _sessions.addAll(fetchedSessions);
     notifyListeners();
   }
 

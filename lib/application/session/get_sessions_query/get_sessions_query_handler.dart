@@ -8,7 +8,7 @@ class GetSessionsQueryHandler {
   GetSessionsQueryHandler({required this.repository});
 
   Future<List<Session>> invoke(GetSessionsQuery query) async {
-    List<Session> sessions = await repository.findAll();
+    List<Session> sessions = await repository.findAll(query.limit, query.offset);
     return sessions;
   }
 }

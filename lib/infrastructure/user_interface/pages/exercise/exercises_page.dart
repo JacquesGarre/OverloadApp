@@ -15,9 +15,14 @@ class ExercisesPage extends StatefulWidget {
 }
 
 class _ExercisesPageState extends State<ExercisesPage> {
+  late ScrollController scrollController;
+  bool loading = false;
+  int currentPage = 1;
+
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController()..addListener(_onScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ExerciseProvider>(
         context,
@@ -26,32 +31,52 @@ class _ExercisesPageState extends State<ExercisesPage> {
     });
   }
 
+  void _onScroll() async {
+    if (scrollController.position.extentAfter == 0 && !loading) {
+      setState(() {
+        loading = true;
+      });
+      final ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(
+        context,
+        listen: false,
+      );
+      await exerciseProvider.loadMoreExercises(currentPage);
+      setState(() {
+        currentPage++;
+        loading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final ExerciseProvider exerciseProvider = Provider.of<ExerciseProvider>(
       context,
     );
-    return ListPageWidget(
-      itemsCount: exerciseProvider.exercises.length,
-      emptyListText:
-          "Looks like your exercises list is taking a rest day! Add a new exercise to get started.",
-      list: ListView.separated(
-        itemCount: exerciseProvider.exercises.length,
-        itemBuilder: (context, index) {
-          return ExerciseCardWidget(
-            exercise: exerciseProvider.exercises[index],
+    return Scrollbar(
+      child: ListPageWidget(
+        itemsCount: exerciseProvider.exercises.length,
+        emptyListText:
+            "Looks like your exercises list is taking a rest day! Add a new exercise to get started.",
+        list: ListView.separated(
+          controller: scrollController,
+          itemCount: exerciseProvider.exercises.length,
+          itemBuilder: (context, index) {
+            return ExerciseCardWidget(
+              exercise: exerciseProvider.exercises[index],
+            );
+          },
+          separatorBuilder: (context, index) => const SizedBox(height: 8),
+        ),
+        onFloatingActionButtonPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddExercisePage(),
+            ),
           );
         },
-        separatorBuilder: (context, index) => const SizedBox(height: 8),
       ),
-      onFloatingActionButtonPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const AddExercisePage(),
-          ),
-        );
-      },
     );
   }
 }

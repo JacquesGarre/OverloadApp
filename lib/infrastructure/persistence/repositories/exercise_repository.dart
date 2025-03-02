@@ -5,7 +5,6 @@ import 'package:overload/domain/exercise/name.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ExerciseRepository implements ExerciseRepositoryInterface {
-
   final Database db;
 
   static const String table = 'exercises';
@@ -27,10 +26,14 @@ class ExerciseRepository implements ExerciseRepositoryInterface {
   }
 
   @override
-  Future<List<Exercise>> findAll() async {
+  Future<List<Exercise>> findAll([int? limit, int? offset]) async {
     List<Exercise> exercises = [];
-    List<Map<String, dynamic>> exercisesJsons = await db.query(table);
-    for(Map<String, dynamic> exerciseJson in exercisesJsons) {
+    List<Map<String, dynamic>> exercisesJsons = await db.query(
+      table,
+      limit: limit,
+      offset: offset,
+    );
+    for (Map<String, dynamic> exerciseJson in exercisesJsons) {
       exercises.add(Exercise.fromJson(exerciseJson));
     }
     return exercises;
@@ -52,12 +55,12 @@ class ExerciseRepository implements ExerciseRepositoryInterface {
       table,
       where: 'id = ?',
       whereArgs: [id.toString()],
-    );    
-    if(exercisesJsons.isEmpty){
+    );
+    if (exercisesJsons.isEmpty) {
       return null;
     }
     List<Exercise> exercises = [];
-    for(Map<String, Object?> exerciseJson in exercisesJsons) {
+    for (Map<String, Object?> exerciseJson in exercisesJsons) {
       exercises.add(Exercise.fromJson(exerciseJson));
     }
     return exercises.first;
@@ -69,12 +72,12 @@ class ExerciseRepository implements ExerciseRepositoryInterface {
       table,
       where: 'name = ?',
       whereArgs: [name.value()],
-    );    
-    if(exercisesJsons.isEmpty){
+    );
+    if (exercisesJsons.isEmpty) {
       return null;
     }
     List<Exercise> exercises = [];
-    for(Map<String, Object?> exerciseJson in exercisesJsons) {
+    for (Map<String, Object?> exerciseJson in exercisesJsons) {
       exercises.add(Exercise.fromJson(exerciseJson));
     }
     return exercises.first;

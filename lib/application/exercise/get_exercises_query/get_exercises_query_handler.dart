@@ -8,7 +8,10 @@ class GetExercisesQueryHandler {
   GetExercisesQueryHandler({required this.repository});
 
   Future<List<Exercise>> invoke(GetExercisesQuery query) async {
-    List<Exercise> exercises = await repository.findAll();
+    List<Exercise> exercises = await repository.findAll(
+      query.limit,
+      query.offset,
+    );
     return exercises;
   }
 }

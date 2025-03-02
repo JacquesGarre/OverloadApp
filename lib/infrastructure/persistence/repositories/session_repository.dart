@@ -25,11 +25,13 @@ class SessionRepository implements SessionRepositoryInterface {
   }
 
   @override
-  Future<List<Session>> findAll() async {
+  Future<List<Session>> findAll([int? limit, int? offset]) async {
     List<Session> sessions = [];
     List<Map<String, dynamic>> sessionsJsons = await db.query(
       table,
       orderBy: 'end_date IS NULL DESC, end_date DESC',
+      limit: limit,
+      offset: offset,
     );
     for (Map<String, dynamic> sessionJson in sessionsJsons) {
       Session session = Session.fromJson(sessionJson);

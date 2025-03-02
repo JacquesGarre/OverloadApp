@@ -8,5 +8,5 @@ abstract class ExerciseRepositoryInterface {
   Future<void> delete(Exercise exercise);
   Future<Exercise?> ofId(Id id);
   Future<Exercise?> ofName(Name name);
-  Future<List<Exercise>> findAll();
+  Future<List<Exercise>> findAll([int? limit, int? offset]);
 }

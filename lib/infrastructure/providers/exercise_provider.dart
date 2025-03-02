@@ -25,9 +25,24 @@ class ExerciseProvider with ChangeNotifier {
   List<Exercise> _exercises = [];
   List<Exercise> get exercises => _exercises;
 
+  int limit = 25;
+
   Future<void> loadExercises() async {
-    GetExercisesQuery query = GetExercisesQuery();
+    GetExercisesQuery query = GetExercisesQuery(
+      limit: limit,
+      offset: 0,
+    );
     _exercises = await getExercisesQueryHandler.invoke(query);
+    notifyListeners();
+  }
+
+  Future<void> loadMoreExercises(int page) async {
+    GetExercisesQuery query = GetExercisesQuery(
+      limit: limit,
+      offset: limit * page,
+    );
+    List<Exercise> fetchedExercises = await getExercisesQueryHandler.invoke(query);
+    _exercises.addAll(fetchedExercises);
     notifyListeners();
   }
 
