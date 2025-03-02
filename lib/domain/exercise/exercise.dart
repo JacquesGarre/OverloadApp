@@ -6,6 +6,7 @@ import 'package:overload/domain/exercise/domain_events/exercise_updated_domain_e
 import 'package:overload/domain/exercise/id.dart';
 import 'package:overload/domain/exercise/is_body_weight_exercise.dart';
 import 'package:overload/domain/exercise/name.dart';
+import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/exercise/units.dart';
 import 'package:overload/domain/shared/domain_event_collection.dart';
 
@@ -46,6 +47,10 @@ class Exercise {
 
   IsBodyWeightExercise isBodyWeightExercise() {
     return _isBodyWeightExercise;
+  }
+
+  bool hasUnit(Unit unit) {
+    return _units.hasUnit(unit);
   }
 
   static Exercise create(Name name, Units units, IsBodyWeightExercise isBodyWeightExercise) {

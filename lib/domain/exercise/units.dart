@@ -42,4 +42,14 @@ class Units {
       throw DuplicateExerciseUnitException();
     }
   }
+
+  bool hasUnit(Unit unit) {
+    for (Unit existingUnit in value()) {
+      if(unit.equals(existingUnit)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

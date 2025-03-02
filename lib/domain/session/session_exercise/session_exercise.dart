@@ -1,3 +1,4 @@
+import 'package:overload/domain/exercise/unit.dart';
 import 'package:overload/domain/session/session_exercise/session_exercise_index.dart';
 import 'package:overload/domain/user/weight.dart';
 import 'package:overload/domain/shared/notes.dart';
@@ -96,7 +97,7 @@ class SessionExercise {
 
   int finishedSetsCount() {
     int count = 0;
-    for(Set set in _sets.value()) {
+    for (Set set in _sets.value()) {
       if (set.isDone()) {
         count += 1;
       }
@@ -106,9 +107,10 @@ class SessionExercise {
 
   num finishedVolume(Weight userWeight) {
     num volume = 0;
-    for(Set set in _sets.value()) {
+    for (Set set in _sets.value()) {
       if (set.isDone()) {
-        volume += set.finishedVolume(_workoutExercise.exercise().isBodyWeightExercise(), userWeight);
+        volume += set.finishedVolume(
+            _workoutExercise.exercise().isBodyWeightExercise(), userWeight);
       }
     }
     return volume;
@@ -116,11 +118,35 @@ class SessionExercise {
 
   num finishedRepsCount() {
     num reps = 0;
-    for(Set set in _sets.value()) {
+    for (Set set in _sets.value()) {
       if (set.isDone()) {
         reps += set.finishedRepsCount();
       }
     }
     return reps;
+  }
+
+  bool hasUnit(Unit unit) {
+    return _workoutExercise.hasUnit(unit);
+  }
+
+  num averageSpeed() {
+    num speed = 0;
+    for (Set set in _sets.value()) {
+      if (set.isDone()) {
+        speed += set.speed();
+      }
+    }
+    return speed / _sets.count();
+  }
+
+  num distance() {
+    num distance = 0;
+    for (Set set in _sets.value()) {
+      if (set.isDone()) {
+        distance += set.distance();
+      }
+    }
+    return distance;
   }
 }

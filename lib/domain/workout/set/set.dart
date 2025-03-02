@@ -96,4 +96,26 @@ class Set {
     }
     return repsMetric.value()!;
   }
+
+  num speed() {
+    if (!_isDone) {
+      return 0;
+    }
+    Metric? speedMetric = _metrics.findByUnit(Unit.kmh);
+    if (speedMetric == null || speedMetric.value() == null) {
+      return 0;
+    }
+    return speedMetric.value()!;
+  }
+
+  num distance() {
+    if (!_isDone) {
+      return 0;
+    }
+    Metric? distanceMetric = _metrics.findByUnit(Unit.kms);
+    if (distanceMetric == null || distanceMetric.value() == null) {
+      return 0;
+    }
+    return distanceMetric.value()!;
+  }
 }
