@@ -98,6 +98,7 @@ class _GoalsPageState extends State<GoalsPage> {
                     setsCount: widget.setsCount,
                     notes: widget.notes,
                     goals: goals,
+                    timer: widget.timer,
                   );
                   Navigator.pop(context, workoutExercise);
                 },

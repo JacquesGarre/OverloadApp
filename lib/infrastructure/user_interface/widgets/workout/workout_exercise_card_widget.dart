@@ -85,24 +85,39 @@ class _WorkoutExerciseCardWidgetState extends State<WorkoutExerciseCardWidget> {
                             padding:
                                 const EdgeInsets.fromLTRB(6.0, 5.0, 6.0, 5.0),
                             child: Text(
-                              workoutExercise.exercise().name().value(),
+                              "${workoutExercise.setsCount().value()} X ${workoutExercise.exercise().name().value()}",
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(0.0, 5.0, 6.0, 5.0),
-                            child: Text(
-                              "(${workoutExercise.setsCount().value()} set${workoutExercise.setsCount().value() > 1 ? 's' : ''})",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                          if (workoutExercise.timer() != null)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                0.0,
+                                5.0,
+                                6.0,
+                                5.0,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.schedule,
+                                    color: AppColorScheme.primary,
+                                  ),
+                                  const SizedBox(
+                                    width: 5.0,
+                                  ),
+                                  Text(
+                                    workoutExercise.timer()!.display(),
+                                    style: TextStyle(
+                                      color: AppColorScheme.primary,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
                         ],
                       ),
                       if (workoutExercise.notes() != null)

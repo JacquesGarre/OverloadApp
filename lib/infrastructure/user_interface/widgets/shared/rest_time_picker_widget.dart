@@ -15,17 +15,23 @@ Future<Duration?> showRestTimePicker(
         children: [
           SizedBox(
             height: 200,
-            child: CupertinoTimerPicker(
-              backgroundColor: AppColorScheme.lightBackground,
-              mode: CupertinoTimerPickerMode.ms, 
-              initialTimerDuration: initialDuration,
-              onTimerDurationChanged: (Duration newDuration) {
-                selectedDuration = newDuration;
-              },
+            child: CupertinoTheme(
+              data: const CupertinoThemeData(
+                brightness: Brightness.dark, 
+              ),
+              child: CupertinoTimerPicker(
+                backgroundColor: AppColorScheme.lightBackground,
+                mode: CupertinoTimerPickerMode.ms,
+                initialTimerDuration: initialDuration,
+                onTimerDurationChanged: (Duration newDuration) {
+                  selectedDuration = newDuration;
+                },
+              ),
             ),
           ),
           TextButton(
-            child: const Text("Done"),
+            child:
+                Text("Done", style: TextStyle(color: AppColorScheme.primary)),
             onPressed: () => Navigator.pop(context, selectedDuration),
           ),
         ],

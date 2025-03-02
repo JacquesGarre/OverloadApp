@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:overload/domain/exercise/exercise.dart';
 import 'package:overload/domain/workout/id.dart';
 import 'package:overload/domain/shared/notes.dart';
@@ -61,6 +62,10 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
             widget.workoutExercise!.timer() != null
         ? Duration(seconds: widget.workoutExercise!.timer()!.value())
         : const Duration(minutes: 1, seconds: 00);
+    if (widget.workoutExercise != null &&
+        widget.workoutExercise!.timer() != null) {
+      _trackRestTime = true;
+    }
   }
 
   void pickRestTime() async {
@@ -93,7 +98,10 @@ class _WorkoutExerciseFormWidgetState extends State<WorkoutExerciseFormWidget> {
   }
 
   void _navigateToAddGoalsPage(
-      Exercise exercise, SetsCount setsCount, Notes? notes) async {
+    Exercise exercise,
+    SetsCount setsCount,
+    Notes? notes,
+  ) async {
     WorkoutExercise? workoutExercise = await Navigator.push(
       context,
       MaterialPageRoute(
