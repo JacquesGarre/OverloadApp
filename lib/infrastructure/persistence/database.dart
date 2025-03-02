@@ -1,21 +1,4 @@
 import 'dart:async';
-import 'package:overload/domain/exercise/exercise.dart';
-import 'package:overload/domain/exercise/id.dart';
-import 'package:overload/domain/exercise/is_body_weight_exercise.dart';
-import 'package:overload/domain/workout/id.dart' as workout_id;
-import 'package:overload/domain/workout/name.dart' as workout_name;
-import 'package:overload/domain/shared/notes.dart';
-import 'package:overload/domain/workout/workout_exercise/id.dart'
-    as workout_exercise_id;
-import 'package:overload/domain/exercise/name.dart';
-import 'package:overload/domain/exercise/unit.dart';
-import 'package:overload/domain/exercise/units.dart';
-import 'package:overload/domain/shared/domain_event_collection.dart';
-import 'package:overload/domain/workout/workout.dart';
-import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
-import 'package:overload/domain/workout/workout_exercise/workout_exercise.dart';
-import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
-import 'package:overload/domain/workout/workout_exercises.dart';
 import 'package:overload/infrastructure/persistence/repositories/exercise_repository.dart';
 import 'package:overload/infrastructure/persistence/repositories/session_repository.dart';
 import 'package:overload/infrastructure/persistence/repositories/user_repository.dart';
@@ -34,7 +17,6 @@ class Database {
         version: 6,
         onCreate: (db, version) async {
           await createDatabase(db);
-          await seedDatabase(db);
         },
       );
     }
@@ -88,127 +70,5 @@ class Database {
         workout_weekly_days TEXT NULL
       )
     ''');
-  }
-
-  static FutureOr<void> seedDatabase(sqflite.Database db) async {
-    // Create exercises
-    ExerciseRepository exerciseRepository = ExerciseRepository(db: db);
-    List<Exercise> exercises = [
-      Exercise(
-        domainEvents: DomainEventsCollection(),
-        id: Id.create(),
-        name: Name.fromString("Pull-ups"),
-        units: Units.fromUnitList([Unit.reps]),
-        isBodyWeightExercise: IsBodyWeightExercise(value: true),
-      ),
-      Exercise(
-        domainEvents: DomainEventsCollection(),
-        id: Id.create(),
-        name: Name.fromString("Dips"),
-        units: Units.fromUnitList([Unit.reps]),
-        isBodyWeightExercise: IsBodyWeightExercise(value: true),
-      ),
-      Exercise(
-        domainEvents: DomainEventsCollection(),
-        id: Id.create(),
-        name: Name.fromString("Chest press"),
-        units: Units.fromUnitList([Unit.reps, Unit.kgs]),
-        isBodyWeightExercise: IsBodyWeightExercise(value: false),
-      ),
-      Exercise(
-        domainEvents: DomainEventsCollection(),
-        id: Id.create(),
-        name: Name.fromString("Shoulder press"),
-        units: Units.fromUnitList([Unit.reps, Unit.kgs]),
-        isBodyWeightExercise: IsBodyWeightExercise(value: false),
-      ),
-      Exercise(
-        domainEvents: DomainEventsCollection(),
-        id: Id.create(),
-        name: Name.fromString("Biceps curls"),
-        units: Units.fromUnitList([Unit.reps, Unit.kgs]),
-        isBodyWeightExercise: IsBodyWeightExercise(value: false),
-      ),
-      Exercise(
-        domainEvents: DomainEventsCollection(),
-        id: Id.create(),
-        name: Name.fromString("Lat pulldown"),
-        units: Units.fromUnitList([Unit.reps, Unit.kgs]),
-        isBodyWeightExercise: IsBodyWeightExercise(value: false),
-      ),
-      Exercise(
-        domainEvents: DomainEventsCollection(),
-        id: Id.create(),
-        name: Name.fromString("Row"),
-        units: Units.fromUnitList([Unit.reps, Unit.kgs]),
-        isBodyWeightExercise: IsBodyWeightExercise(value: false),
-      ),
-    ];
-    for (Exercise exercise in exercises) {
-      await exerciseRepository.add(exercise);
-    }
-
-    // Create workout
-    WorkoutRepository workoutRepository = WorkoutRepository(db: db);
-    workout_id.Id workoutId = workout_id.Id.create();
-    Workout workout = Workout(
-      domainEvents: DomainEventsCollection(),
-      id: workoutId,
-      name: workout_name.Name.fromString("Full body"),
-      notes: Notes.fromString("Focus on a lot of reps"),
-      exercises: WorkoutExercises(
-        value: [
-          WorkoutExercise(
-            id: workout_exercise_id.Id.create(),
-            workoutId: workoutId,
-            index: WorkoutExerciseIndex(value: 1),
-            exercise: exercises[0],
-            setsCount: SetsCount(value: 3),
-            notes: Notes.fromString("Focus on a lot of reps"),
-          ),
-          WorkoutExercise(
-            id: workout_exercise_id.Id.create(),
-            workoutId: workoutId,
-            index: WorkoutExerciseIndex(value: 2),
-            exercise: exercises[1],
-            setsCount: SetsCount(value: 3),
-            notes: Notes.fromString("Focus on a lot of reps"),
-          ),
-          WorkoutExercise(
-            id: workout_exercise_id.Id.create(),
-            workoutId: workoutId,
-            index: WorkoutExerciseIndex(value: 3),
-            exercise: exercises[2],
-            setsCount: SetsCount(value: 3),
-            notes: Notes.fromString("Focus on a lot of reps"),
-          ),
-          WorkoutExercise(
-            id: workout_exercise_id.Id.create(),
-            workoutId: workoutId,
-            index: WorkoutExerciseIndex(value: 4),
-            exercise: exercises[3],
-            setsCount: SetsCount(value: 3),
-            notes: Notes.fromString("Focus on a lot of reps"),
-          ),
-          WorkoutExercise(
-            id: workout_exercise_id.Id.create(),
-            workoutId: workoutId,
-            index: WorkoutExerciseIndex(value: 5),
-            exercise: exercises[4],
-            setsCount: SetsCount(value: 3),
-            notes: Notes.fromString("Focus on a lot of reps"),
-          ),
-          WorkoutExercise(
-            id: workout_exercise_id.Id.create(),
-            workoutId: workoutId,
-            index: WorkoutExerciseIndex(value: 6),
-            exercise: exercises[5],
-            setsCount: SetsCount(value: 3),
-            notes: Notes.fromString("Focus on a lot of reps"),
-          ),
-        ],
-      ),
-    );
-    await workoutRepository.add(workout);
   }
 }

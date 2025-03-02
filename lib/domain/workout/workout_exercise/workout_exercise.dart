@@ -5,6 +5,7 @@ import 'package:overload/domain/shared/notes.dart';
 import 'package:overload/domain/workout/workout_exercise/id.dart';
 import 'package:overload/domain/workout/id.dart' as workout;
 import 'package:overload/domain/workout/workout_exercise/sets_count.dart';
+import 'package:overload/domain/workout/workout_exercise/timer.dart';
 import 'package:overload/domain/workout/workout_exercise/workout_exercise_index.dart';
 
 class WorkoutExercise {
@@ -15,22 +16,25 @@ class WorkoutExercise {
   final SetsCount _setsCount;
   final Notes? _notes;
   final Goals? _goals;
+  final Timer? _timer;
 
-  WorkoutExercise({
-    required Id id,
-    required workout.Id workoutId,
-    required WorkoutExerciseIndex index,
-    required Exercise exercise,
-    required SetsCount setsCount,
-    Notes? notes,
-    Goals? goals,
-  })  : _id = id,
+  WorkoutExercise(
+      {required Id id,
+      required workout.Id workoutId,
+      required WorkoutExerciseIndex index,
+      required Exercise exercise,
+      required SetsCount setsCount,
+      Notes? notes,
+      Goals? goals,
+      Timer? timer})
+      : _id = id,
         _workoutId = workoutId,
         _index = index,
         _exercise = exercise,
         _setsCount = setsCount,
         _notes = notes,
-        _goals = goals;
+        _goals = goals,
+        _timer = timer;
 
   Id id() {
     return _id;
@@ -60,6 +64,10 @@ class WorkoutExercise {
     return _goals;
   }
 
+  Timer? timer() {
+    return _timer;
+  }
+
   bool hasUnit(Unit unit) {
     return _exercise.hasUnit(unit);
   }
@@ -72,7 +80,8 @@ class WorkoutExercise {
       "exercise": _exercise.toJson(),
       "sets_count": _setsCount.value(),
       "notes": _notes?.value(),
-      "goals": _goals?.toJson()
+      "goals": _goals?.toJson(),
+      "timer": _timer?.value()
     };
   }
 
@@ -93,8 +102,14 @@ class WorkoutExercise {
     Goals? goals;
     if (json["goals"] != null) {
       goals = Goals.fromJson(
-        (json["goals"] as List).map((item) => item as Map<String, dynamic>).toList(),
+        (json["goals"] as List)
+            .map((item) => item as Map<String, dynamic>)
+            .toList(),
       );
+    }
+    Timer? timer;
+    if (json["timer"] != null) {
+      timer = Timer(value: json["timer"]);
     }
     return WorkoutExercise(
       workoutId: workoutId,
@@ -104,6 +119,7 @@ class WorkoutExercise {
       setsCount: setsCount,
       notes: notes,
       goals: goals,
+      timer: timer,
     );
   }
 }
