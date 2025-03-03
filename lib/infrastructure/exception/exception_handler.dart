@@ -56,7 +56,7 @@ class ExceptionHandler {
       WorkoutAlreadyExistsException _ => 'This workout already exists',
       WorkoutNotFoundException _ => 'Workout not found',
       ExerciseNameTooLongException _ =>
-        'Exercise name cannot exceed 30 characters length',
+        'Exercise name cannot exceed 50 characters length',
       WorkoutNameTooLongException _ =>
         'Workout name cannot exceed 50 characters length',
       NotesTooLongException _ => 'Notes cannot exceed 500 characters length',

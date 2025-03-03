@@ -4,7 +4,7 @@ import 'package:overload/domain/exercise/exception/invalid_exercise_name_excepti
 class Name {
 
   final String _value;
-  static const int maxLength = 30;
+  static const int maxLength = 50;
 
   Name._({required String value}) : _value = value;
 
